@@ -15,8 +15,14 @@ group :core do
 end
 
 group :frontend do
+  gem 'bootstrap'
+  gem 'browser'
+  gem 'font_awesome5_rails'
   gem 'jbuilder', '~> 2.7'
+  gem 'jquery-rails'
+  gem 'js-routes'
   gem 'sass-rails', '>= 6'
+  gem 'simple_form'
   gem 'slim'
   gem 'slim-rails'
   gem 'turbolinks', '~> 5'
