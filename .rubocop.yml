@@ -1,0 +1,149 @@
+require:
+  - rubocop-rails
+
+AllCops:
+  TargetRubyVersion: 2.6
+  # Include:
+  #   - '**/Gemfile'
+  #   - '**/Rakefile'
+  Exclude:
+    - '**/bin/*'
+    - '**/Capfile'
+    - '**/Guardfile'
+    - 'bin/*'
+    - 'builds/**/*'
+    - 'config/**/*'
+    - 'db/**/*'
+    - 'gems/**/*'
+    - 'lib/tasks/*'
+    - 'node_modules/**/*'
+    - 'script/**/*'
+    - 'vendor/**/*'
+
+# Avoid 'Missing top-level class documentation comment'
+Documentation:
+  Enabled: false
+
+Layout/IndentationWidth:
+  Width: 2
+
+Layout/LeadingCommentSpace:
+  Enabled: false
+
+Lint/RedundantCopDisableDirective:
+  Enabled: false
+
+# The ABC size is a calculated magnitude, so this number can be a Fixnum or a Float (default 15)
+Metrics/AbcSize:
+  Max: 25
+  Exclude:
+    - 'test/support/*.rb'
+
+Metrics/BlockLength:
+  Exclude:
+    - '**/*_spec.rb'
+    - '**/*.rake'
+    - 'test/factories/*.rb'
+    - 'test/**/*.rb'
+    - Gemfile
+
+# Be realistic, sometimes a class has many lines
+Metrics/ClassLength:
+  Enabled: true
+  Max: 150
+  Exclude:
+    - '**/*_spec.rb'
+    - '**/*.rake'
+    - 'test/factories/*.rb'
+    - 'test/**/*.rb'
+
+# Be realistic, sometimes breaking up is not useful (default 10)
+Metrics/MethodLength:
+  CountComments: false # count full line comments?
+  Max: 20
+  Exclude:
+    - 'test/support/*.rb'
+
+# Be realistic, sometimes a module has many lines
+Metrics/ModuleLength:
+  Enabled: true
+  Max: 150
+  Exclude:
+    - spec/**/*
+    - test/**/*
+    - "**/*.rake"
+
+Metrics/LineLength:
+  Max: 120
+
+# Be realistic, sometimes a complex if-else-branch is usefull (default 8)
+Metrics/PerceivedComplexity:
+  Max: 10
+
+# Avoid complex methods
+Metrics/CyclomaticComplexity:
+  Max: 10
+
+# What a bullshit-cop ... especially in controller-methods
+Naming/MemoizedInstanceVariableName:
+  Enabled: false
+
+Naming/VariableNumber:
+  Enabled: false
+
+Naming/PredicateName:
+  Enabled: false
+
+Rails/UnknownEnv:
+  Environments:
+    - production
+    - development
+    - test
+    - staging
+
+Rails/Output:
+  Description: 'Checks for calls to puts, print, etc.'
+  Enabled: false
+
+Rails/LexicallyScopedActionFilter:
+  Enabled: false
+
+Rails/SkipsModelValidations:
+  Enabled: false
+
+Style/AccessModifierDeclarations:
+  Enabled: false
+
+# Allow code-style 'my_condtion and return true'
+Style/AndOr:
+  EnforcedStyle: conditionals
+
+# super-stupid-cop! # Must be a positive fail ... check again!
+Style/AsciiComments:
+  Enabled: false
+
+Style/BlockDelimiters:
+  Exclude:
+    - 'test/factories/*.rb'
+    - 'lib/tasks/**/*.rake'
+
+Style/ClassAndModuleChildren:
+  Exclude:
+    - test/**/*.rb
+
+# Should be deprecated in newer Rails-versions
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+Style/RegexpLiteral:
+  Enabled: false
+
+Style/RescueModifier:
+  Enabled: false
+
+Style/Semicolon:
+  AllowAsExpressionSeparator: true
+
+Style/SymbolArray:
+  Exclude:
+    - 'test/factories/*.rb'
