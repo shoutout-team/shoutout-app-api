@@ -63,11 +63,19 @@ group :development do
 end
 
 group :test do
-  gem 'capybara', '>= 2.15'
+  gem 'capybara', '>= 2.15' # Adds support for Capybara system testing and selenium driver
+  gem 'guard'
+  gem 'guard-minitest'
+  gem 'm'
+  gem 'minitest-focus' # Focus on one test at a time.
+  gem 'minitest-macos-notification', platforms: :ruby, install_if: host_os_is?(/darwin/)
+  gem 'minitest-optional_retry'
+  gem 'minitest-rails', git: 'https://github.com/blowmage/minitest-rails'
+  gem 'minitest-spec-rails' # Drops in Minitest::Spec superclass for ActiveSupport::TestCase
   gem 'selenium-webdriver'
+  gem 'simplecov', require: false
   gem 'webdrivers'
 end
-
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 4.0'
 
