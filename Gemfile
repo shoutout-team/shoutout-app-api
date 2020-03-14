@@ -17,6 +17,7 @@ end
 group :frontend do
   gem 'bootstrap'
   gem 'browser'
+  gem 'country_select'
   gem 'font_awesome5_rails'
   gem 'jbuilder', '~> 2.7'
   gem 'jquery-rails'
