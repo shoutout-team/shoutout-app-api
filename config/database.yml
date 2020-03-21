@@ -10,16 +10,16 @@ default: &default
 
 development:
   <<: *default
-  database: killcorona_development
+  database: savethekiez_development
 
 test:
   <<: *default
-  database: killcorona_test
+  database: savethekiez_test
 
 staging:
   <<: *default
-  database: killcorona_staging
+  database: savethekiez_staging
 
 production:
   <<: *default
-  database: killcorona_production
+  database: savethekiez_production
