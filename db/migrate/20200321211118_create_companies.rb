@@ -9,10 +9,10 @@ class CreateCompanies < ActiveRecord::Migration[6.0]
       t.string :city, null: false
       t.string :street, null: false
       t.string :street_number, null: false
-      t.text :description
       t.decimal :latitude, precision: 10, scale: 6
       t.decimal :longitude, precision: 10, scale: 6
       t.jsonb :properties, null: false, default: {}
+      t.boolean :active, null: false, default: true
       t.integer :user_id, null: false
 
       t.timestamps
@@ -24,6 +24,7 @@ class CreateCompanies < ActiveRecord::Migration[6.0]
     add_index :companies, :latitude
     add_index :companies, :longitude
     add_index :companies, :properties, using: :gin
+    add_index :companies, :active
     add_index :companies, :user_id
   end
 end

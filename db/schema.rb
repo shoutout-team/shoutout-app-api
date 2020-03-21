@@ -24,13 +24,14 @@ ActiveRecord::Schema.define(version: 2020_03_21_211118) do
     t.string "city", null: false
     t.string "street", null: false
     t.string "street_number", null: false
-    t.text "description"
     t.decimal "latitude", precision: 10, scale: 6
     t.decimal "longitude", precision: 10, scale: 6
     t.jsonb "properties", default: {}, null: false
+    t.boolean "active", default: true, null: false
     t.integer "user_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["active"], name: "index_companies_on_active"
     t.index ["category"], name: "index_companies_on_category"
     t.index ["latitude"], name: "index_companies_on_latitude"
     t.index ["longitude"], name: "index_companies_on_longitude"
