@@ -1,0 +1,39 @@
+doctype html
+html lang='de'
+  head
+    meta charset='utf-8'
+    meta name='lang' content='de'
+
+    meta http-equiv='Content-Type' content='text/html; charset=utf-8'
+    meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'
+
+    meta name='viewport' content='width=device-width, initial-scale=1.0, minimum-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no'
+
+    meta name='description' content="#{frontend.description}"
+
+    = csrf_meta_tags
+    = csp_meta_tag
+
+    link rel='shortcut icon' type='image/x-icon' href='/favicon.ico'
+
+    title = frontend.title
+
+    = stylesheet_link_tag 'frontend', media: 'all', 'data-turbolinks-track': 'reload'
+    = javascript_include_tag 'frontend', 'data-turbolinks-track': 'reload'
+    = javascript_pack_tag 'application', 'data-turbolinks-track': 'reload'
+
+
+  body*body_attributes
+    section#page class="#{frontend.theme}"
+      header#header
+        = render 'layouts/frontend/header'
+      main#content role='main'
+        = render 'layouts/frontend/messages'
+
+        section#view.container-fluid class="#{frontend.section_style}"
+          = yield
+
+        = render 'layouts/frontend/dev_tools' if Rails.env.development?
+
+      footer#footer.bg-dark.text-white-50
+        = render 'layouts/frontend/footer'
