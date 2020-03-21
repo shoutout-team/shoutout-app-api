@@ -1,0 +1,7 @@
+test:
+  adapter: postgresql
+  database: save-the-kiez_test
+  encoding: utf8
+  username: postgres
+  host: postgres
+  min_messages: 'WARNING'
