@@ -3,9 +3,9 @@ nav#nav.navbar.navbar-expand-xl.fixed-top.navbar-dark.bg-dark
   a.navbar-brand href="#"
     = frontend.title
 
-  / - if user_signed_in?
-  /   button class='navbar-toggler' type='button' data-toggle='collapse' data-target='#mobile-nav-button'
-  /     span.navbar-toggler-icon
+  - if user_signed_in?
+    button class='navbar-toggler' type='button' data-toggle='collapse' data-target='#mobile-nav-button'
+      span.navbar-toggler-icon
 
-  /   div.navbar-collapse.collapse id='mobile-nav-button'
-  /     = render 'layouts/frontend/navigation'
+    div.navbar-collapse.collapse id='mobile-nav-button'
+      = render 'layouts/frontend/navigation'

@@ -8,7 +8,7 @@ module Views
       @controller = @view.controller
       @controller_name = view.controller_name
       @action_name = view.action_name
-      #@current_user = view&.current_user
+      @current_user = view&.current_user
     end
 
     def qualified_controller_name
