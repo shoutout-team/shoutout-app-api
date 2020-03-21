@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   devise_for :users
+
   namespace :api do
     get 'static/companies', to: 'static#companies'
   end
