@@ -1,4 +1,13 @@
 module Static
+  CATEGORIES = {
+    kiosk: 'Kiosk',
+    bar: 'Bar',
+    club: 'Club',
+    cafe: 'Café',
+    food: 'Food',
+    coiffeur: 'Friseur'
+  }.freeze
+
   COMPANIES = [
     {
       id: 1,
