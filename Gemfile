@@ -8,6 +8,7 @@ def host_os_is?(regex)
 end
 
 group :core do
+  gem 'activerecord-session_store'
   gem 'bootsnap', '>= 1.4.2', require: false # Reduces boot times through caching; required in config/boot.rb
   gem 'devise'
   gem 'pg'
