@@ -1,0 +1,39 @@
+default: &default
+  title: 'SaveTheKiez'
+
+  domains:
+    live: ''
+    production: ''
+    staging: ''
+    preview: ''
+    development: ''
+
+  hosting:
+    - production
+    - staging
+    - preview
+    - localhost:3020 # TODO: local-domain ~ pow
+
+  email:
+
+  debug:
+    app: true
+
+  user:
+    role_wordings:
+      guest: 'Gast'
+      user: 'Benutzer'
+      administrator: 'Administrator'
+      developer: 'Entwickler'
+
+
+development:
+  <<: *default
+staging:
+  <<: *default
+production:
+  <<: *default
+preview:
+  <<: *default
+test:
+  <<: *default
