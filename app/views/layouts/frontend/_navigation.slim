@@ -1,0 +1,21 @@
+ul.navbar-nav.entities
+  li.nav-item data-group='dashboard'
+    = link_to('Aktuell', root_path, class: 'nav-link')
+  li.nav-item data-group='archiv'
+    = link_to('Erledigt', root_path, class: 'nav-link')
+
+- if current_user.developer?
+  ul.navbar-nav.ml-auto.hosting
+    li.nav-item.dropdown class="#{Rails.env}"
+      a.nav-link.dropdown-toggle href='#' id="hosting-dropdown" data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'
+        = Rails.env.titleize
+      .dropdown-menu aria-labelledby="hosting-dropdown"
+        = hosting_selector
+
+ul.navbar-nav.ml-auto.account
+  li.nav-item.dropdown
+    a.nav-link.dropdown-toggle href='#' id="account-dropdown" data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'
+      = current_user
+    .dropdown-menu.dropdown-menu-right aria-labelledby="account-dropdown"
+      /= link_to 'Einstellungen',  user_settings_path(current_user), class: 'dropdown-item'
+      = link_to 'Abmelden', destroy_user_session_path, method: :delete, class: 'dropdown-item'
