@@ -1,4 +1,5 @@
 module Static
+  # TODO: Move to App::Definitions #6
   CATEGORIES = {
     kiosk: 'Kiosk',
     bar: 'Bar',
@@ -7,6 +8,8 @@ module Static
     food: 'Food',
     coiffeur: 'Friseur'
   }.freeze
+
+  CATEGORIES_ENUM = { kiosk: 0, bar: 1, club: 2, cafe: 3, food: 4, coiffeur: 5 }.freeze
 
   COMPANIES = [
     {

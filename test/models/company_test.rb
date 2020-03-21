@@ -11,16 +11,17 @@
 #  city          :string           not null
 #  street        :string           not null
 #  street_number :string           not null
-#  description   :text
 #  latitude      :decimal(10, 6)
 #  longitude     :decimal(10, 6)
 #  properties    :jsonb            not null
+#  active        :boolean          default("true"), not null
 #  user_id       :integer          not null
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
 #
 # Indexes
 #
+#  index_companies_on_active      (active)
 #  index_companies_on_category    (category)
 #  index_companies_on_latitude    (latitude)
 #  index_companies_on_longitude   (longitude)
