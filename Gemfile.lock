@@ -421,7 +421,6 @@ DEPENDENCIES
   selenium-webdriver
   simple_form
   simplecov
-  slim
   slim-rails
   spring
   spring-watcher-listen (~> 2.0.0)

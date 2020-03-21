@@ -24,7 +24,6 @@ group :frontend do
   gem 'js-routes'
   gem 'sass-rails', '>= 6'
   gem 'simple_form'
-  gem 'slim'
   gem 'slim-rails'
   gem 'turbolinks', '~> 5'
   gem 'webpacker', '~> 4.0'
@@ -83,6 +82,7 @@ group :test do
   gem 'simplecov', require: false
   gem 'webdrivers'
 end
+
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 4.0'
 
