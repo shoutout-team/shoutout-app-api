@@ -10,10 +10,35 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_21_182243) do
+ActiveRecord::Schema.define(version: 2020_03_21_211118) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "companies", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "title", null: false
+    t.integer "category", null: false
+    t.string "slug", null: false
+    t.string "postcode", null: false
+    t.string "city", null: false
+    t.string "street", null: false
+    t.string "street_number", null: false
+    t.text "description"
+    t.decimal "latitude", precision: 10, scale: 6
+    t.decimal "longitude", precision: 10, scale: 6
+    t.jsonb "properties", default: {}, null: false
+    t.integer "user_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["category"], name: "index_companies_on_category"
+    t.index ["latitude"], name: "index_companies_on_latitude"
+    t.index ["longitude"], name: "index_companies_on_longitude"
+    t.index ["name"], name: "index_companies_on_name"
+    t.index ["properties"], name: "index_companies_on_properties", using: :gin
+    t.index ["slug"], name: "index_companies_on_slug"
+    t.index ["user_id"], name: "index_companies_on_user_id"
+  end
 
   create_table "sessions", force: :cascade do |t|
     t.string "session_id", null: false
