@@ -47,7 +47,7 @@ group :development, :test do
   gem 'factory_bot_rails'
   gem 'pry'
   gem 'pry-alias'
-  gem 'pry-byebug'
+  #gem 'pry-byebug' # Disabled due to error: uninitialized constant Pry::Command::ExitAll (NameError)
   gem 'pry-rails'
   gem 'pry-rescue'
   gem 'pry-stack_explorer'
