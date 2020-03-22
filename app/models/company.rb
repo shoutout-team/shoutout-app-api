@@ -67,7 +67,7 @@ class Company < ApplicationRecord
   def define_slug
     return if slug.present?
 
-    self.slug = sanitize_slug("#{city}-#{name}").parameterize
+    self.slug = sanitize_slug("#{name}-#{city}").parameterize
   end
 
   def define_properties
@@ -95,7 +95,7 @@ class Company < ApplicationRecord
   end
 
   protected def sanitize_slug(slug_value)
-    slug_value.gsub!(/[äöüÄÖÜß]/) do |match|
+    slug_value.gsub(/[äöüÄÖÜß]/) do |match|
       case match
       when 'ä' then 'ae'
       when 'ö' then 'oe'
