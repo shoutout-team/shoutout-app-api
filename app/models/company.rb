@@ -41,7 +41,7 @@ class Company < ApplicationRecord
     id name title category slug properties gid
     postcode city street street_number latitude longitude
   ].freeze
-  API_METHODS = %i[category_wording keeper_name].freeze
+  API_METHODS = %i[category_wording keeper_name picture].freeze
 
   NESTED_PROPERTIES = %i[payment links].freeze
 
@@ -52,6 +52,7 @@ class Company < ApplicationRecord
   has_jsonb_attributes :properties, :description, :cr_number, :notes, :payment, :links
 
   belongs_to :user
+  has_one_attached :image
 
   scope :with_models, -> { includes(:user) }
 
@@ -81,6 +82,10 @@ class Company < ApplicationRecord
 
   def keeper_name
     user.name
+  end
+
+  def picture
+    image.key if image.attached?
   end
 
   def as_json(options = {})
