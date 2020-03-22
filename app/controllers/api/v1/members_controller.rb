@@ -1,6 +1,6 @@
 module Api
   module V1
-    class UsersController < Api::BaseController
+    class MembersController < Api::BaseController
       include Users::ResourceStates
 
       after_action :set_csrf_headers, only: :login
