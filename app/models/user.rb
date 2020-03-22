@@ -41,7 +41,7 @@
 #
 class User < ApplicationRecord
   # TODO: Remove :id from public attributes #26
-  PUBLIC_ATTRIBUTES = %i[id email name gid].freeze
+  API_ATTRIBUTES = %i[id email name gid].freeze
   API_METHODS = %i[company_name].freeze
 
   # Include default devise modules. Others available are:
@@ -71,7 +71,7 @@ class User < ApplicationRecord
   end
 
   def as_json(options = {})
-    super({ only: PUBLIC_ATTRIBUTES, methods: API_METHODS }.merge(options || {}))
+    super({ only: API_ATTRIBUTES, methods: API_METHODS }.merge(options || {}))
   end
 
   def define_user_role
@@ -91,7 +91,7 @@ class User < ApplicationRecord
   end
 
   def public_attributes
-    attributes.symbolize_keys.slice(*PUBLIC_ATTRIBUTES)
+    attributes.symbolize_keys.slice(*API_ATTRIBUTES)
   end
 
   def to_s

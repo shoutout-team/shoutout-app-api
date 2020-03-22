@@ -37,7 +37,7 @@ class Company < ApplicationRecord
   include JsonBinaryAttributes
 
   # TODO: Remove :id from public attributes #26
-  PUBLIC_ATTRIBUTES = %i[id name title category slug postcode city street street_number latitude longitude properties gid].freeze
+  API_ATTRIBUTES = %i[id name title category slug postcode city street street_number latitude longitude properties gid].freeze
   API_METHODS = %i[category_wording keeper_name].freeze
 
   NESTED_PROPERTIES = %i[payment links].freeze
@@ -81,7 +81,7 @@ class Company < ApplicationRecord
   end
 
   def as_json(options = {})
-    super({ only: PUBLIC_ATTRIBUTES, methods: API_METHODS }.merge(options || {}))
+    super({ only: API_ATTRIBUTES, methods: API_METHODS }.merge(options || {}))
   end
 
   def generate_gid
