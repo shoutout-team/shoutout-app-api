@@ -9,6 +9,7 @@ Rails.application.routes.draw do
     namespace :v1 do
       get 'companies', to: :companies
       get 'categories', to: :categories
+      get 'keepers', to: :keepers
     end
   end
 

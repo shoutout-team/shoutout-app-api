@@ -7,5 +7,9 @@ module Api
     def categories
       render_json(Static::CATEGORIES)
     end
+
+    def keepers
+      render_json(User.available.pluck(:id, :email, :name))
+    end
   end
 end
