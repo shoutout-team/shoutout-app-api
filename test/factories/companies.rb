@@ -32,17 +32,16 @@
 #
 FactoryBot.define do
   factory :company do
-    name { "" }
-    title { "" }
-    category { "" }
-    postcode { "MyString" }
-    city { "MyString" }
-    street { "MyString" }
-    street_number { "MyString" }
-    description { "MyText" }
-    latitude { "9.99" }
-    longitude { "9.99" }
-    properties { "" }
+    name { 'Name' }
+    title { '' }
+    category { 0 }
+    postcode { 'MyString' }
+    city { 'MyString' }
+    street { 'MyString' }
+    street_number { 'MyString' }
+    description { 'MyText' }
+    latitude { 9.99 }
+    longitude { 9.99 }
     user_id { 1 }
   end
 end

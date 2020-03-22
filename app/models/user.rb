@@ -45,7 +45,7 @@ class User < ApplicationRecord
 
   enum role: { guest: 0, user: 1, administrator: 2, developer: 3 }
 
-  has_one :company
+  has_one :company, dependent: :destroy
 
   scope :administrative, -> { where(role: %i[administrator developer]) }
   scope :users, -> { where(role: %i[guest user]) }
