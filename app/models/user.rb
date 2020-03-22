@@ -42,7 +42,7 @@
 class User < ApplicationRecord
   # TODO: Remove :id from public attributes #26
   API_ATTRIBUTES = %i[id email name gid].freeze
-  API_METHODS = %i[company_name].freeze
+  API_METHODS = %i[company_name avatar].freeze
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
@@ -69,7 +69,7 @@ class User < ApplicationRecord
 
   # rubocop:disable Rails/Delegate
   def company_name
-    company.name
+    company.try(:name)
   end
   # rubocop:enable Rails/Delegate
 
@@ -83,6 +83,10 @@ class User < ApplicationRecord
   # rescue URI::InvalidURIError => e
   #   # TODO: Log issue
   # end
+
+  def avatar
+    image.key if image.attached?
+  end
 
   def as_json(options = {})
     super({ only: API_ATTRIBUTES, methods: API_METHODS }.merge(options || {}))
