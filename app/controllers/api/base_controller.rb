@@ -2,8 +2,8 @@ module Api
   class BaseController < ApplicationController
     protect_from_forgery unless: -> { request.format.json? }
 
-    before_filter :cors_preflight_check
-    after_filter :cors_set_access_control_headers
+    before_action :cors_preflight_check
+    after_action :cors_set_access_control_headers
 
     # Add the newly created csrf-token to the page headers
     protected def set_csrf_headers
