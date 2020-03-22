@@ -12,13 +12,23 @@ module Api
         @company.persisted? ? render_json(result: @company) : render_json_unprocessable(:invalid, @company.errors)
       end
 
+      def update
+        return render_json_forbidden(:unknown_keeper) if @keeper.nil?
+
+        if Company.update(company_params)
+          render_json(result: @company)
+        else
+          render_json_unprocessable(:invalid, @company.errors)
+        end
+      end
+
       private def company_params
         allowed = PARAMS + [Company.property_params]
         params.require(:company).permit(*allowed)
       end
 
       private def token
-        params[:company][:keeper_token]
+        params[:keeper_token] || params[:company][:keeper_token]
       end
 
       private def require_keeper

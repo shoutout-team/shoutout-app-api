@@ -14,6 +14,7 @@ Rails.application.routes.draw do
       post 'members/login', to: 'members#login'
       post 'members/signup', to: 'members#signup'
       post 'companies/add', to: 'companies#create'
+      post 'companies/(:keeper_token)/edit', to: 'companies#update'
     end
   end
 
