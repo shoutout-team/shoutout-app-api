@@ -85,7 +85,10 @@ class User < ApplicationRecord
   # end
 
   def avatar
-    image.key if image.attached?
+    return unless image.attached?
+
+    #Rails.env.development? ? image.key : image.service_url
+    image.service_url
   end
 
   def as_json(options = {})
