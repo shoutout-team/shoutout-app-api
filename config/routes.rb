@@ -13,6 +13,7 @@ Rails.application.routes.draw do
       get 'keepers', to: 'entities#keepers'
       post 'members/login', to: 'members#login'
       post 'members/signup', to: 'members#signup'
+      post 'companies/add', to: 'companies#create'
     end
   end
 
