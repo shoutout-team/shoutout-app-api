@@ -1,10 +1,14 @@
 # ShoutOut-API
 
-This project provides a internal API with all relevant data for serving our SPA-Frontend.
+This project provides a internal API for serving our SPA-Frontend.
+- It acts as a REST-based service with endpoints for provision of all relevant data in JSON-format.
+- This includes currently users, companies and locations.
+- It handles registration and login for new members and creating and updating a company-profile.
 
-Checkout [https://devpost.com/software/0016_lokale-unternehmen_savethekiez-wrey3j] for further details!
+Checkout [Our DevPost-Profile](https://devpost.com/software/0016_lokale-unternehmen_savethekiez-wrey3j) for further details!
 
-Or watch our awesome video: [https://www.youtube.com/watch?v=je_1JkFD6lM&feature=youtu.be]
+Or watch our [awesome project-trailer](https://www.youtube.com/watch?v=WgSPyhn-6Gg&feature=youtu.be)
+
 
 ## Setup
 
