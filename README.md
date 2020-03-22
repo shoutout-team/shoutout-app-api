@@ -1,24 +1,18 @@
-# README
+# ShoutOut-API
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+This project provides a internal API with all relevant data for serving our SPA-Frontend.
 
-Things you may want to cover:
+Checkout [https://devpost.com/software/0016_lokale-unternehmen_savethekiez-wrey3j] for further details!
 
-* Ruby version
+Or watch our awesome video: [https://www.youtube.com/watch?v=je_1JkFD6lM&feature=youtu.be]
 
-* System dependencies
+## Setup
 
-* Configuration
+### Requirements
+* Ruby 2.5.1
+* Rails 6
+* Postgres
+* ImageMagick
 
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+### Installation
+Nothing special to perform yet. It should run out of the box in any propper configured dev-stack.
