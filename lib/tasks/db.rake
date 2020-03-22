@@ -36,7 +36,7 @@ namespace :db do
   # rake db:truncate
   desc 'Truncates all tables in the database'
   task truncate: :environment do
-    abort 'This task is not available in production!' if Rails.env.production?
+    # abort 'This task is not available in production!' if Rails.env.production?
 
     ARGV.each { |a| task a.to_sym do; end }
     tables = ARGV[1].try(:split, ',')
