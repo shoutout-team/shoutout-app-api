@@ -8,10 +8,10 @@ Rails.application.routes.draw do
 
     namespace :v1 do
       get 'load', to: 'entities#load'
-      get 'companies', to: :companies
-      get 'categories', to: :categories
-      get 'keepers', to: :keepers
-      post 'signup', to: :signup
+      get 'companies', to: 'entities#companies'
+      get 'categories', to: 'entities#categories'
+      get 'keepers', to: 'entities#keepers'
+      post 'signup', to: 'users#signup'
     end
   end
 
