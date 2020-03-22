@@ -59,4 +59,10 @@ namespace :db do
       end
     end
   end
+
+  # rake db:rebuild
+  task rebuild: :environment do
+    Rake::Task['db:truncate'].invoke
+    Rake::Task['db:seed'].invoke
+  end
 end
