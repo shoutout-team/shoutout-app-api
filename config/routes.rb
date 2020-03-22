@@ -13,6 +13,7 @@ Rails.application.routes.draw do
       get 'keepers', to: 'entities#keepers'
       get 'locations', to: 'entities#locations'
       post 'locations/search', to: 'locations#search'
+      post 'locations/cities', to: 'locations#cities'
       post 'members/login', to: 'members#login'
       post 'members/signup', to: 'members#signup'
       post 'companies/add', to: 'companies#create'
