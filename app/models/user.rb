@@ -49,6 +49,7 @@ class User < ApplicationRecord
 
   scope :administrative, -> { where(role: %i[administrator developer]) }
   scope :users, -> { where(role: %i[guest user]) }
+  scope :keepers, -> { where(role: %i[user]) }
 
   after_initialize :define_user_role
 
@@ -58,6 +59,10 @@ class User < ApplicationRecord
 
   def admin?
     administrator? || developer?
+  end
+
+  def keeper?
+    user
   end
 
   def to_s

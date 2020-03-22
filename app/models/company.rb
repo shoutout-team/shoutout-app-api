@@ -38,6 +38,8 @@ class Company < ApplicationRecord
 
   enum category: CATEGORIES
 
+  has_jsonb_attributes :properties, :description, :cr_number, :notes, :payment, :links
+
   belongs_to :user
 
   validates :name, :category, :postcode, :city, :street, :street_number, :user_id, presence: true
@@ -74,6 +76,7 @@ class Company < ApplicationRecord
       links: {
         website: nil,
         facebook: nil,
+        twitter: nil,
         instagram: nil
       }
     }

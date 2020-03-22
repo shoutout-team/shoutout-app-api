@@ -6,10 +6,11 @@ module Static
     club: 'Club',
     cafe: 'Café',
     food: 'Food',
-    coiffeur: 'Friseur'
+    coiffeur: 'Friseur',
+    shop: 'Geschäft'
   }.freeze
 
-  CATEGORIES_ENUM = { kiosk: 0, bar: 1, club: 2, cafe: 3, food: 4, coiffeur: 5 }.freeze
+  CATEGORIES_ENUM = { kiosk: 0, bar: 1, club: 2, cafe: 3, food: 4, coiffeur: 5, shop: 6 }.freeze
 
   COMPANIES = [
     {
