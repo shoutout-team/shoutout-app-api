@@ -34,6 +34,10 @@ class Company < ApplicationRecord
   include ActiveScope
   include JsonBinaryAttributes
 
+  # TODO: Remove :id from public attributes and add a :uuid instead
+  PUBLIC_ATTRIBUTES = %i[id name title category slug postcode city street street_number latitude longitude properties].freeze
+  API_METHODS = %i[category_wording keeper_name].freeze
+
   NESTED_PROPERTIES = %i[payment links].freeze
 
   CATEGORIES = Static::CATEGORIES_ENUM
@@ -44,6 +48,8 @@ class Company < ApplicationRecord
 
   belongs_to :user
 
+  scope :with_models, -> { includes(:user) }
+
   validates :name, :category, :postcode, :city, :street, :street_number, :user_id, presence: true
 
   after_initialize :define_properties, if: :new_record?
@@ -52,11 +58,27 @@ class Company < ApplicationRecord
 
   alias keeper user
 
+  def self.available
+    active.with_models
+  end
+
   def self.property_params
     params = { properties: PROPERTIES - NESTED_PROPERTIES }
     params[:properties] << { payment: [:paypal, :gofoundme, bank: [:owner, :iban]] }
     params[:properties] << { links: [:website, :facebook, :twitter, :instagram] }
     params
+  end
+
+  def category_wording
+    Static::CATEGORIES[category.to_sym]
+  end
+
+  def keeper_name
+    user.name
+  end
+
+  def as_json(options = {})
+    super({ only: PUBLIC_ATTRIBUTES, methods: API_METHODS }.merge(options || {}))
   end
 
   def define_title
