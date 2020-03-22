@@ -18,11 +18,13 @@
 #  user_id       :integer          not null
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
+#  gid           :string           not null
 #
 # Indexes
 #
 #  index_companies_on_active      (active)
 #  index_companies_on_category    (category)
+#  index_companies_on_gid         (gid) UNIQUE
 #  index_companies_on_latitude    (latitude)
 #  index_companies_on_longitude   (longitude)
 #  index_companies_on_name        (name)
