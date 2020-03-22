@@ -19,9 +19,9 @@
 #
 FactoryBot.define do
   factory :location do
-    name { "MyString" }
-    postcode { "MyString" }
-    federate_state { "MyString" }
+    name { 'MyString' }
+    postcode { 'MyString' }
+    federate_state { 'MyString' }
     osm_id { 1 }
   end
 end
