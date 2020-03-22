@@ -63,12 +63,13 @@ unless User.keepers.any? && Company.any?
   end
 end
 
-unless Location.any?
-  require 'csv'
+# Disabled due to row-limit on heroku #20
+# unless Location.any?
+#   require 'csv'
 
-  file_path = Rails.root.join('public/data/zuordnung_plz_ort.csv')
+#   file_path = Rails.root.join('public/data/zuordnung_plz_ort.csv')
 
-  CSV.foreach(file_path, headers: true) do |row|
-    Location.create!(name: row['ort'], postcode: row['plz'], federate_state: row['bundesland'], osm_id: row['osm_id'].to_i)
-  end
-end
+#   CSV.foreach(file_path, headers: true) do |row|
+#     Location.create!(name: row['ort'], postcode: row['plz'], federate_state: row['bundesland'], osm_id: row['osm_id'].to_i)
+#   end
+# end
