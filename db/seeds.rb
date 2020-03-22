@@ -25,21 +25,38 @@ unless User.keepers.any? && Company.any?
     @k14 = User.create!(email: 'jon.doe3@zyx-mail.de', name: 'Jon Doe 3', password: 'Keeper123!', role: :user, approved: true)
     @k15 = User.create!(email: 'jon.doe4@zyx-mail.de', name: 'Jon Doe 4', password: 'Keeper123!', role: :user, approved: true)
 
-    Company.create!(name: 'Café Frida', category: :cafe, user: @k01, street: 'Bornheimer Straße', street_number: '57', postcode: '53119', city: 'Bonn', latitude: 50.737273, longitude: 7.085851)
-    Company.create!(name: 'Zum scheuen Reh', category: :bar, user: @k02, street: 'Hans-Böckler-Platz', street_number: '2', postcode: '50672', city: 'Köln', latitude: 50.943762, longitude: 6.933824)
-    Company.create!(name: 'Barracuda-Bar', category: :bar, user: @k03, street: 'Bismarckstraße', street_number: '44', postcode: '50672', city: 'Köln', latitude: 50.941464, longitude: 6.935182)
-    Company.create!(name: 'Veedelskrämer', category: :shop, user: @k04, street: 'Körner Straße', street_number: '2-4', postcode: '50823', city: 'Köln', latitude: 50.948069, longitude: 6.921838)
-    Company.create!(name: 'Nikos Friseure', category: :coiffeur,  user: @k05, street: 'Belderberg', street_number: '19', postcode: '53113', city: 'Bonn', latitude: 50.735880, longitude: 7.105141)
-    Company.create!(name: 'Café Nale Café', category: :cafe, user: @k06, street: 'Darmstädter Straße', street_number: '19', postcode: '50678', city: 'Köln', latitude: 50.919261, longitude: 6.961764)
-    Company.create!(name: 'Eddys Haarkultur', category: :coiffeur, user: @k07, street: 'Bonner Straße', street_number: '49', postcode: '50667', city: 'Köln', latitude: 50.917814, longitude: 6.960779)
-    Company.create!(name: 'Miss Minz - Das B', category: :kiosk, user: @k08, street: 'Rheinaustraße', street_number: '101', postcode: '53225', city: 'Bonn', latitude: 50.740102, longitude: 7.113713)
-    Company.create!(name: 'Brigittes Büdchen', category: :kiosk, user: @k09, street: 'Merowingerstraße', street_number: '73', postcode: '50677', city: 'Köln', latitude: 50.919928, longitude: 6.954558)
-    Company.create!(name: 'Björns Büdchen', category: :kiosk, user: @k10, street: 'Lülsdorfer Straße', street_number: '117', postcode: '51143', city: 'Köln', latitude: 50.846255, longitude: 7.004519)
-    Company.create!(name: 'Friseur Michels', category: :coiffeur, user: @k11, street: 'Acherstraße', street_number: '30', postcode: '53111', city: 'Bonn', latitude: 50.735383, longitude: 7.099942117)
-    Company.create!(name: 'Mayras Wohnzimm Café', category: :cafe, user: @k12, street: 'Friedrich-Breuer-Straße', street_number: '39', postcode: '53225', city: 'Bonn', latitude: 50.738746, longitude: 7.117492)
-    Company.create!(name: 'Kiosk', category: :kiosk, user: @k13, street: 'Breite Straße', street_number: '17', postcode: '53111', city: 'Bonn', latitude: 50.737450, longitude: 7.095750)
-    Company.create!(name: 'Frittebud Food', category: :food, user: @k14, street: 'Franzstraße', street_number: '42', postcode: '53111', city: 'Bonn', latitude: 50.736468, longitude: 7.093573)
-    Company.create!(name: 'Untergrund  Club', category: :club, user: @k15, street: 'Kesselgasse', street_number: '1', postcode: '53111', city: 'Bonn', latitude: 50.736912, longitude: 7.099255)
+    properties = {
+      description: 'A really nice description about the company',
+      cr_number: '123456-ABC-7890',
+      notes: 'A personal note to anyone who donates',
+      payment: {
+        paypal: 'https://paypal.me/my-company-name',
+        gofoundme: 'https://gofoundme.com/my-company-name',
+        iban: nil
+      },
+      links: {
+        website: 'https://my-company-name.de',
+        facebook: 'https://facebook.com/my-company-name',
+        twitter: 'https://twitter.com/my-company-name',
+        instagram: 'https://instagram.com/my-company-name'
+      }
+    }
+
+    Company.create!(name: 'Café Frida', category: :cafe, user: @k01, street: 'Bornheimer Straße', street_number: '57', postcode: '53119', city: 'Bonn', latitude: 50.737273, longitude: 7.085851, properties: properties)
+    Company.create!(name: 'Zum scheuen Reh', category: :bar, user: @k02, street: 'Hans-Böckler-Platz', street_number: '2', postcode: '50672', city: 'Köln', latitude: 50.943762, longitude: 6.933824, properties: properties)
+    Company.create!(name: 'Barracuda-Bar', category: :bar, user: @k03, street: 'Bismarckstraße', street_number: '44', postcode: '50672', city: 'Köln', latitude: 50.941464, longitude: 6.935182, properties: properties)
+    Company.create!(name: 'Veedelskrämer', category: :shop, user: @k04, street: 'Körner Straße', street_number: '2-4', postcode: '50823', city: 'Köln', latitude: 50.948069, longitude: 6.921838, properties: properties)
+    Company.create!(name: 'Nikos Friseure', category: :coiffeur,  user: @k05, street: 'Belderberg', street_number: '19', postcode: '53113', city: 'Bonn', latitude: 50.735880, longitude: 7.105141, properties: properties)
+    Company.create!(name: 'Café Nale Café', category: :cafe, user: @k06, street: 'Darmstädter Straße', street_number: '19', postcode: '50678', city: 'Köln', latitude: 50.919261, longitude: 6.961764, properties: properties)
+    Company.create!(name: 'Eddys Haarkultur', category: :coiffeur, user: @k07, street: 'Bonner Straße', street_number: '49', postcode: '50667', city: 'Köln', latitude: 50.917814, longitude: 6.960779, properties: properties)
+    Company.create!(name: 'Miss Minz - Das B', category: :kiosk, user: @k08, street: 'Rheinaustraße', street_number: '101', postcode: '53225', city: 'Bonn', latitude: 50.740102, longitude: 7.113713, properties: properties)
+    Company.create!(name: 'Brigittes Büdchen', category: :kiosk, user: @k09, street: 'Merowingerstraße', street_number: '73', postcode: '50677', city: 'Köln', latitude: 50.919928, longitude: 6.954558, properties: properties)
+    Company.create!(name: 'Björns Büdchen', category: :kiosk, user: @k10, street: 'Lülsdorfer Straße', street_number: '117', postcode: '51143', city: 'Köln', latitude: 50.846255, longitude: 7.004519, properties: properties)
+    Company.create!(name: 'Friseur Michels', category: :coiffeur, user: @k11, street: 'Acherstraße', street_number: '30', postcode: '53111', city: 'Bonn', latitude: 50.735383, longitude: 7.099942117, properties: properties)
+    Company.create!(name: 'Mayras Wohnzimm Café', category: :cafe, user: @k12, street: 'Friedrich-Breuer-Straße', street_number: '39', postcode: '53225', city: 'Bonn', latitude: 50.738746, longitude: 7.117492, properties: properties)
+    Company.create!(name: 'Kiosk', category: :kiosk, user: @k13, street: 'Breite Straße', street_number: '17', postcode: '53111', city: 'Bonn', latitude: 50.737450, longitude: 7.095750, properties: properties)
+    Company.create!(name: 'Frittebud Food', category: :food, user: @k14, street: 'Franzstraße', street_number: '42', postcode: '53111', city: 'Bonn', latitude: 50.736468, longitude: 7.093573, properties: properties)
+    Company.create!(name: 'Untergrund Club', category: :club, user: @k15, street: 'Kesselgasse', street_number: '1', postcode: '53111', city: 'Bonn', latitude: 50.736912, longitude: 7.099255, properties: properties)
   rescue ActiveRecord::RecordInvalid => e
     puts "Failed record #{e.record}"
     raise e
