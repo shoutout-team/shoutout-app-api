@@ -11,6 +11,7 @@ Rails.application.routes.draw do
       get 'companies', to: :companies
       get 'categories', to: :categories
       get 'keepers', to: :keepers
+      post 'signup', to: :signup
     end
   end
 
