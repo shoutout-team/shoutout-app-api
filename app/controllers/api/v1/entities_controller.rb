@@ -17,6 +17,10 @@ module Api
         render_json(User.available)
       end
 
+      def locations
+        render_json(Location.all)
+      end
+
       private def spa_load_response
         {
           keepers: User.available,

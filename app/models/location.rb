@@ -18,5 +18,12 @@
 #  index_locations_on_postcode        (postcode)
 #
 class Location < ApplicationRecord
-  validate :name, :postcode, :federate_state, :osm_id, presence: true
+  API_ATTRIBUTES = %i[name postcode federate_state osm_id].freeze
+  API_METHODS = %i[].freeze
+
+  validates :name, :postcode, :federate_state, :osm_id, presence: true
+
+  def as_json(options = {})
+    super({ only: API_ATTRIBUTES, methods: API_METHODS }.merge(options || {}))
+  end
 end
