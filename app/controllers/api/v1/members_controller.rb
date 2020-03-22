@@ -13,7 +13,7 @@ module Api
 
       # TODO: Use :signup_params after MVP #10
       def signup
-        @user = User.create(approved_signup_params)
+        @user = User.create(approved_signup_params.merge(role: :user))
 
         if @user.persisted?
           render_json
