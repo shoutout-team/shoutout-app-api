@@ -11,7 +11,8 @@ Rails.application.routes.draw do
       get 'companies', to: 'entities#companies'
       get 'categories', to: 'entities#categories'
       get 'keepers', to: 'entities#keepers'
-      post 'signup', to: 'users#signup'
+      post 'users/login', to: 'users#login'
+      post 'users/signup', to: 'users#signup'
     end
   end
 
