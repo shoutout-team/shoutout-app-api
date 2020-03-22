@@ -66,9 +66,11 @@ class User < ApplicationRecord
     keepers.approved.with_models
   end
 
+  # rubocop:disable Rails/Delegate
   def company_name
     company.name
   end
+  # rubocop:enable Rails/Delegate
 
   def as_json(options = {})
     super({ only: API_ATTRIBUTES, methods: API_METHODS }.merge(options || {}))

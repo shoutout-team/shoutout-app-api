@@ -37,7 +37,10 @@ class Company < ApplicationRecord
   include JsonBinaryAttributes
 
   # TODO: Remove :id from public attributes #26
-  API_ATTRIBUTES = %i[id name title category slug postcode city street street_number latitude longitude properties gid].freeze
+  API_ATTRIBUTES = %i[
+    id name title category slug properties gid
+    postcode city street street_number latitude longitude
+  ].freeze
   API_METHODS = %i[category_wording keeper_name].freeze
 
   NESTED_PROPERTIES = %i[payment links].freeze
@@ -67,8 +70,8 @@ class Company < ApplicationRecord
 
   def self.property_params
     params = { properties: PROPERTIES - NESTED_PROPERTIES }
-    params[:properties] << { payment: [:paypal, :gofoundme, bank: [:owner, :iban]] }
-    params[:properties] << { links: [:website, :facebook, :twitter, :instagram] }
+    params[:properties] << { payment: [:paypal, :gofoundme, bank: %i[owner iban]] }
+    params[:properties] << { links: %i[website facebook twitter instagram] }
     params
   end
 
