@@ -8,7 +8,7 @@ module Api
       # TODO: Missing case-handling for :confirmed? and :approved?
       def login
         @user = User.find_for_database_authentication(email: params[:user][:email])
-        @user.present? ? render_json : render_json_error
+        authenticated? ? render_json : render_json_forbidden(:invalid_login)
       end
 
       # TODO: Use :signup_params after MVP #10
@@ -33,6 +33,10 @@ module Api
       # TODO: Remove :approved_signup_params after MVP #10
       private def approved_signup_params
         signup_params.merge(approved: true)
+      end
+
+      private def authenticated?
+        @user.present? && @user.valid_password?(params[:user][:password])
       end
     end
   end
