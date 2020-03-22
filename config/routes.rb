@@ -2,7 +2,16 @@ Rails.application.routes.draw do
   devise_for :users
 
   namespace :api do
-    get 'static/companies', to: 'static#companies'
+    namespace :static do
+      get 'companies', to: :companies
+    end
+
+    namespace :v1 do
+      get 'load', to: :load
+      get 'companies', to: :companies
+      get 'categories', to: :categories
+      get 'keepers', to: :keepers
+    end
   end
 
   get 'welcome', to: 'pages#index'

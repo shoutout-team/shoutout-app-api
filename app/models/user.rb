@@ -50,8 +50,13 @@ class User < ApplicationRecord
   scope :administrative, -> { where(role: %i[administrator developer]) }
   scope :users, -> { where(role: %i[guest user]) }
   scope :keepers, -> { where(role: %i[user]) }
+  scope :approved, -> { where(approved: true) }
 
   after_initialize :define_user_role
+
+  def self.available
+    keepers.approved
+  end
 
   def define_user_role
     self.role = :user if role.blank?
