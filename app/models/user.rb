@@ -52,6 +52,7 @@ class User < ApplicationRecord
   enum role: { guest: 0, user: 1, administrator: 2, developer: 3 }
 
   has_one :company, dependent: :destroy
+  has_one_attached :image
 
   scope :administrative, -> { where(role: %i[administrator developer]) }
   scope :users, -> { where(role: %i[guest user]) }
@@ -71,6 +72,17 @@ class User < ApplicationRecord
     company.name
   end
   # rubocop:enable Rails/Delegate
+
+  # Deprecated: we solve this in an endpoint #9
+  # def avatar
+  #   return unless image.attached?
+
+  #   #image.service_url if Rails.env.production?
+  #   image.service.send(:path_for, image.key) if Rails.env.development?
+
+  # rescue URI::InvalidURIError => e
+  #   # TODO: Log issue
+  # end
 
   def as_json(options = {})
     super({ only: API_ATTRIBUTES, methods: API_METHODS }.merge(options || {}))
