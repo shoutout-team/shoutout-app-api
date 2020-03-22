@@ -6,7 +6,7 @@ module Api
       end
 
       def companies
-        render_json(Company.active)
+        render_json(Company.available)
       end
 
       def categories
@@ -21,7 +21,7 @@ module Api
         {
           keepers: User.available.pluck(:id, :email, :name),
           categories: Static::CATEGORIES,
-          companies: Company.active
+          companies: Company.available
         }
       end
     end

@@ -3,7 +3,7 @@ module Api
     class CompaniesController < Api::BaseController
       PARAMS = %i[name title category postcode city street street_number latitude longitude].freeze
 
-      before_action :require_keeper
+      before_action :require_keeper, only: %i[create update]
 
       def create
         return render_json_forbidden(:unknown_keeper) if @keeper.nil?

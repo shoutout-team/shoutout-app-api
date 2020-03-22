@@ -55,12 +55,13 @@ class User < ApplicationRecord
   scope :users, -> { where(role: %i[guest user]) }
   scope :keepers, -> { where(role: %i[user]) }
   scope :approved, -> { where(approved: true) }
+  scope :with_models, -> { includes(:company) }
 
   after_initialize :define_user_role
   before_create :generate_token
 
   def self.available
-    keepers.approved
+    keepers.approved.with_models
   end
 
   def define_user_role
