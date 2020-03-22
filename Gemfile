@@ -12,6 +12,8 @@ group :core do
   gem 'airbrake'
   gem 'bootsnap', '>= 1.4.2', require: false # Reduces boot times through caching; required in config/boot.rb
   gem 'devise'
+  gem 'image_processing', '~> 1.2'
+  gem 'mini_magick'
   gem 'pg'
   gem 'puma', '~> 4.1'
   gem 'rails', '~> 6.0.2', '>= 6.0.2.1'
