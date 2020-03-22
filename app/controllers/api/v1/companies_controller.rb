@@ -32,7 +32,7 @@ module Api
       end
 
       private def require_keeper
-        @keeper = User.available.find_by(token: token)
+        @keeper = User.available.find_by(gid: token)
       end
     end
   end

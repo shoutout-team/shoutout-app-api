@@ -27,16 +27,16 @@
 #  locked_at              :datetime
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
-#  token                  :string           not null
+#  gid                    :string           not null
 #
 # Indexes
 #
 #  index_users_on_confirmation_token    (confirmation_token) UNIQUE
 #  index_users_on_email                 (email) UNIQUE
+#  index_users_on_gid                   (gid) UNIQUE
 #  index_users_on_preferences           (preferences) USING gin
 #  index_users_on_properties            (properties) USING gin
 #  index_users_on_reset_password_token  (reset_password_token) UNIQUE
-#  index_users_on_token                 (token) UNIQUE
 #  index_users_on_unlock_token          (unlock_token) UNIQUE
 #
 class User < ApplicationRecord
@@ -58,7 +58,7 @@ class User < ApplicationRecord
   scope :with_models, -> { includes(:company) }
 
   after_initialize :define_user_role
-  before_create :generate_token
+  before_create :generate_gid
 
   def self.available
     keepers.approved.with_models
@@ -68,8 +68,8 @@ class User < ApplicationRecord
     self.role = :user if role.blank?
   end
 
-  def generate_token
-    self.token = SecureRandom.hex(16) if token.blank?
+  def generate_gid
+    self.gid = SecureRandom.hex(16) if gid.blank?
   end
 
   def admin?
