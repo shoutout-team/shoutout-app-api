@@ -40,7 +40,9 @@
 #  index_users_on_unlock_token          (unlock_token) UNIQUE
 #
 class User < ApplicationRecord
-  PUBLIC_ATTRIBUTES = %i[email name token].freeze
+  # TODO: Remove :id from public attributes #26
+  PUBLIC_ATTRIBUTES = %i[id email name gid].freeze
+  API_METHODS = %i[company_name].freeze
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
@@ -62,6 +64,14 @@ class User < ApplicationRecord
 
   def self.available
     keepers.approved.with_models
+  end
+
+  def company_name
+    company.name
+  end
+
+  def as_json(options = {})
+    super({ only: PUBLIC_ATTRIBUTES, methods: API_METHODS }.merge(options || {}))
   end
 
   def define_user_role

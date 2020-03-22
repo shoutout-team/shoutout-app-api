@@ -14,12 +14,12 @@ module Api
       end
 
       def keepers
-        render_json(User.available.pluck(:id, :email, :name))
+        render_json(User.available)
       end
 
       private def spa_load_response
         {
-          keepers: User.available.pluck(:id, :email, :name),
+          keepers: User.available,
           categories: Static::CATEGORIES,
           companies: Company.available
         }
