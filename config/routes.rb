@@ -7,6 +7,7 @@ Rails.application.routes.draw do
     end
 
     namespace :v1 do
+      get 'load', to: :load
       get 'companies', to: :companies
       get 'categories', to: :categories
       get 'keepers', to: :keepers
