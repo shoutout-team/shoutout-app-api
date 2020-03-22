@@ -32,7 +32,7 @@ unless User.keepers.any? && Company.any?
       payment: {
         paypal: 'https://paypal.me/my-company-name',
         gofoundme: 'https://gofoundme.com/my-company-name',
-        iban: nil
+        bank: { holder: nil, iban: nil }
       },
       links: {
         website: 'https://my-company-name.de',

@@ -13,7 +13,8 @@ module Api
       end
 
       private def company_params
-        params.require(:company).permit(*PARAMS)
+        allowed = PARAMS + [Company.property_params]
+        params.require(:company).permit(*allowed)
       end
 
       private def token
