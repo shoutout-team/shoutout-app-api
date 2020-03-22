@@ -27,6 +27,7 @@
 #  locked_at              :datetime
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
+#  token                  :string           not null
 #
 # Indexes
 #
@@ -35,9 +36,12 @@
 #  index_users_on_preferences           (preferences) USING gin
 #  index_users_on_properties            (properties) USING gin
 #  index_users_on_reset_password_token  (reset_password_token) UNIQUE
+#  index_users_on_token                 (token) UNIQUE
 #  index_users_on_unlock_token          (unlock_token) UNIQUE
 #
 class User < ApplicationRecord
+  PUBLIC_ATTRIBUTES = %i[email name token].freeze
+
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
@@ -53,6 +57,7 @@ class User < ApplicationRecord
   scope :approved, -> { where(approved: true) }
 
   after_initialize :define_user_role
+  before_create :generate_token
 
   def self.available
     keepers.approved
@@ -62,12 +67,20 @@ class User < ApplicationRecord
     self.role = :user if role.blank?
   end
 
+  def generate_token
+    self.token = SecureRandom.hex(16) if token.blank?
+  end
+
   def admin?
     administrator? || developer?
   end
 
   def keeper?
     user
+  end
+
+  def public_attributes
+    attributes.symbolize_keys.slice(*PUBLIC_ATTRIBUTES)
   end
 
   def to_s

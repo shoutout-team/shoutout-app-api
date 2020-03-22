@@ -34,6 +34,8 @@ class Company < ApplicationRecord
   include ActiveScope
   include JsonBinaryAttributes
 
+  NESTED_PROPERTIES = %i[payment links].freeze
+
   CATEGORIES = Static::CATEGORIES_ENUM
 
   enum category: CATEGORIES
@@ -50,6 +52,13 @@ class Company < ApplicationRecord
 
   alias keeper user
 
+  def self.property_params
+    params = { properties: PROPERTIES - NESTED_PROPERTIES }
+    params[:properties] << { payment: [:paypal, :gofoundme, bank: [:owner, :iban]] }
+    params[:properties] << { links: [:website, :facebook, :twitter, :instagram] }
+    params
+  end
+
   def define_title
     self.title = name if title.blank?
   end
@@ -58,7 +67,7 @@ class Company < ApplicationRecord
   def define_slug
     return if slug.present?
 
-    self.slug = "#{city}-#{name}".parameterize
+    self.slug = sanitize_slug("#{name}-#{city}").parameterize
   end
 
   def define_properties
@@ -71,7 +80,10 @@ class Company < ApplicationRecord
       payment: {
         paypal: nil,
         gofoundme: nil,
-        iban: nil
+        bank: {
+          owner: nil,
+          iban: nil
+        }
       },
       links: {
         website: nil,
@@ -80,5 +92,19 @@ class Company < ApplicationRecord
         instagram: nil
       }
     }
+  end
+
+  protected def sanitize_slug(slug_value)
+    slug_value.gsub(/[äöüÄÖÜß]/) do |match|
+      case match
+      when 'ä' then 'ae'
+      when 'ö' then 'oe'
+      when 'ü' then 'ue'
+      when 'Ä' then 'ae'
+      when 'Ö' then 'oe'
+      when 'Ü' then 'ue'
+      when 'ß' then 'ss'
+      end
+    end
   end
 end

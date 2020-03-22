@@ -7,10 +7,14 @@ Rails.application.routes.draw do
     end
 
     namespace :v1 do
-      get 'load', to: :load
-      get 'companies', to: :companies
-      get 'categories', to: :categories
-      get 'keepers', to: :keepers
+      get 'load', to: 'entities#load'
+      get 'companies', to: 'entities#companies'
+      get 'categories', to: 'entities#categories'
+      get 'keepers', to: 'entities#keepers'
+      post 'members/login', to: 'members#login'
+      post 'members/signup', to: 'members#signup'
+      post 'companies/add', to: 'companies#create'
+      post 'companies/(:keeper_token)/edit', to: 'companies#update'
     end
   end
 
