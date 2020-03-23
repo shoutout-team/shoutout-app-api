@@ -32,6 +32,7 @@ unless User.keepers.any? && Company.any?
       payment: {
         paypal: 'https://paypal.me/my-company-name',
         gofoundme: 'https://gofoundme.com/my-company-name',
+        ticket_io: 'https://ticket.io/my-company-name',
         bank: { holder: nil, iban: nil }
       },
       links: {

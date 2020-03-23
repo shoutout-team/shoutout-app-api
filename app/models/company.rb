@@ -45,6 +45,9 @@ class Company < ApplicationRecord
 
   NESTED_PROPERTIES = %i[payment links].freeze
 
+  PAYMENT_OPTIONS = [:paypal, :gofoundme, bank: %i[owner iban]].freeze
+  LINKS_OPTIONS = %i[website facebook twitter instagram].freeze
+
   CATEGORIES = Static::CATEGORIES_ENUM
 
   enum category: CATEGORIES
@@ -71,8 +74,8 @@ class Company < ApplicationRecord
 
   def self.property_params
     params = { properties: PROPERTIES - NESTED_PROPERTIES }
-    params[:properties] << { payment: [:paypal, :gofoundme, bank: %i[owner iban]] }
-    params[:properties] << { links: %i[website facebook twitter instagram] }
+    params[:properties] << { payment: PAYMENT_OPTIONS }
+    params[:properties] << { links: LINKS_OPTIONS }
     params
   end
 
@@ -120,6 +123,7 @@ class Company < ApplicationRecord
       payment: {
         paypal: nil,
         gofoundme: nil,
+        ticket_io: nil,
         bank: {
           owner: nil,
           iban: nil
