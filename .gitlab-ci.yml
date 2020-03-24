@@ -21,16 +21,21 @@ services:
   paths:
     - vendor/bundle
 
-
 before_script:
   - echo "$RAILS_MASTER_KEY" > config/master.key
-  #- apt-get install phantomjs
   - bin/ci_setup
-
 
 rubocop:
   script:
     - bundle exec rubocop
+
+  cache:
+    <<: *build_cache
+    policy: pull
+
+performance:
+  script:
+    - bundle exec rubocop --require rubocop-performance
 
   cache:
     <<: *build_cache
