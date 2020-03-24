@@ -17,12 +17,19 @@ module App
       process_seeds
     end
 
+    def process_seeds
+      content = load_seeds
+      process_admins(content)
+      process_users(content) if development?
+      process_companies(content) if development?
+      map_keepers if development?
+    end
+
     def check_environment!
       check_database!
       check_env_vars!
-      # TODO: Enable :truncate and :check_data_state! #32
-      #truncate if development?
-      #check_data_state!
+      truncate if development?
+      check_data_state!
     end
 
     def migrate_database
@@ -35,16 +42,12 @@ module App
       User.create!(role: :root, name: 'Shoutout', email: email, password: password, approved: true, confirmed_at: Time.zone.now)
     end
 
-    def process_seeds
-      content = load_seeds
-      process_users(content)
-    end
-
     private def check_database!
       raise 'NoDatabase' unless ActiveRecord::Base.connection.table_exists?(:ar_internal_metadata)
     end
 
     private def truncate
+      ARGV[1] = ''
       Rake::Task['db:truncate'].invoke if development?
     end
 
@@ -91,9 +94,32 @@ module App
       @env.eql?('development')
     end
 
+    def process_admins(content)
+      content[:seeds][:admins].each do |attrs|
+        User.create!(attrs.merge(confirmed_at: Time.zone.now))
+      end
+    end
+
     def process_users(content)
       content[:seeds][:users].each do |attrs|
-        User.create!(attrs)
+        User.create!(attrs.merge(confirmed_at: Time.zone.now))
+      end
+    end
+
+    def process_companies(content)
+      user = User.root.first
+      default_properties = content[:seeds][:company_properties]
+
+      content[:seeds][:companies].each do |attrs|
+        Company.create!(attrs.merge(user: user))
+      end
+    end
+
+    def map_keepers
+      companies = Company.order(:id).all
+
+      User.keepers.order(:id).limit(companies.size).each_with_index do |user, index|
+        companies[index].update(user: user)
       end
     end
   end
