@@ -120,21 +120,29 @@ class Company < ApplicationRecord
       description: nil,
       cr_number: nil,
       notes: nil,
-      payment: {
-        paypal: nil,
-        gofoundme: nil,
-        ticket_io: nil,
-        bank: {
-          owner: nil,
-          iban: nil
-        }
-      },
-      links: {
-        website: nil,
-        facebook: nil,
-        twitter: nil,
-        instagram: nil
+      payment: payment_properties_definition,
+      links: links_properties_definition
+    }
+  end
+
+  private def payment_properties_definition
+    {
+      paypal: nil,
+      gofoundme: nil,
+      ticket_io: nil,
+      bank: {
+        owner: nil,
+        iban: nil
       }
+    }
+  end
+
+  private def links_properties_definition
+    {
+      website: nil,
+      facebook: nil,
+      twitter: nil,
+      instagram: nil
     }
   end
 
