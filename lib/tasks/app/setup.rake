@@ -6,7 +6,8 @@ namespace :app do
 
       raise 'no name for application given' if ARGV[1].blank?
 
-      App::Setup.call(ARGV[1], local_seeds: true)
+      #App::Setup.call(ARGV[1], local_seeds: true)
+      App::Setup.call(ARGV[1], local_seeds: false)
     end
   end
 end

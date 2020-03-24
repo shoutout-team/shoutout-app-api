@@ -22,7 +22,8 @@ module App
       process_admins(content)
       process_users(content) if development?
       process_companies(content) if development?
-      map_keepers if development?
+      map_keepers_to_companies if development?
+      #process_locations
     end
 
     def check_environment!
@@ -77,7 +78,7 @@ module App
     end
 
     private def seed_url
-      development? ? fetch_env_var(:app_seed_dev_url) : fetch_env_var(:app_seed_url)
+      url = development? ? fetch_env_var(:app_seed_dev_url) : fetch_env_var(:app_seed_url)
     end
 
     private def load_seeds_from_path
@@ -87,7 +88,7 @@ module App
 
     private def load_seeds_from_url
       require 'open-uri'
-      open(seed_url) { |f| f.read }
+      open(seed_url, http_basic_authentication: [@app_name, fetch_env_var(:app_root_pwd)]) { |f| f.read }
     end
 
     private def development?
@@ -115,11 +116,21 @@ module App
       end
     end
 
-    def map_keepers
+    def map_keepers_to_companies
       companies = Company.order(:id).all
 
       User.keepers.order(:id).limit(companies.size).each_with_index do |user, index|
         companies[index].update(user: user)
+      end
+    end
+
+    def process_locations
+      require 'csv'
+
+      file_path = Rails.root.join('public/data/zuordnung_plz_ort.csv')
+
+      CSV.foreach(file_path, headers: true) do |row|
+        Location.create!(name: row['ort'], postcode: row['plz'], federate_state: row['bundesland'], osm_id: row['osm_id'].to_i)
       end
     end
   end
