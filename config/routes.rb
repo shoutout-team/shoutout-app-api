@@ -19,6 +19,7 @@ Rails.application.routes.draw do
       post 'companies/add', to: 'companies#create'
       post 'companies/(:keeper_token)/edit', to: 'companies#update'
       get 'assets/:key', to: 'assets#show'
+      post 'assets/:entity/:kind', to: 'assets#upload'
     end
   end
 
