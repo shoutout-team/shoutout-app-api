@@ -40,6 +40,7 @@ namespace :db do
 
     ARGV.each { |a| task a.to_sym do; end }
     tables = ARGV[1].try(:split, ',')
+    tables = nil if tables.eql?([])
     tables ||= ActiveRecord::Base.connection.tables - ['schema_migrations', 'ar_internal_metadata']
 
     puts 'TRUNCATE TABLES: '
