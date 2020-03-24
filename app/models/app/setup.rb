@@ -1,3 +1,4 @@
+# rubocop:disable Layout/LineLength
 module App
   class Setup
     def initialize(app_name, local_seeds: false)
@@ -23,6 +24,7 @@ module App
       process_users(content) if development?
       process_companies(content) if development?
       map_keepers_to_companies if development?
+      # TODO: disabled :process_locations in setup #42
       #process_locations
     end
 
@@ -71,14 +73,17 @@ module App
       ENV[name.upcase]
     end
 
+    # rubocop:disable Security/YAMLLoad
+    # YAML.safe_load does not work with symbols in yaml-file!
     private def load_seeds
       yaml_content = @local_seeds ? load_seeds_from_path : load_seeds_from_url
-      yaml_data = YAML::load(yaml_content)
+      yaml_data = YAML.load(yaml_content)
       yaml_data.deep_symbolize_keys!
     end
+    # rubocop:enable Security/YAMLLoad
 
     private def seed_url
-      url = development? ? fetch_env_var(:app_seed_dev_url) : fetch_env_var(:app_seed_url)
+      development? ? fetch_env_var(:app_seed_dev_url) : fetch_env_var(:app_seed_url)
     end
 
     private def load_seeds_from_path
@@ -86,10 +91,13 @@ module App
       File.open(Rails.root.join("tmp/seeds/#{file_name}"))
     end
 
+    # rubocop:disable Security/Open
+    # This is OK for this task!
     private def load_seeds_from_url
       require 'open-uri'
-      open(seed_url, http_basic_authentication: [@app_name, fetch_env_var(:app_root_pwd)]) { |f| f.read }
+      open(seed_url, http_basic_authentication: [@app_name, fetch_env_var(:app_root_pwd)], &:read)
     end
+    # rubocop:enable Security/Open
 
     private def development?
       @env.eql?('development')
@@ -112,7 +120,7 @@ module App
       default_properties = content[:seeds][:company_properties]
 
       content[:seeds][:companies].each do |attrs|
-        Company.create!(attrs.merge(user: user))
+        Company.create!(attrs.merge(user: user, properties: default_properties))
       end
     end
 
@@ -135,3 +143,4 @@ module App
     end
   end
 end
+# rubocop:enable Layout/LineLength
