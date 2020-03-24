@@ -49,7 +49,7 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
-  enum role: { guest: 0, user: 1, administrator: 2, developer: 3 }
+  enum role: { guest: 0, user: 1, administrator: 2, developer: 3, root: 4 }
 
   has_one :company, dependent: :destroy
   has_one_attached :image

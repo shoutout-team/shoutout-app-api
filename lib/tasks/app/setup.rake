@@ -1,15 +1,12 @@
 namespace :app do
   namespace :setup do
-    # rake app:setup:run
+    # rake app:setup:run shoutout
     task run: :environment do
-      app_name = :shoutout
+      ARGV.each { |a| task a.to_sym do; end }
 
-      #Rake::Task['db:truncate'].invoke if Rails.env.development?
+      raise 'no name for application given' if ARGV[1].blank?
 
-      App::Setup.check_environment!(app_name)
-      Rake::Task['db:migrate'].invoke
-      #App::Setup.create_root_account!
-      App::Setup.process_seeds!
+      App::Setup.call(ARGV[1])
     end
   end
 end
