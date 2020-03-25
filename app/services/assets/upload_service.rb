@@ -4,7 +4,7 @@ module Assets
 
     ALLOWED_ASSETS = { user: [:avatar], company: [:picture] }.freeze
 
-    attr_reader :params, :asset_key, :error
+    attr_reader :params, :asset_key, :error, :issues
 
     def initialize(params = {})
       @params = params
@@ -18,13 +18,15 @@ module Assets
     def process
       verify_upload_params!
 
-      if processed_asset.attached?
+      if processed_asset&.attached?
         @asset_key = @upload.store_key_for(asset_storage)
       else
-        fail_with!(:upload_failed)
+        # NOTE: 'rescue ActiveService::ProcessingFailed' is not handled as expected from outer code-base (controller)#31
+        # Maybe has to do with using :tap - style-method-invocation?
+        return fail_with(:upload_failed)
       end
 
-      true
+      succees!
     end
 
     def response
@@ -34,7 +36,11 @@ module Assets
     private def processed_asset
       @upload = Upload.new(entity: entity_param, kind: kind_param)
       @upload.attach_on(asset_storage, @params[:asset])
+      @upload.save!
       @upload.public_send(asset_storage)
+    rescue ActiveRecord::RecordInvalid => e
+      @issues = { details: e.record.errors.details[asset_storage], messages: e.record.errors.messages[asset_storage] }
+      nil
     end
 
     private def verify_upload_params!

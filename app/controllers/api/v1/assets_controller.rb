@@ -9,9 +9,10 @@ module Api
 
       def upload
         @service = Assets::UploadService.call(params)
-        render_json(@service.response)
-      rescue Assets::UploadService::ProcessingFailed
-        render_json_unprocessable(error: @service.error)
+
+        return render_json(@service.response) if @service.succeeded?
+
+        render_json_unprocessable(error: @service.error, issues: @service.issues)
       end
 
       private def load_asset
