@@ -42,7 +42,9 @@
 class User < ApplicationRecord
   # TODO: Remove :id from public attributes #26
   API_ATTRIBUTES = %i[id email name gid].freeze
-  API_METHODS = %i[company_name avatar].freeze
+  API_METHODS = %i[company_name avatar_url].freeze
+
+  attr_accessor :avatar_key
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
@@ -52,7 +54,7 @@ class User < ApplicationRecord
   enum role: { guest: 0, user: 1, administrator: 2, developer: 3, root: 4 }
 
   has_one :company, dependent: :destroy
-  has_one_attached :image
+  has_one_attached :avatar
 
   scope :administrative, -> { where(role: %i[administrator developer]) }
   scope :users, -> { where(role: %i[guest user]) }
@@ -74,21 +76,21 @@ class User < ApplicationRecord
   # rubocop:enable Rails/Delegate
 
   # Deprecated: we solve this in an endpoint #9
-  # def avatar
-  #   return unless image.attached?
+  # def avatar_url
+  #   return unless avatar.attached?
 
-  #   #image.service_url if Rails.env.production?
-  #   image.service.send(:path_for, image.key) if Rails.env.development?
+  #   #avatar.service_url if Rails.env.production?
+  #   avatar.service.send(:path_for, avatar.key) if Rails.env.development?
 
   # rescue URI::InvalidURIError => e
   #   # TODO: Log issue
   # end
 
-  def avatar
-    return unless image.attached?
+  def avatar_url
+    return unless avatar.attached?
 
-    #Rails.env.development? ? image.key : image.service_url
-    image.service_url
+    #Rails.env.development? ? avatar.key : avatar.service_url
+    avatar.service_url
   end
 
   def as_json(options = {})
