@@ -1,7 +1,9 @@
 module Api
   module V1
     class CompaniesController < Api::BaseController
-      PARAMS = %i[name title category postcode city street street_number latitude longitude].freeze
+      include UploadPostProcessing
+
+      PARAMS = %i[name title category postcode city street street_number latitude longitude picture_key].freeze
 
       before_action :require_keeper, only: %i[create update]
 
@@ -9,7 +11,13 @@ module Api
         return render_json_forbidden(:unknown_keeper) if @keeper.nil?
 
         @company = Company.create(company_params.merge(user: @keeper))
-        @company.persisted? ? render_json(result: @company) : render_json_unprocessable(:invalid, @company.errors)
+
+        if @company.persisted?
+          post_process_asset_for(@company, kind: :picture)
+          render_json(result: @company)
+        else
+          render_json_unprocessable(:invalid, @company.errors)
+        end
       end
 
       def update
