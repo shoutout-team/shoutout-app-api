@@ -47,12 +47,21 @@ module Api
       private def post_process_asset_for(entity, kind:)
         return if asset_param_for(kind).blank?
 
-        asset_blob = ActiveStorage::Blob.find_by(key: asset_param_for(kind))
-        attachment = ActiveStorage::Attachment.find_by(blob_id: asset_blob.id)
-        upload = attachment.record
-        attachment.update_columns(name: kind, record_type: entity.class.name, record_id: entity.id)
+        upload = Upload.remap(key: asset_param_for(kind), entity: entity, kind: kind)
         upload.delete
+      rescue Upload::AssetNotFound
+        # TODO: Handle Error #31
       end
+
+      # private def post_process_asset_for(entity, kind:)
+      #   return if asset_param_for(kind).blank?
+
+      #   asset_blob = ActiveStorage::Blob.find_by(key: asset_param_for(kind))
+      #   attachment = ActiveStorage::Attachment.find_by(blob_id: asset_blob.id)
+      #   upload = attachment.record
+      #   attachment.update_columns(name: kind, record_type: entity.class.name, record_id: entity.id)
+      #   upload.delete
+      # end
 
       private def asset_param_for(name)
         asset_key_name = "#{name}_key".to_sym

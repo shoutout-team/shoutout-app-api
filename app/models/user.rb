@@ -69,6 +69,10 @@ class User < ApplicationRecord
     keepers.approved.with_models
   end
 
+  def has_avatar?
+    avatar.attached?
+  end
+
   # rubocop:disable Rails/Delegate
   def company_name
     company.try(:name)
@@ -87,7 +91,7 @@ class User < ApplicationRecord
   # end
 
   def avatar_url
-    return unless avatar.attached?
+    return unless has_avatar?
 
     #Rails.env.development? ? avatar.key : avatar.service_url
     avatar.service_url
