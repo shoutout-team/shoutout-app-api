@@ -8,8 +8,9 @@ module UploadPostProcessing
 
     upload = Upload.remap(key: asset_key, entity: entity, kind: kind)
     upload.delete
-  rescue Upload::AssetNotFound
+  rescue Upload::AssetNotFound => e
     # TODO: Handle Error for Upload::AssetNotFound #31
+    handle_no_op_error!(e)
   end
 
   private def asset_key_from_params(entity, name)

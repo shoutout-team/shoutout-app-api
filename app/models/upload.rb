@@ -17,7 +17,7 @@ class Upload < ApplicationRecord
   class AssetNotFound < StandardError; end
 
   ATTACHMENTS = %i[user_avatar company_picture].freeze
-  MAX_UPLOAD_SIZE = 1.kilobyte #2.megabytes
+  MAX_UPLOAD_SIZE = 2.megabytes
   SIZE_VALIDATION = { less_than: MAX_UPLOAD_SIZE, message: 'ist größer als 2 MB' }.freeze
   VALID_CONTENT_TYPES = ['image/png', 'image/jpg', 'image/jpeg', 'image/bmp'].freeze
   VARIANTS = { small: '100x100', medium: '400x400', large: '1200x1200' }.freeze
@@ -27,8 +27,16 @@ class Upload < ApplicationRecord
   has_one_attached :user_avatar
   has_one_attached :company_picture
 
-  validates :user_avatar, attached: true, content_type: VALID_CONTENT_TYPES, size: SIZE_VALIDATION, if: -> { attachment_name.eql?(:user_avatar) }
-  validates :company_picture, attached: true, content_type: VALID_CONTENT_TYPES, size: SIZE_VALIDATION, if: -> { attachment_name.eql?(:company_picture) }
+  # TODO: We should cleanup stale uploads in a daily job ad midnight #31
+  scope :stale, -> { where(created_at: Time.zone.yesterday.beginning_of_day..Time.zone.yesterday.end_of_day) }
+
+  validates :user_avatar,
+            attached: true, content_type: VALID_CONTENT_TYPES, size: SIZE_VALIDATION,
+            if: -> { attachment_name.eql?(:user_avatar) }
+
+  validates :company_picture,
+            attached: true, content_type: VALID_CONTENT_TYPES, size: SIZE_VALIDATION,
+            if: -> { attachment_name.eql?(:company_picture) }
 
   before_destroy :destroyable?
   after_commit :build_variants

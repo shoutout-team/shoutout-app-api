@@ -18,19 +18,17 @@ module Assets
     def process
       verify_upload_params!
 
-      if processed_asset&.attached?
-        @asset_key = @upload.store_key_for(asset_storage)
-      else
-        # NOTE: 'rescue ActiveService::ProcessingFailed' is not handled as expected from outer code-base (controller)#31
-        # Maybe has to do with using :tap - style-method-invocation?
-        return fail_with(:upload_failed)
-      end
+      # NOTE: 'rescue ActiveService::ProcessingFailed' is not handled as expected from outer code-base (controller)#31
+      # Maybe has to do with using :tap - style-method-invocation?
 
+      return fail_with(:upload_failed) unless processed_asset&.attached?
+
+      @asset_key = @upload.store_key_for(asset_storage)
       succees!
     end
 
     def response
-      { response_key => @asset_key  }
+      { response_key => @asset_key }
     end
 
     private def processed_asset

@@ -8,8 +8,8 @@ def host_os_is?(regex)
 end
 
 group :core do
-  gem 'activerecord-session_store'
   gem 'active_storage_validations'
+  gem 'activerecord-session_store'
   gem 'airbrake'
   gem 'aws-sdk-s3', require: false
   gem 'bootsnap', '>= 1.4.2', require: false # Reduces boot times through caching; required in config/boot.rb
