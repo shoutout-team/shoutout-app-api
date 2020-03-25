@@ -2,19 +2,19 @@ module UploadPostProcessing
   extend ActiveSupport::Concern
 
   private def post_process_asset_for(entity, kind:)
-    asset_key = asset_key_from_params(entity, kind)
+    attachment_key = attachment_key_from_params(entity, kind)
 
-    return if asset_key.blank?
+    return if attachment_key.blank?
 
-    upload = Upload.remap(key: asset_key, entity: entity, kind: kind)
+    upload = Upload.remap(key: attachment_key, entity: entity, kind: kind)
     upload.delete
   rescue Upload::AssetNotFound => e
     # TODO: Handle Error for Upload::AssetNotFound #31
     handle_no_op_error!(e)
   end
 
-  private def asset_key_from_params(entity, name)
-    asset_key_name = "#{name}_key".to_sym
-    params[entity.model_name.param_key][asset_key_name]
+  private def attachment_key_from_params(entity, name)
+    param_key_name = "#{name}_key".to_sym
+    params[entity.model_name.param_key][param_key_name]
   end
 end

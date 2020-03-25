@@ -56,10 +56,12 @@ class Upload < ApplicationRecord
     public_send(asset_storage_name).attach(http_uploaded_file)
   end
 
-  def store_key_for(asset_storage_name)
+  def update_attachment_key_for(asset_storage_name)
     blob_key = public_send(asset_storage_name).try(:key)
-    update(key: blob_key) if blob_key.present?
-    key
+
+    return key if blob_key.present? && update(key: blob_key)
+
+    false
   end
 
   def attachment_name

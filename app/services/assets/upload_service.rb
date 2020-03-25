@@ -4,7 +4,7 @@ module Assets
 
     ALLOWED_ASSETS = { user: [:avatar], company: [:picture] }.freeze
 
-    attr_reader :params, :asset_key, :error, :issues
+    attr_reader :params, :attachment_key, :error, :issues
 
     def initialize(params = {})
       @params = params
@@ -23,12 +23,15 @@ module Assets
 
       return fail_with(:upload_failed) unless processed_asset&.attached?
 
-      @asset_key = @upload.store_key_for(asset_storage)
-      succees!
+      @attachment_key = @upload.update_attachment_key_for(asset_storage)
+
+      return succees! if @attachment_key.present
+
+      false
     end
 
     def response
-      { response_key => @asset_key }
+      { response_key => @attachment_key }
     end
 
     private def processed_asset
