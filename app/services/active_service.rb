@@ -4,6 +4,8 @@ class ActiveService
 
   METHODS = [].freeze
 
+  attr_accessor :succees
+
   class UnknownServiceMethod < StandardError; end
   class MissingParams < StandardError; end
   class ProcessingFailed < StandardError; end
@@ -12,8 +14,21 @@ class ActiveService
     raise UnknownServiceMethod unless self::METHODS.include?(method_name)
   end
 
-  protected def fail_with!(error_key)
+  def succeeded?
+    @success
+  end
+
+  protected def succees!
+    @success = true
+  end
+
+  protected def fail_with(error_key)
     @error = error_key
+    @success = false
+  end
+
+  protected def fail_with!(error_key)
+    fail_with(error_key)
 
     raise ProcessingFailed
   end
