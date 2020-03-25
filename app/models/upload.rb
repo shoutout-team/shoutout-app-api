@@ -21,9 +21,9 @@ class Upload < ApplicationRecord
     public_send(asset_storage_name).attach(http_uploaded_file)
   end
 
-  def update_key!(asset_storage_name)
-    blob_key = public_send(asset_storage_name).key
-    update(key: blob_key)
+  def store_key_for(asset_storage_name)
+    blob_key = public_send(asset_storage_name).try(:key)
+    update(key: blob_key) if blob_key.present?
     key
   end
 end

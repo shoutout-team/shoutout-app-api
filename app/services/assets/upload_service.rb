@@ -19,13 +19,16 @@ module Assets
       verify_upload_params!
 
       if processed_asset.attached?
-        @upload.update_key!(asset_storage)
-        @asset_key = @upload.key
+        @asset_key = @upload.store_key_for(asset_storage)
       else
         fail_with!(:upload_failed)
       end
 
       true
+    end
+
+    def response
+      { response_key => @asset_key  }
     end
 
     private def processed_asset
@@ -66,6 +69,10 @@ module Assets
 
     private def kind_param
       @params[:kind].try(:to_sym)
+    end
+
+    private def response_key
+      "#{kind_param}_key".to_sym
     end
   end
 end

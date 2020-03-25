@@ -9,7 +9,7 @@ module Api
 
       def upload
         @service = Assets::UploadService.call(params)
-        render_json(asset_key: @service.asset_key)
+        render_json(@service.response)
       rescue Assets::UploadService::ProcessingFailed
         render_json_unprocessable(error: @service.error)
       end
