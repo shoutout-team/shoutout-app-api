@@ -45,7 +45,7 @@ module Assets
     end
 
     private def allowed_entity?
-      ALLOWED_ASSETS.keys.include?(entity_param)
+      ALLOWED_ASSETS.key?(entity_param)
     end
 
     private def allowed_asset_kind?
