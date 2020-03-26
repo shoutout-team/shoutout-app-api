@@ -7,6 +7,8 @@ module Api
 
       before_action :require_keeper, only: %i[create update]
 
+      # TODO: Problem: when asynchrounus processing is integrated, then rendering asset with attached-check on asset
+      # in model (e.g. has_picture?) will not provide the attachment_key! #31
       def create
         return render_json_forbidden(:unknown_keeper) if @keeper.nil?
 
@@ -23,7 +25,7 @@ module Api
       def update
         return render_json_forbidden(:unknown_keeper) if @keeper.nil?
 
-        if Company.update(company_params)
+        if @company = Company.update(company_params)
           render_json(result: @company)
         else
           render_json_unprocessable(:invalid, @company.errors)

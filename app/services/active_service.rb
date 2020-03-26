@@ -32,4 +32,8 @@ class ActiveService
 
     raise ProcessingFailed
   end
+
+  protected def issues_from_record_for(attr_key)
+    { details: e.record.errors.details[attr_key], messages: e.record.errors.messages[attr_key] }
+  end
 end

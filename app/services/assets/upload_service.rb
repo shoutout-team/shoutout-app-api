@@ -40,7 +40,7 @@ module Assets
       @upload.save!
       @upload.public_send(asset_storage)
     rescue ActiveRecord::RecordInvalid => e
-      @issues = { details: e.record.errors.details[asset_storage], messages: e.record.errors.messages[asset_storage] }
+      @issues = issues_from_record_for(asset_storage)
       nil
     end
 
