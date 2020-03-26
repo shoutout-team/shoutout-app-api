@@ -30,6 +30,8 @@ class Upload < ApplicationRecord
   # TODO: We should cleanup stale uploads in a daily job ad midnight #31
   scope :stale, -> { where(created_at: Time.zone.yesterday.beginning_of_day..Time.zone.yesterday.end_of_day) }
 
+  validates :entity, :kind, presence: true
+
   validates :user_avatar,
             attached: true, content_type: VALID_CONTENT_TYPES, size: SIZE_VALIDATION,
             if: -> { attachment_name.eql?(:user_avatar) }

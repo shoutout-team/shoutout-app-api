@@ -8,7 +8,7 @@ module UploadPostProcessing
     return if attachment_key.blank?
 
     upload = Upload.remap(key: attachment_key, entity: entity, kind: kind)
-    upload.delete
+    upload.delete # Do not perform destroy! Otherwise the asset get's deleted from storage!
   rescue Upload::AssetNotFound => e
     # TODO: Handle Error for Upload::AssetNotFound #31
     handle_no_op_error!(e)
