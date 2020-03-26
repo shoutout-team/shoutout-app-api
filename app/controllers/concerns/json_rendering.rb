@@ -21,14 +21,12 @@ module JsonRendering
     render json: response.merge(Hash(additional_result)), status: :forbidden
   end
 
-  # TODO: Checkout improvements from #123
-  # And we should rename key :html to :markup
   def render_json_partial(partial_path, locals = {})
-    render json: { html: render_to_string(partial: partial_path, locals: locals) }, layout: false
+    render json: { markup: render_to_string(partial: partial_path, locals: locals) }, layout: false
   end
 
   def render_json_markup(markup)
-    render json: { html: markup }, layout: false
+    render json: { markup: markup }, layout: false
   end
 
   private def ensure_json_request

@@ -31,6 +31,8 @@ module Api
       render text: '', content_type: 'text/plain'
     end
 
+    protected def handle_no_op_error!(error); end
+
     private def allowed_headers
       %w[Origin Accept Content-Type X-Requested-With auth_token X-CSRF-Token].join(',')
     end
