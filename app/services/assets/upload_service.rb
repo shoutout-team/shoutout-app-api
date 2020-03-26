@@ -25,7 +25,7 @@ module Assets
 
       @attachment_key = @upload.update_attachment_key_for(asset_storage)
 
-      return succees! if @attachment_key.present
+      return succees! if @attachment_key.present?
 
       false
     end
