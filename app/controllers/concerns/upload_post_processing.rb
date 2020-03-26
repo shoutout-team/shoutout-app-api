@@ -1,6 +1,7 @@
 module UploadPostProcessing
   extend ActiveSupport::Concern
 
+  # TODO: Should be done in a background-job #31
   private def post_process_asset_for(entity, kind:)
     attachment_key = attachment_key_from_params(entity, kind)
 

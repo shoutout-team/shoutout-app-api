@@ -2,7 +2,7 @@ namespace :images do
   # rake images:test
   task test: :environment do
     user = User.first
-    file_path = Rails.root.join('public/data/ruby-logo.png')
+    file_path = Rails.root.join('public/data/user-avatar.png')
 
     user.avatar.attach(io: File.open(file_path), filename: 'avatar.png')
   end
