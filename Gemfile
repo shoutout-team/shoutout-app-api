@@ -8,6 +8,7 @@ def host_os_is?(regex)
 end
 
 group :core do
+  gem 'active_storage_validations'
   gem 'activerecord-session_store'
   gem 'airbrake'
   gem 'aws-sdk-s3', require: false
