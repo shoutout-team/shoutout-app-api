@@ -4,7 +4,7 @@ class ActiveService
 
   METHODS = [].freeze
 
-  attr_accessor :succees
+  attr_accessor :succees, :error, :issues
 
   class UnknownServiceMethod < StandardError; end
   class MissingParams < StandardError; end
@@ -16,6 +16,10 @@ class ActiveService
 
   def succeeded?
     @success
+  end
+
+  def failed?
+    @error.present?
   end
 
   protected def succees!

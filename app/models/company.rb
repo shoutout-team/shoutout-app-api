@@ -36,17 +36,17 @@ class Company < ApplicationRecord
   include ActiveScope
   include JsonBinaryAttributes
 
-  # TODO: Remove :id from public attributes #26
   API_ATTRIBUTES = %i[
-    id name title category slug properties gid
+    name title category slug properties gid
     postcode city street street_number latitude longitude
   ].freeze
+
   API_METHODS = %i[category_wording keeper_name picture_url].freeze
 
   NESTED_PROPERTIES = %i[payment links].freeze
 
   PAYMENT_OPTIONS = [:paypal, :gofoundme, bank: %i[owner iban]].freeze
-  LINKS_OPTIONS = %i[website facebook twitter instagram].freeze
+  LINKS_OPTIONS = %i[website promotion facebook twitter instagram].freeze
 
   CATEGORIES = Static::CATEGORIES_ENUM
 
@@ -146,6 +146,7 @@ class Company < ApplicationRecord
   private def links_properties_definition
     {
       website: nil,
+      promotion: nil,
       facebook: nil,
       twitter: nil,
       instagram: nil
