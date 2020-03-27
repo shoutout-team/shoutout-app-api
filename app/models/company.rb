@@ -19,10 +19,12 @@
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
 #  gid           :string           not null
+#  approved      :boolean          default("false"), not null
 #
 # Indexes
 #
 #  index_companies_on_active      (active)
+#  index_companies_on_approved    (approved)
 #  index_companies_on_category    (category)
 #  index_companies_on_gid         (gid) UNIQUE
 #  index_companies_on_latitude    (latitude)
@@ -52,13 +54,14 @@ class Company < ApplicationRecord
 
   enum category: CATEGORIES
 
-  has_jsonb_attributes :properties, :description, :cr_number, :notes, :payment, :links
+  has_jsonb_attributes :properties, :description, :cr_number, :notes, :payment, :links, :permissions
 
   attr_accessor :picture_key
 
   belongs_to :user
   has_one_attached :picture
 
+  scope :approved, -> { where(approved: true) }
   scope :with_models, -> { includes(:user) }
 
   validates :name, :category, :postcode, :city, :street, :street_number, :user_id, presence: true
@@ -71,7 +74,7 @@ class Company < ApplicationRecord
   alias keeper user
 
   def self.available
-    active.with_models
+    active.approved.with_models
   end
 
   def self.property_params
@@ -127,7 +130,9 @@ class Company < ApplicationRecord
       cr_number: nil,
       notes: nil,
       payment: payment_properties_definition,
-      links: links_properties_definition
+      links: links_properties_definition,
+      permissions: {},
+      approval_note: nil
     }
   end
 
