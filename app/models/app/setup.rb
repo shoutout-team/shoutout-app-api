@@ -70,7 +70,9 @@ module App
 
     private def fetch_env_var(name)
       name = "#{@app_name}_#{name}" if development? && @app_name.present?
-      ENV[name.upcase]
+      puts ENV
+      puts name.upcase
+      ENV[name.to_s.upcase]
     end
 
     # rubocop:disable Security/YAMLLoad
