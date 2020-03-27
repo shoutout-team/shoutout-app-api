@@ -28,10 +28,12 @@
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
 #  gid                    :string           not null
+#  developer_key          :string
 #
 # Indexes
 #
 #  index_users_on_confirmation_token    (confirmation_token) UNIQUE
+#  index_users_on_developer_key         (developer_key)
 #  index_users_on_email                 (email) UNIQUE
 #  index_users_on_gid                   (gid) UNIQUE
 #  index_users_on_preferences           (preferences) USING gin
@@ -40,8 +42,7 @@
 #  index_users_on_unlock_token          (unlock_token) UNIQUE
 #
 class User < ApplicationRecord
-  # TODO: Remove :id from public attributes #26
-  API_ATTRIBUTES = %i[id email name gid].freeze
+  API_ATTRIBUTES = %i[email name gid].freeze
   API_METHODS = %i[company_name avatar_url].freeze
 
   attr_accessor :avatar_key

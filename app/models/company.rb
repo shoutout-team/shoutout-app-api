@@ -54,7 +54,7 @@ class Company < ApplicationRecord
 
   enum category: CATEGORIES
 
-  has_jsonb_attributes :properties, :description, :cr_number, :notes, :payment, :links
+  has_jsonb_attributes :properties, :description, :cr_number, :notes, :payment, :links, :permissions
 
   attr_accessor :picture_key
 
@@ -129,7 +129,8 @@ class Company < ApplicationRecord
       cr_number: nil,
       notes: nil,
       payment: payment_properties_definition,
-      links: links_properties_definition
+      links: links_properties_definition,
+      permissions: {}
     }
   end
 
