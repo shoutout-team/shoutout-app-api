@@ -70,9 +70,7 @@ module App
 
     private def fetch_env_var(name)
       name = "#{@app_name}_#{name}" if development? && @app_name.present?
-      puts ENV
-      puts name.upcase
-      ENV[name.to_s.upcase]
+      ENV[name.to_s.upcase] # NOTE: Weird, on heroku it crashes when not calling explicitly :to_s
     end
 
     # rubocop:disable Security/YAMLLoad
