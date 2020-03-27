@@ -1,10 +1,14 @@
 module Assets
   class UploadService < ActiveService
+    # NOTE: 'rescue ActiveService::ProcessingFailed' is not handled as expected from outer code-base (controller)#31
+    # Maybe has to do with using :tap - style-method-invocation?
+    # Thus we can only use fail_with and not fail_with!
+
     METHODS = %i[process].freeze
 
     ALLOWED_ASSETS = { user: [:avatar], company: [:picture] }.freeze
 
-    attr_reader :params, :attachment_key, :error, :issues
+    attr_reader :params, :attachment_key
 
     def initialize(params = {})
       @params = params
@@ -18,9 +22,7 @@ module Assets
     def process
       verify_upload_params!
 
-      # NOTE: 'rescue ActiveService::ProcessingFailed' is not handled as expected from outer code-base (controller)#31
-      # Maybe has to do with using :tap - style-method-invocation?
-
+      return if failed?
       return fail_with(:upload_failed) unless processed_asset&.attached?
 
       @attachment_key = @upload.update_attachment_key_for(asset_storage)
@@ -45,9 +47,11 @@ module Assets
     end
 
     private def verify_upload_params!
-      fail_with!(:unkown_endpoint) unless allowed_upload_endpoint?
-      fail_with!(:no_data) if @params[:asset].blank?
-      fail_with!(:invalid_upload) unless valid_asset_upload?
+      return fail_with(:unkown_endpoint) unless allowed_upload_endpoint?
+      return fail_with(:no_data) if @params[:asset].blank?
+      return fail_with(:invalid_upload) unless valid_asset_upload?
+
+      true
     end
 
     private def allowed_upload_endpoint?
