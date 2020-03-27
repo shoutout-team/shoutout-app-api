@@ -19,10 +19,12 @@
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
 #  gid           :string           not null
+#  approved      :boolean          default("false"), not null
 #
 # Indexes
 #
 #  index_companies_on_active      (active)
+#  index_companies_on_approved    (approved)
 #  index_companies_on_category    (category)
 #  index_companies_on_gid         (gid) UNIQUE
 #  index_companies_on_latitude    (latitude)
