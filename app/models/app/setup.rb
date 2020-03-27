@@ -21,9 +21,9 @@ module App
     def process_seeds
       content = load_seeds
       process_admins(content)
-      process_users(content) if development?
-      process_companies(content) if development?
-      map_keepers_to_companies if development?
+      process_users(content) if development? || preview?
+      process_companies(content) if development? || preview?
+      map_keepers_to_companies if development? || preview?
       # TODO: disabled :process_locations in setup #42
       #process_locations
     end
@@ -31,7 +31,7 @@ module App
     def check_environment!
       check_database!
       check_env_vars!
-      truncate if development?
+      truncate if development? || preview?
       check_data_state!
     end
 
@@ -51,7 +51,7 @@ module App
 
     private def truncate
       ARGV[1] = ''
-      Rake::Task['db:truncate'].invoke if development?
+      Rake::Task['db:truncate'].invoke if development? || preview?
     end
 
     private def check_data_state!
@@ -83,11 +83,11 @@ module App
     # rubocop:enable Security/YAMLLoad
 
     private def seed_url
-      development? ? fetch_env_var(:app_seed_dev_url) : fetch_env_var(:app_seed_url)
+      development? || preview? ? fetch_env_var(:app_seed_dev_url) : fetch_env_var(:app_seed_url)
     end
 
     private def load_seeds_from_path
-      file_name = development? ? 'seeds_dev.yml' : 'seeds.yml'
+      file_name = development? || preview? ? 'seeds_dev.yml' : 'seeds.yml'
       File.open(Rails.root.join("tmp/seeds/#{file_name}"))
     end
 
@@ -101,6 +101,10 @@ module App
 
     private def development?
       @env.eql?('development')
+    end
+
+    private def preview?
+      fetch_env_var(:app_environment).to_sym.eql?(:preview)
     end
 
     def process_admins(content)
