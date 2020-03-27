@@ -61,6 +61,7 @@ class Company < ApplicationRecord
   belongs_to :user
   has_one_attached :picture
 
+  scope :approved, -> { where(approved: true) }
   scope :with_models, -> { includes(:user) }
 
   validates :name, :category, :postcode, :city, :street, :street_number, :user_id, presence: true
@@ -73,7 +74,7 @@ class Company < ApplicationRecord
   alias keeper user
 
   def self.available
-    active.with_models
+    active.approved.with_models
   end
 
   def self.property_params
@@ -130,7 +131,8 @@ class Company < ApplicationRecord
       notes: nil,
       payment: payment_properties_definition,
       links: links_properties_definition,
-      permissions: {}
+      permissions: {},
+      approval_note: nil
     }
   end
 
