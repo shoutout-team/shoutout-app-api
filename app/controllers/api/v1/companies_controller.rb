@@ -18,7 +18,7 @@ module Api
           post_process_asset_for(@company, kind: :picture)
           render_json(result: @company)
         else
-          render_json_unprocessable(error: :invalid, issues: @company.errors)
+          render_json_unprocessable(error: :invalid, issues: @company.errors.details)
         end
       end
 
@@ -28,7 +28,7 @@ module Api
         if (@company = Company.update(company_params))
           render_json(result: @company)
         else
-          render_json_unprocessable(error: :invalid, issues: @company.errors)
+          render_json_unprocessable(error: :invalid, issues: @company.errors.details)
         end
       end
 
