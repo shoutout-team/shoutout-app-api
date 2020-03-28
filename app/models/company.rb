@@ -40,7 +40,7 @@ class Company < ApplicationRecord
 
   API_ATTRIBUTES = %i[
     name title category slug properties gid
-    postcode city street street_number latitude longitude
+    postcode city street street_number latitude longitude approved
   ].freeze
 
   API_METHODS = %i[category_wording keeper_name picture_url].freeze
