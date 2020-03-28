@@ -25,7 +25,7 @@ module Api
       def update
         return render_json_forbidden(:unknown_keeper) if @keeper.nil?
 
-        if @company = Company.update(company_params)
+        if (@company = Company.update(company_params))
           render_json(result: @company)
         else
           render_json_unprocessable(:invalid, @company.errors)

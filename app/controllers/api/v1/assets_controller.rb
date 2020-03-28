@@ -15,9 +15,9 @@ module Api
         return render_json(@service.response) if @service.succeeded?
 
         render_json_unprocessable(error: @service.error, issues: @service.issues)
-
       rescue ActiveService::ProcessingFailed => e
         # Problem! @service is nil, when an exception is raised
+        Loggers::IssueLogger.init.error("UploadService failed to process. cause: #{e.message}")
       end
 
       private def load_asset

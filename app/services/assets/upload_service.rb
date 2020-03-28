@@ -64,7 +64,6 @@ module Assets
       filename = params[:filename] || generate_filename_from(meta_data)
 
       { io: File.open(image.tempfile), filename: filename }
-
     rescue MiniMagick::Invalid => e
       # TODO: Do not expose details to frontend. Log error instead #60
       fail_with(:unprosseable_upload, e.message)
