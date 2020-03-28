@@ -38,12 +38,27 @@ module Assets
 
     private def processed_asset
       @upload = Upload.new(entity: entity_param, kind: kind_param)
-      @upload.attach_on(asset_storage, @params[:asset])
+      @upload.attach_on(asset_storage, asset_data)
       @upload.save!
       @upload.public_send(asset_storage)
     rescue ActiveRecord::RecordInvalid => e
-      @issues = issues_from_record_for(asset_storage)
+      @issues = issues_from_record_for(e.record, asset_storage)
       nil
+    end
+
+    private def asset_data
+      return @params[:asset] if file_upload?
+
+      require 'base64'
+
+      uploaded_io = @params[:asset]
+      metadata = "data:image/png;base64,"
+      base64_string = uploaded_io[metadata.size..-1]
+      blob = Base64.decode64(base64_string)
+      image = MiniMagick::Image.read(blob)
+
+      # TODO: How to handle file_name? #60
+      { io: File.open(image.tempfile), filename: 'test.png' }
     end
 
     private def verify_upload_params!
@@ -67,7 +82,7 @@ module Assets
     end
 
     private def valid_asset_upload?
-      @params[:asset].is_a?(ActionDispatch::Http::UploadedFile)
+      file_upload? || binary_upload?
     end
 
     private def asset_storage
@@ -84,6 +99,14 @@ module Assets
 
     private def response_key
       "#{kind_param}_key".to_sym
+    end
+
+    private def file_upload?
+      @params[:asset].is_a?(ActionDispatch::Http::UploadedFile)
+    end
+
+    private def binary_upload?
+      @params[:asset].starts_with?('data:image/')
     end
   end
 end
