@@ -43,7 +43,7 @@ namespace :db do
     tables = nil if tables.eql?([])
     tables ||= ActiveRecord::Base.connection.tables - ['schema_migrations', 'ar_internal_metadata']
 
-    puts 'TRUNCATE TABLES: '
+    puts "TRUNCATE TABLES on environment #{Rails.env}: "
     puts tables.join(' | ')
     puts 'Confirm with "y"'
 
