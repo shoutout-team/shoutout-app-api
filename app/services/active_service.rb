@@ -4,7 +4,7 @@ class ActiveService
 
   METHODS = [].freeze
 
-  attr_accessor :succees
+  attr_accessor :succees, :error, :issues
 
   class UnknownServiceMethod < StandardError; end
   class MissingParams < StandardError; end
@@ -18,12 +18,17 @@ class ActiveService
     @success
   end
 
+  def failed?
+    @error.present?
+  end
+
   protected def succees!
     @success = true
   end
 
-  protected def fail_with(error_key)
+  protected def fail_with(error_key, msg = nil)
     @error = error_key
+    @issues = msg.presence
     @success = false
   end
 
@@ -33,7 +38,7 @@ class ActiveService
     raise ProcessingFailed
   end
 
-  protected def issues_from_record_for(attr_key)
-    { details: e.record.errors.details[attr_key], messages: e.record.errors.messages[attr_key] }
+  protected def issues_from_record_for(record, attr_key)
+    { details: record.errors.details[attr_key], messages: record.errors.messages[attr_key] }
   end
 end
