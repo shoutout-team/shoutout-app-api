@@ -3,7 +3,11 @@ module Api
     class CompaniesController < Api::BaseController
       include UploadPostProcessing
 
-      PARAMS = %i[name title category postcode city street street_number latitude longitude picture_key].freeze
+      PARAMS = %i[
+        name title category
+        postcode city street street_number latitude longitude
+        picture_key change_picture]
+      .freeze
 
       before_action :require_keeper, only: %i[fetch create update approve]
 
@@ -37,7 +41,8 @@ module Api
 
         return render_json_forbidden(:unapproved_company) unless @company.approved?
 
-        if @company.update(company_params)
+        if @company.update_with_picture(company_params)
+          replace_asset_for(@company, kind: :picture) if @company.update_picture?
           render_json(result: @company)
         else
           render_json_unprocessable(error: :invalid, issues: @company.errors.details)
