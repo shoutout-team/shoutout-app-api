@@ -6,8 +6,8 @@ module Api
       PARAMS = %i[
         name title category
         postcode city street street_number latitude longitude
-        picture_key change_picture]
-      .freeze
+        picture_key change_picture
+      ].freeze
 
       before_action :require_keeper, only: %i[fetch create update approve]
 
