@@ -1,11 +1,11 @@
 default: &default
-  title: 'SaveTheKiez'
+  title: 'Shoutout-API'
 
   domains:
-    live: ''
-    production: ''
+    live: 'shoutout.jetzt'
+    production: 'shoutout-app-api.herokuapp.com'
     staging: ''
-    preview: ''
+    preview: 'shoutout-app-api-preview.herokuapp.com'
     development: ''
 
   hosting:
