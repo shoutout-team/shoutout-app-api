@@ -49,6 +49,7 @@ module Assets
     end
 
     # TODO: Checkout any possible security-issues with processing binary-data
+    # TODO: Refactor asset_data #60
     private def asset_data
       return @params[:asset] if file_upload?
 
@@ -60,10 +61,14 @@ module Assets
 
       blob = Base64.decode64(binary_data)
       image = MiniMagick::Image.read(blob)
+      filename = params[:filename] || generate_filename_from(meta_data)
 
-      # TODO: How to handle file_name? ... we must change the API! #60
-      filename = "asset-#{Time.now.to_i}." + meta_data.gsub('data:image/', '').gsub(';base64', '')
       { io: File.open(image.tempfile), filename: filename }
+
+    rescue MiniMagick::Invalid => e
+      # TODO: Do not expose details to frontend. Log error instead #60
+      fail_with(:unprosseable_upload, e.message)
+      nil
     end
 
     private def verify_upload_params!
@@ -112,6 +117,10 @@ module Assets
 
     private def binary_upload?
       @params[:asset].starts_with?('data:image/')
+    end
+
+    private def generate_filename_from(meta_data)
+      "asset-#{Time.now.to_i}." + meta_data.gsub('data:image/', '').gsub(';base64', '')
     end
   end
 end
