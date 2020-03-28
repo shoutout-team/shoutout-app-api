@@ -26,8 +26,9 @@ class ActiveService
     @success = true
   end
 
-  protected def fail_with(error_key)
+  protected def fail_with(error_key, msg = nil)
     @error = error_key
+    @issues = msg.presence
     @success = false
   end
 
