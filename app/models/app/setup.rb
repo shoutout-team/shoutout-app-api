@@ -18,12 +18,13 @@ module App
       process_seeds
     end
 
+    # TODO: :processable_environment? should include :production, if we collect early adopters in seed-file! #50
     def process_seeds
       content = load_seeds
       process_admins(content)
-      process_users(content) if development? || preview?
-      process_companies(content) if development? || preview?
-      map_keepers_to_companies if development? || preview?
+      process_users(content) if processable_environment?
+      process_companies(content) if processable_environment?
+      map_keepers_to_companies if processable_environment?
       # TODO: disabled :process_locations in setup #42
       #process_locations
     end
@@ -31,7 +32,7 @@ module App
     def check_environment!
       check_database!
       check_env_vars!
-      truncate if development? || preview?
+      truncate if processable_environment?
       check_data_state!
     end
 
@@ -51,7 +52,7 @@ module App
 
     private def truncate
       ARGV[1] = ''
-      Rake::Task['db:truncate'].invoke if development? || preview?
+      Rake::Task['db:truncate'].invoke if processable_environment?
     end
 
     private def check_data_state!
@@ -83,11 +84,11 @@ module App
     # rubocop:enable Security/YAMLLoad
 
     private def seed_url
-      development? || preview? ? fetch_env_var(:app_seed_dev_url) : fetch_env_var(:app_seed_url)
+      processable_environment? ? fetch_env_var(:app_seed_dev_url) : fetch_env_var(:app_seed_url)
     end
 
     private def load_seeds_from_path
-      file_name = development? || preview? ? 'seeds_dev.yml' : 'seeds.yml'
+      file_name = processable_environment? ? 'seeds_dev.yml' : 'seeds.yml'
       File.open(Rails.root.join("tmp/seeds/#{file_name}"))
     end
 
@@ -98,6 +99,10 @@ module App
       open(seed_url, http_basic_authentication: [@app_name, fetch_env_var(:app_root_pwd)], &:read)
     end
     # rubocop:enable Security/Open
+
+    private def processable_environment?
+      development? || preview?
+    end
 
     private def development?
       @env.eql?('development')
