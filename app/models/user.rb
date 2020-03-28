@@ -44,6 +44,8 @@
 #  index_users_on_unlock_token          (unlock_token) UNIQUE
 #
 class User < ApplicationRecord
+  include ActiveScope
+
   API_ATTRIBUTES = %i[email name gid].freeze
   API_METHODS = %i[company_name avatar_url].freeze
 
