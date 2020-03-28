@@ -21,7 +21,10 @@ module CorsAccess
 
   # TODO: Make this configurable #41
   private def allowed_client_origins
-    '*'
+    return '*' if App::Hosting.localhost?
+    #'https://google.com'
+    # https://shoutout-app-spa-dev.herokuapp.com
+    # https://shoutout-app-spa-dev.herokuapp.com
   end
 
   # TODO: Make this configurable #41

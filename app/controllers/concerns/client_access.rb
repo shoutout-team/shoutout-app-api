@@ -9,6 +9,8 @@ module ClientAccess
     true
   end
 
+  # App::Hosting.api_access_mode
+
   protected def local_host_access?
     request.host.eql?('localhost')
   end
