@@ -51,25 +51,13 @@ module Assets
 
       require 'base64'
 
-      #uploaded_io = "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2....."
-
       uploaded_io = @params[:asset]
       metadata = "data:image/png;base64,"
       base64_string = uploaded_io[metadata.size..-1]
       blob = Base64.decode64(base64_string)
       image = MiniMagick::Image.read(blob)
-      #image.write 'image.jpeg'
 
-      # ArgumentError: Could not find or build blob: expected attachable
-      #@upload.public_send(asset_storage).attach(image)
-      #@upload.public_send(asset_storage).attach(io: image, filename: 'test.png')
-
-      #@upload.public_send(asset_storage).attach(image.tempfile)
-      #@upload.public_send(asset_storage).attach(File.open(image.tempfile))
-
-      # Works! #60
-      # @upload.public_send(asset_storage).attach(io: File.open(image.tempfile), filename: 'test.png')
-
+      # TODO: How to handle file_name? #60
       { io: File.open(image.tempfile), filename: 'test.png' }
     end
 
