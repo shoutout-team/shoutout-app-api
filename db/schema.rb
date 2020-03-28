@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_22_171102) do
+ActiveRecord::Schema.define(version: 2020_03_27_205413) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -53,7 +53,9 @@ ActiveRecord::Schema.define(version: 2020_03_22_171102) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "gid", null: false
+    t.boolean "approved", default: false, null: false
     t.index ["active"], name: "index_companies_on_active"
+    t.index ["approved"], name: "index_companies_on_approved"
     t.index ["category"], name: "index_companies_on_category"
     t.index ["gid"], name: "index_companies_on_gid", unique: true
     t.index ["latitude"], name: "index_companies_on_latitude"
@@ -86,6 +88,15 @@ ActiveRecord::Schema.define(version: 2020_03_22_171102) do
     t.index ["updated_at"], name: "index_sessions_on_updated_at"
   end
 
+  create_table "uploads", force: :cascade do |t|
+    t.string "entity", null: false
+    t.string "kind", null: false
+    t.string "key"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["key"], name: "index_uploads_on_key"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", null: false
     t.string "name"
@@ -112,7 +123,9 @@ ActiveRecord::Schema.define(version: 2020_03_22_171102) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "gid", null: false
+    t.string "developer_key"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
+    t.index ["developer_key"], name: "index_users_on_developer_key"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["gid"], name: "index_users_on_gid", unique: true
     t.index ["preferences"], name: "index_users_on_preferences", using: :gin

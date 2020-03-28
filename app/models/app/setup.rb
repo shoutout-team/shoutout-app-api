@@ -18,12 +18,13 @@ module App
       process_seeds
     end
 
+    # TODO: :processable_environment? should include :production, if we collect early adopters in seed-file! #50
     def process_seeds
       content = load_seeds
       process_admins(content)
-      process_users(content) if development?
-      process_companies(content) if development?
-      map_keepers_to_companies if development?
+      process_users(content) if processable_environment?
+      process_companies(content) if processable_environment?
+      map_keepers_to_companies if processable_environment?
       # TODO: disabled :process_locations in setup #42
       #process_locations
     end
@@ -31,7 +32,7 @@ module App
     def check_environment!
       check_database!
       check_env_vars!
-      truncate if development?
+      truncate if processable_environment?
       check_data_state!
     end
 
@@ -51,7 +52,7 @@ module App
 
     private def truncate
       ARGV[1] = ''
-      Rake::Task['db:truncate'].invoke if development?
+      Rake::Task['db:truncate'].invoke if processable_environment?
     end
 
     private def check_data_state!
@@ -65,12 +66,12 @@ module App
     end
 
     private def required_env_vars
-      %w[app_environment app_root_user app_root_pwd app_seed_url app_seed_dev_url].freeze
+      %w[app_hosting app_root_user app_root_pwd app_seed_url app_seed_dev_url].freeze
     end
 
     private def fetch_env_var(name)
-      name = "#{@app_name}_#{name}" if development? && @app_name.present?
-      ENV[name.upcase]
+      name = "#{@app_name}_#{name}" if localhost? && @app_name.present?
+      ENV[name.to_s.upcase] # NOTE: Weird, on heroku it crashes when not calling explicitly :to_s
     end
 
     # rubocop:disable Security/YAMLLoad
@@ -83,11 +84,11 @@ module App
     # rubocop:enable Security/YAMLLoad
 
     private def seed_url
-      development? ? fetch_env_var(:app_seed_dev_url) : fetch_env_var(:app_seed_url)
+      processable_environment? ? fetch_env_var(:app_seed_dev_url) : fetch_env_var(:app_seed_url)
     end
 
     private def load_seeds_from_path
-      file_name = development? ? 'seeds_dev.yml' : 'seeds.yml'
+      file_name = processable_environment? ? 'seeds_dev.yml' : 'seeds.yml'
       File.open(Rails.root.join("tmp/seeds/#{file_name}"))
     end
 
@@ -99,8 +100,16 @@ module App
     end
     # rubocop:enable Security/Open
 
-    private def development?
+    private def processable_environment?
+      localhost? || preview?
+    end
+
+    private def localhost?
       @env.eql?('development')
+    end
+
+    private def preview?
+      fetch_env_var(:app_hosting).to_sym.eql?(:preview)
     end
 
     def process_admins(content)

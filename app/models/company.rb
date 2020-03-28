@@ -19,10 +19,12 @@
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
 #  gid           :string           not null
+#  approved      :boolean          default("false"), not null
 #
 # Indexes
 #
 #  index_companies_on_active      (active)
+#  index_companies_on_approved    (approved)
 #  index_companies_on_category    (category)
 #  index_companies_on_gid         (gid) UNIQUE
 #  index_companies_on_latitude    (latitude)
@@ -36,27 +38,30 @@ class Company < ApplicationRecord
   include ActiveScope
   include JsonBinaryAttributes
 
-  # TODO: Remove :id from public attributes #26
   API_ATTRIBUTES = %i[
-    id name title category slug properties gid
+    name title category slug properties gid
     postcode city street street_number latitude longitude
   ].freeze
-  API_METHODS = %i[category_wording keeper_name picture].freeze
+
+  API_METHODS = %i[category_wording keeper_name picture_url].freeze
 
   NESTED_PROPERTIES = %i[payment links].freeze
 
   PAYMENT_OPTIONS = [:paypal, :gofoundme, bank: %i[owner iban]].freeze
-  LINKS_OPTIONS = %i[website facebook twitter instagram].freeze
+  LINKS_OPTIONS = %i[website promotion facebook twitter instagram].freeze
 
   CATEGORIES = Static::CATEGORIES_ENUM
 
   enum category: CATEGORIES
 
-  has_jsonb_attributes :properties, :description, :cr_number, :notes, :payment, :links
+  has_jsonb_attributes :properties, :description, :cr_number, :notes, :payment, :links, :permissions
+
+  attr_accessor :picture_key
 
   belongs_to :user
-  has_one_attached :image
+  has_one_attached :picture
 
+  scope :approved, -> { where(approved: true) }
   scope :with_models, -> { includes(:user) }
 
   validates :name, :category, :postcode, :city, :street, :street_number, :user_id, presence: true
@@ -69,7 +74,7 @@ class Company < ApplicationRecord
   alias keeper user
 
   def self.available
-    active.with_models
+    active.approved.with_models
   end
 
   def self.property_params
@@ -87,11 +92,15 @@ class Company < ApplicationRecord
     user.name
   end
 
-  def picture
-    return unless image.attached?
+  def has_picture?
+    picture.attached?
+  end
 
-    #Rails.env.development? ? image.key : image.service_url
-    image.service_url
+  def picture_url
+    return unless has_picture?
+
+    #Rails.env.development? ? picture.key : picture.service_url
+    picture.service_url
   end
 
   def as_json(options = {})
@@ -121,7 +130,9 @@ class Company < ApplicationRecord
       cr_number: nil,
       notes: nil,
       payment: payment_properties_definition,
-      links: links_properties_definition
+      links: links_properties_definition,
+      permissions: {},
+      approval_note: nil
     }
   end
 
@@ -140,6 +151,7 @@ class Company < ApplicationRecord
   private def links_properties_definition
     {
       website: nil,
+      promotion: nil,
       facebook: nil,
       twitter: nil,
       instagram: nil
