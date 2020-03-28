@@ -73,7 +73,7 @@ class User < ApplicationRecord
   end
 
   def self.fetchable
-    with_models
+    active.with_models
   end
 
   def has_avatar?
