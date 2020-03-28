@@ -5,12 +5,20 @@ module Api
 
       PARAMS = %i[name title category postcode city street street_number latitude longitude picture_key].freeze
 
-      before_action :require_keeper, only: %i[create update]
+      before_action :require_keeper, only: %i[fetch create update approve]
+
+      def fetch
+        return render_json_forbidden(:unknown_keeper) if @keeper.nil?
+        return render_json_forbidden(:company_not_present) if @keeper.company.nil?
+
+        render_json(result: @keeper.company)
+      end
 
       # TODO: Problem: when asynchrounus processing is integrated, then rendering asset with attached-check on asset
       # in model (e.g. has_picture?) will not provide the attachment_key! #31
       def create
         return render_json_forbidden(:unknown_keeper) if @keeper.nil?
+        return render_json_forbidden(:company_already_present) if @keeper.company.present?
 
         @company = Company.create(company_params.merge(user: @keeper))
 
@@ -25,8 +33,26 @@ module Api
       def update
         return render_json_forbidden(:unknown_keeper) if @keeper.nil?
 
-        if (@company = Company.update(company_params))
+        @company = @keeper.company
+
+        return render_json_forbidden(:unapproved_company) unless @company.approved?
+
+        if @company.update(company_params)
           render_json(result: @company)
+        else
+          render_json_unprocessable(error: :invalid, issues: @company.errors.details)
+        end
+      end
+
+      # TODO: This endpoint must be restricted to dev-clients #43
+      def approve
+        return render_json_forbidden(:unknown_keeper) if @keeper.nil?
+        return render_json_forbidden(:company_not_present) if @keeper.company.nil?
+
+        @company = @keeper.company
+
+        if @company.update(approved: true)
+          render_json
         else
           render_json_unprocessable(error: :invalid, issues: @company.errors.details)
         end
