@@ -8,6 +8,8 @@ module Assets
 
     ALLOWED_ASSETS = { user: [:avatar], company: [:picture] }.freeze
 
+    ACCEPTABLE_META_DATA = ['data:image/png;base64', 'data:image/jpg;base64', 'data:image/jpeg;base64'].freeze
+
     attr_reader :params, :attachment_key
 
     def initialize(params = {})
@@ -39,26 +41,29 @@ module Assets
     private def processed_asset
       @upload = Upload.new(entity: entity_param, kind: kind_param)
       @upload.attach_on(asset_storage, asset_data)
-      @upload.save!
+      @upload.save! unless failed?
       @upload.public_send(asset_storage)
     rescue ActiveRecord::RecordInvalid => e
       @issues = issues_from_record_for(e.record, asset_storage)
       nil
     end
 
+    # TODO: Checkout any possible security-issues with processing binary-data
     private def asset_data
       return @params[:asset] if file_upload?
 
       require 'base64'
 
-      uploaded_io = @params[:asset]
-      metadata = "data:image/png;base64,"
-      base64_string = uploaded_io[metadata.size..-1]
-      blob = Base64.decode64(base64_string)
+      meta_data, binary_data = @params[:asset].split(',')
+
+      return fail_with(:unacceptable_base64_content) unless ACCEPTABLE_META_DATA.include?(meta_data)
+
+      blob = Base64.decode64(binary_data)
       image = MiniMagick::Image.read(blob)
 
-      # TODO: How to handle file_name? #60
-      { io: File.open(image.tempfile), filename: 'test.png' }
+      # TODO: How to handle file_name? ... we must change the API! #60
+      filename = "asset-#{Time.now.to_i}." + meta_data.gsub('data:image/', '').gsub(';base64', '')
+      { io: File.open(image.tempfile), filename: filename }
     end
 
     private def verify_upload_params!
