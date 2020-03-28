@@ -21,7 +21,7 @@ module CorsAccess
 
   # TODO: FRONTEND_HOST
   private def allowed_client_origins
-    return '*' if App::Hosting.localhost?
+    return '*' if App::Hosting.localhost? || @api_client.present?
     return App::Config::FRONTEND_PREVIEW_HOST if App::Hosting.preview_hosting?
     return App::Config::FRONTEND_PRODUCTION_HOST if App::Hosting.production_hosting?
   end
