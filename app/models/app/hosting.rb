@@ -10,11 +10,10 @@ module App
       hosting_matches?(:preview)
     end
 
-    # TODO: Rename APP_ENVIRONMENT to APP_HOSTING and update Setup-Process too #50
     def self.hosting_matches?(name)
-      raise EnvironmentUndefined if ENV['APP_ENVIRONMENT'].blank?
+      raise EnvironmentUndefined if ENV['APP_HOSTING'].blank?
 
-      ENV['APP_ENVIRONMENT'].to_sym.eql?(name.to_sym)
+      ENV['APP_HOSTING'].to_sym.eql?(name.to_sym)
     end
   end
 end

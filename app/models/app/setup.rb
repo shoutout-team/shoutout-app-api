@@ -66,11 +66,11 @@ module App
     end
 
     private def required_env_vars
-      %w[app_environment app_root_user app_root_pwd app_seed_url app_seed_dev_url].freeze
+      %w[app_hosting app_root_user app_root_pwd app_seed_url app_seed_dev_url].freeze
     end
 
     private def fetch_env_var(name)
-      name = "#{@app_name}_#{name}" if development? && @app_name.present?
+      name = "#{@app_name}_#{name}" if localhost? && @app_name.present?
       ENV[name.to_s.upcase] # NOTE: Weird, on heroku it crashes when not calling explicitly :to_s
     end
 
@@ -101,15 +101,15 @@ module App
     # rubocop:enable Security/Open
 
     private def processable_environment?
-      development? || preview?
+      localhost? || preview?
     end
 
-    private def development?
+    private def localhost?
       @env.eql?('development')
     end
 
     private def preview?
-      fetch_env_var(:app_environment).to_sym.eql?(:preview)
+      fetch_env_var(:app_hosting).to_sym.eql?(:preview)
     end
 
     def process_admins(content)
