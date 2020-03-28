@@ -70,6 +70,7 @@ class User < ApplicationRecord
     keepers.approved.with_models
   end
 
+  # TODO: This causes an extra-query N+1 #67
   def has_avatar?
     avatar.attached?
   end

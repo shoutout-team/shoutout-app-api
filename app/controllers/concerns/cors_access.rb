@@ -19,17 +19,16 @@ module CorsAccess
     headers['Access-Control-Max-Age'] = allowed_max_age
   end
 
-  # TODO: Make this configurable #41
+  # TODO: FRONTEND_HOST
   private def allowed_client_origins
     return '*' if App::Hosting.localhost?
-    #'https://google.com'
-    # https://shoutout-app-spa-dev.herokuapp.com
-    # https://shoutout-app-spa-dev.herokuapp.com
+    return App::Config::FRONTEND_PREVIEW_HOST if App::Hosting.preview_hosting?
+    return App::Config::FRONTEND_PRODUCTION_HOST if App::Hosting.production_hosting?
   end
 
   # TODO: Make this configurable #41
   private def allowed_client_methods
-    'POST, GET, OPTIONS'
+    'POST, GET, OPTIONS, PATCH, DELETE'
   end
 
   # TODO: Make this configurable #41

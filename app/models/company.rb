@@ -92,6 +92,7 @@ class Company < ApplicationRecord
     user.name
   end
 
+  # TODO: This causes an extra-query N+1 #67
   def has_picture?
     picture.attached?
   end
