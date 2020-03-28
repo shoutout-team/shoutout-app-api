@@ -77,6 +77,10 @@ class Company < ApplicationRecord
     active.approved.with_models
   end
 
+  def self.fetchable
+    active.with_models
+  end
+
   def self.property_params
     params = { properties: PROPERTIES - NESTED_PROPERTIES }
     params[:properties] << { payment: PAYMENT_OPTIONS }

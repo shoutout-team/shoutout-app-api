@@ -29,9 +29,11 @@
 #  updated_at             :datetime         not null
 #  gid                    :string           not null
 #  developer_key          :string
+#  active                 :boolean          default("true"), not null
 #
 # Indexes
 #
+#  index_users_on_active                (active)
 #  index_users_on_confirmation_token    (confirmation_token) UNIQUE
 #  index_users_on_developer_key         (developer_key)
 #  index_users_on_email                 (email) UNIQUE
@@ -68,6 +70,10 @@ class User < ApplicationRecord
 
   def self.available
     keepers.approved.with_models
+  end
+
+  def self.fetchable
+    active.with_models
   end
 
   def has_avatar?

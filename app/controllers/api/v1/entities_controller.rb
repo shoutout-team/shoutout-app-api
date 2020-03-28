@@ -23,9 +23,9 @@ module Api
 
       private def spa_load_response
         {
-          keepers: User.available,
+          keepers: User.fetchable,
           categories: Static::CATEGORIES,
-          companies: Company.available
+          companies: Company.fetchable
         }
       end
     end
