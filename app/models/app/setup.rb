@@ -16,11 +16,13 @@ module App
       migrate_database
       create_root_account!
       process_seeds
+      summarize
     end
 
     # TODO: :processable_environment? should include :production, if we collect early adopters in seed-file! #50
     def process_seeds
       content = load_seeds
+      process_clients(content)
       process_admins(content)
       process_users(content) if processable_environment?
       process_companies(content) if processable_environment?
@@ -112,6 +114,12 @@ module App
       fetch_env_var(:app_hosting).to_sym.eql?(:preview)
     end
 
+    def process_clients(content)
+      content[:seeds][:clients].each do |attrs|
+        App::Client.create!(attrs)
+      end
+    end
+
     def process_admins(content)
       content[:seeds][:admins].each do |attrs|
         User.create!(attrs.merge(confirmed_at: Time.zone.now))
@@ -149,6 +157,13 @@ module App
       CSV.foreach(file_path, headers: true) do |row|
         Location.create!(name: row['ort'], postcode: row['plz'], federate_state: row['bundesland'], osm_id: row['osm_id'].to_i)
       end
+    end
+
+    def summarize
+      puts "App::Client: #{App::Client.count}"
+      puts "User: #{User.count}"
+      puts "Company: #{Company.count}"
+      puts "Location: #{Location.count}"
     end
   end
 end
