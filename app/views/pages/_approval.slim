@@ -1,0 +1,64 @@
+h2 Unapproved companies
+
+- @entities = Company.with_models.unapproved.ordered
+
+section#backend-content.companies.index
+  .row
+    .col-12
+      = backend.decorator.backend_table_tag(styles: 'large-rows') do
+        thead
+          tr
+            th #
+            th Name
+            th Titel
+            th Category
+            th Address
+            th Erstellt
+            th Aktualisiert
+            th
+        tbody
+          - @entities.each do |entity|
+            - entity = entity.decorate
+            tr
+              td= entity.id
+              td= entity.name
+              td= entity.title
+              td= entity.category
+              td
+                = entity.postcode
+                br
+                = entity.city
+                br
+                = entity.street
+                br
+                = entity.street_number
+                br
+              = entity.sortable_date_table_cell_tag(:created_at_value)
+              = entity.sortable_date_table_cell_tag(:updated_at_value)
+              td.action-buttons
+
+            tr
+              td colspan='2'
+                = entity.description
+              td colspan='2'
+                = entity.notes
+              td colspan='2'
+                = entity.payment[:paypal]
+                br
+                = entity.payment[:gofoundme]
+                br
+                = entity.payment[:bank].try(:[], :iban)
+                br
+              td colspan='2'
+                = entity.links[:website]
+                br
+                = entity.links[:facebook]
+                br
+                = entity.links[:instagram]
+                br
+                = entity.links[:twitter]
+
+      /           = entity.action_icon(:edit, path: edit_backend_link_path(entity))
+      /           = entity.action_icon(:destroy, path: backend_link_path(entity))
+
+/= backend.decorator.render_pagination(@paginated)
