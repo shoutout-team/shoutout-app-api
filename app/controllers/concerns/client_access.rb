@@ -52,6 +52,6 @@ module ClientAccess
   end
 
   protected def api_key_from_params
-    params[:api_key]
+    params[:api_key] || request.headers['api-key'] || request.headers['API_KEY'] || request.headers['HTTP_API_KEY']
   end
 end
