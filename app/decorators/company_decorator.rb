@@ -1,3 +1,2 @@
 class CompanyDecorator < BackendDecorator
-# ...
 end

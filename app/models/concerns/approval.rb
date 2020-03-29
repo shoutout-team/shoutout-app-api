@@ -21,4 +21,8 @@ module Approval
   def reject!
     update(approved: false)
   end
+
+  def unapproved?
+    !approved?
+  end
 end
