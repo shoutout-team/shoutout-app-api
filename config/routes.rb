@@ -23,6 +23,7 @@ Rails.application.routes.draw do
       post 'companies/(:keeper_token)/edit', to: 'companies#update'
       get 'assets/:key', to: 'assets#show'
       post 'assets/:entity/:kind', to: 'assets#upload'
+      get 'state/ping', to: 'state#ping'
     end
   end
 
