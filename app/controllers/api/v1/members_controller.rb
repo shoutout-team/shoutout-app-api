@@ -28,6 +28,7 @@ module Api
         @keeper = User.available.find_by(gid: update_params[:keeper_token])
 
         return render_json_forbidden(:unknown_keeper) if @keeper.nil?
+
         #return render_json_forbidden(:unapproved_keeper) unless @keeper.approved?
 
         if @keeper.update_with_avatar(update_params)
