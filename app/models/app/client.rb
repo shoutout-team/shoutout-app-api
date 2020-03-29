@@ -44,6 +44,14 @@ module App
       self.api_key = SecureRandom.hex(16) if api_key.blank?
     end
 
+    def disable!
+      update(active: false)
+    end
+
+    def reject!
+      update(approved: false)
+    end
+
     def define_properties
       return if properties.any?
 

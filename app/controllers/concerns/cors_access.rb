@@ -21,26 +21,13 @@ module CorsAccess
     headers['Access-Control-Max-Age'] = allowed_max_age
   end
 
-  # TODO: Change :allowed_client_origins to FRONTEND_HOSTING for GoLive #41
   private def allowed_client_origins
-    #Origin-Code
-    #return '*' if App::Hosting.localhost? || @api_client.present? # TODO: || public_api_access_mode?
-    #return App::Config::FRONTEND_PREVIEW_HOSTING if App::Hosting.preview_hosting?
-    #return App::Config::FRONTEND_PRODUCTION_HOSTING if App::Hosting.production_hosting?
-
-    # New code
     return '*' if Rails.env.development?
     return '*' if public_api_access_mode?
     return '*' if @api_client.present? && @api_client.developer?
     return @api_client.host if @api_client.present? && @api_client.app?
     return App::Config::FRONTEND_PREVIEW_HOSTING if App::Hosting.preview_hosting?
-    return App::Config::FRONTEND_PRODUCTION_HOSTING if App::Hosting.production_hosting?
-
-    # Test-code:
-    #'http://onedivzero.de'
-    #'http://google.de'
-    #'*'
-    #return '*' if @api_client.present?
+    return App::Config::FRONTEND_HOSTING if App::Hosting.production_hosting?
   end
 
   # TODO: Make this configurable #41
