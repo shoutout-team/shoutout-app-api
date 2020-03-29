@@ -2,9 +2,10 @@ module ClientAccess
   extend ActiveSupport::Concern
 
   def authenticate_client_access!
-    verify_client_token if access_from_localhost?
-    verify_client_token if access_from_preview? && restricted_api_access_mode?
-    restricted_api_access_mode?
+    #verify_client_token if access_from_localhost?
+    #verify_client_token if access_from_preview? && restricted_api_access_mode?
+    #restricted_api_access_mode?
+    true
   end
 
   def verify_client_token

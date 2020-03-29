@@ -13,10 +13,10 @@ module CorsAccess
 
   # For all responses in this controller, return the CORS access control headers.
   def cors_set_access_control_headers
-    allowed = allowed_client_origins
-    Loggers::ClientLogger.init.info("Request from: '#{request.host}' | Allow-Origin: #{allowed}")
+    # TODO: Disable logging for GoLive. Log only requests for api-clients #41
+    Loggers::ClientLogger.init.info("Request from: '#{request.host}' | Allow-Origin: #{allowed_client_origins}")
 
-    headers['Access-Control-Allow-Origin'] = allowed
+    headers['Access-Control-Allow-Origin'] = allowed_client_origins
     headers['Access-Control-Allow-Methods'] = allowed_client_methods
     headers['Access-Control-Allow-Headers'] = allowed_headers
     headers['Access-Control-Max-Age'] = allowed_max_age
