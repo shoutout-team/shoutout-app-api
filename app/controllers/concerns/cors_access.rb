@@ -4,7 +4,8 @@ module CorsAccess
   def cors_preflight_check
     return unless request.method.eql?('OPTIONS')
 
-    headers['Access-Control-Allow-Origin'] = 'http://localhost'
+    #headers['Access-Control-Allow-Origin'] = 'http://localhost'
+    headers['Access-Control-Allow-Origin'] = allowed_client_origins
     headers['Access-Control-Allow-Methods'] = allowed_client_methods
     headers['Access-Control-Allow-Headers'] = allowed_headers
     headers['Access-Control-Max-Age'] = allowed_max_age
@@ -20,11 +21,26 @@ module CorsAccess
     headers['Access-Control-Max-Age'] = allowed_max_age
   end
 
-  # TODO: Change :allowed_client_origins to FRONTEND_HOST for GoLive #41
+  # TODO: Change :allowed_client_origins to FRONTEND_HOSTING for GoLive #41
   private def allowed_client_origins
-    return '*' if App::Hosting.localhost? || @api_client.present?
-    return App::Config::FRONTEND_PREVIEW_HOST if App::Hosting.preview_hosting?
-    return App::Config::FRONTEND_PRODUCTION_HOST if App::Hosting.production_hosting?
+    #Origin-Code
+    #return '*' if App::Hosting.localhost? || @api_client.present? # TODO: || public_api_access_mode?
+    #return App::Config::FRONTEND_PREVIEW_HOSTING if App::Hosting.preview_hosting?
+    #return App::Config::FRONTEND_PRODUCTION_HOSTING if App::Hosting.production_hosting?
+
+    # New code
+    return '*' if Rails.env.development?
+    return '*' if public_api_access_mode?
+    return '*' if @api_client.present? && @api_client.developer?
+    return @api_client.host if @api_client.present? && @api_client.app?
+    return App::Config::FRONTEND_PREVIEW_HOSTING if App::Hosting.preview_hosting?
+    return App::Config::FRONTEND_PRODUCTION_HOSTING if App::Hosting.production_hosting?
+
+    # Test-code:
+    #'http://onedivzero.de'
+    #'http://google.de'
+    #'*'
+    #return '*' if @api_client.present?
   end
 
   # TODO: Make this configurable #41
