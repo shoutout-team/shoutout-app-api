@@ -75,6 +75,8 @@ Metrics/ModuleLength:
 
 Metrics/LineLength:
   Max: 120
+  Exclude:
+    - "**/*.rake"
 
 # Be realistic, sometimes a complex if-else-branch is usefull (default 8)
 Metrics/PerceivedComplexity:
