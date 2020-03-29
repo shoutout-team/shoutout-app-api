@@ -44,6 +44,14 @@ module App
       self.api_key = SecureRandom.hex(16) if api_key.blank?
     end
 
+    def enable!
+      update(active: true)
+    end
+
+    def approve!
+      update(approved: true)
+    end
+
     def disable!
       update(active: false)
     end
