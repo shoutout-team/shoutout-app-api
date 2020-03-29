@@ -54,9 +54,9 @@ class Company < ApplicationRecord
 
   enum category: CATEGORIES
 
-  has_jsonb_attributes :properties, :description, :cr_number, :notes, :payment, :links, :permissions
+  has_jsonb_attributes :properties, :description, :cr_number, :notes, :payment, :links, :permissions, :picture_key
 
-  attr_accessor :picture_key
+  attr_accessor :change_picture
 
   belongs_to :user
   has_one_attached :picture
@@ -96,15 +96,28 @@ class Company < ApplicationRecord
     user.name
   end
 
+  def update_with_picture(attributes)
+    attributes[:properties][:picture_key] = attributes.dig(:picture_key)
+    update(attributes)
+  end
+
+  def update_picture?
+    change_picture
+  end
+
   def has_picture?
+    # TODO: This fires a query on each call, resulting in N+1 queries on SPA-Fetch #67
     picture.attached?
+    # And should be replaced by a check on picture_key-property
+    # picture_key.present?
   end
 
   def picture_url
     return unless has_picture?
 
     #Rails.env.development? ? picture.key : picture.service_url
-    picture.service_url
+    #picture.service_url
+    picture.try(:service_url)
   end
 
   def as_json(options = {})
@@ -136,7 +149,8 @@ class Company < ApplicationRecord
       payment: payment_properties_definition,
       links: links_properties_definition,
       permissions: {},
-      approval_note: nil
+      approval_note: nil,
+      picture_key: nil
     }
   end
 

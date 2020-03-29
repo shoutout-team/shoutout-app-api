@@ -2,7 +2,7 @@ module UploadPostProcessing
   extend ActiveSupport::Concern
 
   # TODO: Should be done in a background-job #31
-  private def post_process_asset_for(entity, kind:)
+  protected def post_process_asset_for(entity, kind:)
     attachment_key = attachment_key_from_params(entity, kind)
 
     return if attachment_key.blank?
@@ -14,7 +14,13 @@ module UploadPostProcessing
     handle_no_op_error!(e)
   end
 
-  private def attachment_key_from_params(entity, name)
+  protected def replace_asset_for(entity, kind:)
+    entity.public_send("#{kind}=".to_sym, nil)
+    entity.save
+    post_process_asset_for(entity, kind: kind)
+  end
+
+  protected def attachment_key_from_params(entity, name)
     param_key_name = "#{name}_key".to_sym
     params[entity.model_name.param_key][param_key_name]
   end
