@@ -37,6 +37,8 @@ group :frontend do
 end
 
 group :backend do
+  #gem 'active_decorator'
+  gem 'draper'
 end
 
 group :utils do
