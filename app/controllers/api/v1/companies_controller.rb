@@ -69,7 +69,7 @@ module Api
       end
 
       private def token
-        params[:keeper_token] || params[:company][:keeper_token]
+        params[:keeper_token] || params[:company].try(:[], :keeper_token)
       end
 
       private def require_keeper
