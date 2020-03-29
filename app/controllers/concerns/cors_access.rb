@@ -50,6 +50,6 @@ module CorsAccess
     Rails.env.production? ? puts(msg) : Loggers::ClientLogger.init.info(msg)
 
     # TODO: Remove me!
-    puts(request.headers.to_h) if Rails.env.production?
+    # puts(request.headers.to_h) if Rails.env.production?
   end
 end
