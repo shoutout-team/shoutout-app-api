@@ -43,7 +43,7 @@ class Company < ApplicationRecord
     postcode city street street_number latitude longitude approved
   ].freeze
 
-  API_METHODS = %i[category_wording keeper_name picture_url].freeze
+  API_METHODS = %i[category_wording keeper_name keeper_avatar_key picture_url].freeze
 
   NESTED_PROPERTIES = %i[payment links].freeze
 
@@ -94,6 +94,10 @@ class Company < ApplicationRecord
 
   def keeper_name
     user.name
+  end
+
+  def keeper_avatar_key
+    user.properties[:avatar_key]
   end
 
   # TODO: Checkout why the same stuff with :picture_key works ootb in model user #48 #43

@@ -48,7 +48,7 @@ class User < ApplicationRecord
   include JsonBinaryAttributes
 
   API_ATTRIBUTES = %i[email name gid].freeze
-  API_METHODS = %i[company_name avatar_url].freeze
+  API_METHODS = %i[company_name avatar_url avatar_key].freeze
 
   has_jsonb_attributes :properties, :avatar_key
 
