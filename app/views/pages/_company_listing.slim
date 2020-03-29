@@ -40,17 +40,19 @@
             td colspan='2'
               = entity.notes
             td colspan='2'
-              = entity.payment[:paypal]
-              br
-              = entity.payment[:gofoundme]
-              br
-              = entity.payment[:bank].try(:[], :iban)
-              br
+              - if entity.payment.present?
+                = entity.payment[:paypal]
+                br
+                = entity.payment[:gofoundme]
+                br
+                = entity.payment[:bank].try(:[], :iban)
+                br
             td colspan='2'
-              = entity.links[:website]
-              br
-              = entity.links[:facebook]
-              br
-              = entity.links[:instagram]
-              br
-              = entity.links[:twitter]
+              - if entity.links.present?
+                = entity.links[:website]
+                br
+                = entity.links[:facebook]
+                br
+                = entity.links[:instagram]
+                br
+                = entity.links[:twitter]

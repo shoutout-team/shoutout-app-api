@@ -2,6 +2,9 @@
 - @approved = Company.with_models.approved.ordered
 
 section#backend-content.companies.index
+  b= link_to('Add company', backend_add_company_path)
+  hr
+
   h2 Unapproved companies
   = render partial: 'company_listing', locals: { entities: @unapproved }
   hr

@@ -1,0 +1,59 @@
+section#backend-content.companies.form
+  - form_url = backend_create_company_path
+
+  = simple_form_for(@entity, url: form_url, html: { class: 'backend-form' }) do |f|
+    - @entity.form = f
+
+    .row.form-errors
+      .col-12= f.error_notification
+      .col-12.validation-notice
+
+      .row.form-inputs
+        .col-12
+          = f.association :user
+        .col-12
+          = f.input :name
+        .col-12
+          = f.input :title
+        .col-12
+          = f.input :category, collection: Company::CATEGORIES.keys
+        .col-12
+          = f.input :postcode
+        .col-12
+          = f.input :city
+        .col-12
+          = f.input :street
+        .col-12
+          = f.input :street_number
+        .col-12
+          = f.input :latitude
+        .col-12
+          = f.input :longitude
+        .col-12
+          = f.input :description
+        .col-12
+          = f.input :notes
+        .col-12
+          = f.input :cr_number
+        .col-12
+          h3 Payment
+        / .col-12
+        /   = f.input :name
+        / .col-12
+        /   = f.input :name
+        / .col-12
+        /   = f.input :name
+        / .col-12
+        /   = f.input :name
+        / .col-12
+        /   = f.input :name
+        / .col-12
+        /   = f.input :name
+
+
+    .row.form-actions
+      .col-12
+        span.input-group-btn
+          = f.submit
+
+
