@@ -47,7 +47,7 @@ class User < ApplicationRecord
   include ActiveScope
   include JsonBinaryAttributes
 
-  API_ATTRIBUTES = %i[email name gid].freeze
+  API_ATTRIBUTES = %i[name gid].freeze
   API_METHODS = %i[company_name avatar_url avatar_key].freeze
 
   has_jsonb_attributes :properties, :avatar_key
