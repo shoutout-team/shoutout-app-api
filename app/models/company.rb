@@ -62,7 +62,7 @@ class Company < ApplicationRecord
   belongs_to :user
   has_one_attached :picture
 
-  scope :ordered, -> { order: :created_at }
+  scope :ordered, -> { order(:created_at) }
   scope :with_models, -> { includes(:user) }
 
   validates :name, :category, :postcode, :city, :street, :street_number, :user_id, presence: true
