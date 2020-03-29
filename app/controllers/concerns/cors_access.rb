@@ -48,5 +48,8 @@ module CorsAccess
   private def log_origin_access
     msg = "Request from: '#{request.host}' | Allow-Origin: #{allowed_client_origins}"
     Rails.env.production? ? puts(msg) : Loggers::ClientLogger.init.info(msg)
+
+    # TODO: Remove me!
+    puts(request.headers.to_h) if Rails.env.production?
   end
 end
