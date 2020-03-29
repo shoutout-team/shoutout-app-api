@@ -52,7 +52,7 @@ class User < ApplicationRecord
 
   has_jsonb_attributes :properties, :avatar_key
 
-  attr_accessor :change_avatar
+  attr_accessor :change_avatar, :keeper_token
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
@@ -89,7 +89,6 @@ class User < ApplicationRecord
   # rubocop:enable Rails/Delegate
 
   def update_with_avatar(attributes)
-    attributes[:properties][:avatar_key] = attributes.dig(:avatar_key)
     update(attributes)
   end
 

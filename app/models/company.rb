@@ -96,6 +96,7 @@ class Company < ApplicationRecord
     user.name
   end
 
+  # TODO: Checkout why the same stuff with :picture_key works ootb in model user #48 #43
   def update_with_picture(attributes)
     attributes[:properties][:picture_key] = attributes.dig(:picture_key)
     update(attributes)
