@@ -1,0 +1,12 @@
+- @unapproved = Company.with_models.unapproved.ordered
+- @approved = Company.with_models.approved.ordered
+
+section#backend-content.companies.index
+  h2 Unapproved companies
+  = render partial: 'company_listing', locals: { entities: @unapproved }
+  hr
+  h2 Approved companies
+  = render partial: 'company_listing', locals: { entities: @approved }
+
+
+/= backend.decorator.render_pagination(@paginated)

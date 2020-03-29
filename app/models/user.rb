@@ -46,6 +46,7 @@
 class User < ApplicationRecord
   include ActiveScope
   include JsonBinaryAttributes
+  include Approval
 
   API_ATTRIBUTES = %i[name gid].freeze
   API_METHODS = %i[company_name avatar_url avatar_key].freeze
@@ -67,7 +68,6 @@ class User < ApplicationRecord
   scope :administrative, -> { where(role: %i[administrator developer]) }
   scope :users, -> { where(role: %i[guest user]) }
   scope :keepers, -> { where(role: %i[user]) }
-  scope :approved, -> { where(approved: true) }
   scope :with_models, -> { includes(:company) }
 
   after_initialize :define_properties, if: :new_record?
