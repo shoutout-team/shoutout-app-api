@@ -40,7 +40,7 @@ class Company < ApplicationRecord
 
   API_ATTRIBUTES = %i[
     name title category slug properties gid
-    postcode city street street_number latitude longitude
+    postcode city street street_number latitude longitude approved
   ].freeze
 
   API_METHODS = %i[category_wording keeper_name picture_url].freeze
@@ -54,9 +54,9 @@ class Company < ApplicationRecord
 
   enum category: CATEGORIES
 
-  has_jsonb_attributes :properties, :description, :cr_number, :notes, :payment, :links, :permissions
+  has_jsonb_attributes :properties, :description, :cr_number, :notes, :payment, :links, :permissions, :picture_key
 
-  attr_accessor :picture_key
+  attr_accessor :change_picture
 
   belongs_to :user
   has_one_attached :picture
@@ -77,6 +77,10 @@ class Company < ApplicationRecord
     active.approved.with_models
   end
 
+  def self.fetchable
+    active.with_models
+  end
+
   def self.property_params
     params = { properties: PROPERTIES - NESTED_PROPERTIES }
     params[:properties] << { payment: PAYMENT_OPTIONS }
@@ -92,16 +96,33 @@ class Company < ApplicationRecord
     user.name
   end
 
+<<<<<<< HEAD
   # TODO: This causes an extra-query N+1 #67
+=======
+  # TODO: Checkout why the same stuff with :picture_key works ootb in model user #48 #43
+  def update_with_picture(attributes)
+    attributes[:properties][:picture_key] = attributes.dig(:picture_key)
+    update(attributes)
+  end
+
+  def update_picture?
+    change_picture
+  end
+
+>>>>>>> 186d2035eae96a3e44652ff8cf0f23259eb2ad79
   def has_picture?
+    # TODO: This fires a query on each call, resulting in N+1 queries on SPA-Fetch #67
     picture.attached?
+    # And should be replaced by a check on picture_key-property
+    # picture_key.present?
   end
 
   def picture_url
     return unless has_picture?
 
     #Rails.env.development? ? picture.key : picture.service_url
-    picture.service_url
+    #picture.service_url
+    picture.try(:service_url)
   end
 
   def as_json(options = {})
@@ -133,7 +154,8 @@ class Company < ApplicationRecord
       payment: payment_properties_definition,
       links: links_properties_definition,
       permissions: {},
-      approval_note: nil
+      approval_note: nil,
+      picture_key: nil
     }
   end
 
