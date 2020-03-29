@@ -16,6 +16,7 @@ Rails.application.routes.draw do
       post 'locations/cities', to: 'locations#cities'
       post 'members/login', to: 'members#login'
       post 'members/signup', to: 'members#signup'
+      post 'members/(:keeper_token)/edit', to: 'members#update'
       get 'companies/fetch', to: 'companies#fetch'
       post 'companies/add', to: 'companies#create'
       post 'companies/approve', to: 'companies#approve' # TODO: This endpoint must be restricted to dev-clients #43
