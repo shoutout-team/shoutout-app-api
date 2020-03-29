@@ -37,6 +37,7 @@
 class Company < ApplicationRecord
   include ActiveScope
   include JsonBinaryAttributes
+  include Approval
 
   API_ATTRIBUTES = %i[
     name title category slug properties gid
@@ -61,7 +62,7 @@ class Company < ApplicationRecord
   belongs_to :user
   has_one_attached :picture
 
-  scope :approved, -> { where(approved: true) }
+  scope :ordered, -> { order: :created_at }
   scope :with_models, -> { includes(:user) }
 
   validates :name, :category, :postcode, :city, :street, :street_number, :user_id, presence: true
