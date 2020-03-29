@@ -18,8 +18,8 @@ module App
 
     DEBUG_MODE_APP = fetch[:debug][:app]
 
-    FRONTEND_HOST = Rails.application.credentials.dig(:frontend, :domain)
-    FRONTEND_PRODUCTION_HOST = Rails.application.credentials.dig(:frontend, :production)
-    FRONTEND_PREVIEW_HOST = Rails.application.credentials.dig(:frontend, :preview)
+    FRONTEND_HOSTING = Rails.application.credentials.dig(:frontend, :domain)
+    FRONTEND_PRODUCTION_HOSTING = Rails.application.credentials.dig(:frontend, :production)
+    FRONTEND_PREVIEW_HOSTING = Rails.application.credentials.dig(:frontend, :preview)
   end
 end
