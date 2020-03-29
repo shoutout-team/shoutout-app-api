@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_28_175445) do
+ActiveRecord::Schema.define(version: 2020_03_29_123514) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -34,6 +34,24 @@ ActiveRecord::Schema.define(version: 2020_03_28_175445) do
     t.string "checksum", null: false
     t.datetime "created_at", null: false
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
+  end
+
+  create_table "app_clients", force: :cascade do |t|
+    t.string "name", null: false
+    t.integer "kind", default: 0, null: false
+    t.string "api_key", null: false
+    t.string "host"
+    t.integer "user_id"
+    t.boolean "approved", default: false, null: false
+    t.boolean "active", default: false, null: false
+    t.jsonb "properties", default: {}, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["active"], name: "index_app_clients_on_active"
+    t.index ["api_key"], name: "index_app_clients_on_api_key", unique: true
+    t.index ["approved"], name: "index_app_clients_on_approved"
+    t.index ["properties"], name: "index_app_clients_on_properties", using: :gin
+    t.index ["user_id"], name: "index_app_clients_on_user_id"
   end
 
   create_table "companies", force: :cascade do |t|
