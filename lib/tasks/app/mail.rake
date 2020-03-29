@@ -2,7 +2,6 @@ namespace :app do
   namespace :mail do
     # rake app:mail:test
     task test: :environment do
-
       mailer = ActionMailer::Base.new
 
       # check settings:
@@ -17,5 +16,3 @@ namespace :app do
     end
   end
 end
-
-
