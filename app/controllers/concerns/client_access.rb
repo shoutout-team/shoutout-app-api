@@ -52,6 +52,6 @@ module ClientAccess
   end
 
   protected def api_key_from_params
-    params['api-key']
+    params[:api_key]
   end
 end
