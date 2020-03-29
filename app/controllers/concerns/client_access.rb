@@ -7,15 +7,15 @@ module ClientAccess
   def authenticate_client_access!
     return if api_key_from_params.nil?
 
-    return verify_client_token if access_from_localhost?
-    return verify_client_token if access_from_preview_hosting? && restricted_api_access_mode?
-    return verify_client_token if access_from_production_hosting?
-    return verify_client_token if access_from_public_hosting?
+    return require_api_client if access_from_localhost?
+    return require_api_client if access_from_preview_hosting? && restricted_api_access_mode?
+    return require_api_client if access_from_production_hosting?
+    return require_api_client if access_from_public_hosting?
 
     true # Do not halt otherwise
   end
 
-  def verify_client_token
+  def require_api_client
     @api_client = App::Client.available.find_by(api_key: api_key_from_params)
   end
 
