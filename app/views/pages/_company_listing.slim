@@ -33,6 +33,8 @@
             td.action-buttons
               = link_to('Approve', backend_approve_company_path(entity)) if entity.unapproved?
               = link_to('Reject', backend_reject_company_path(entity)) if entity.approved?
+              br
+              = link_to('Edit', backend_edit_company_path(entity.id))
 
           tr
             td colspan='2'

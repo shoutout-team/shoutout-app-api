@@ -1,5 +1,5 @@
 section#backend-content.companies.form
-  - form_url = backend_create_company_path
+  - form_url = @entity.persisted? ? backend_update_company_path : backend_create_company_path
 
   = simple_form_for(@entity, url: form_url, html: { class: 'backend-form' }) do |f|
     - @entity.form = f

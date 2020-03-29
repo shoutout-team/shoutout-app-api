@@ -6,8 +6,7 @@ module Backend
       user description notes cr_number user_id
     ].freeze
 
-
-    before_action :load_company, only: %i[approve reject]
+    before_action :require_company, only: %i[approve reject edit update]
 
     def approve
       @company.update(approved: true)
@@ -21,6 +20,11 @@ module Backend
 
     def add
       @entity = Company.new.decorate
+      render :form
+    end
+
+    def edit
+      render :form
     end
 
     def create
@@ -29,7 +33,15 @@ module Backend
       if @entity.persisted?
         redirect_to root_path
       else
-        render :add
+        render :form
+      end
+    end
+
+    def update
+      if @entity.update(company_params)
+        redirect_to root_path
+      else
+        render :form
       end
     end
 
@@ -38,8 +50,9 @@ module Backend
       params.require(:company).permit(*allowed)
     end
 
-    private def load_company
+    private def require_company
       @company = Company.find(params[:id])
+      @entity = @company.decorate
     end
   end
 end
