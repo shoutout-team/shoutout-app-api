@@ -13,13 +13,16 @@ module CorsAccess
 
   # For all responses in this controller, return the CORS access control headers.
   def cors_set_access_control_headers
-    headers['Access-Control-Allow-Origin'] = allowed_client_origins
+    allowed = allowed_client_origins
+    Loggers::ClientLogger.init.info("Request from: '#{request.host}' | Allow-Origin: #{allowed}")
+
+    headers['Access-Control-Allow-Origin'] = allowed
     headers['Access-Control-Allow-Methods'] = allowed_client_methods
     headers['Access-Control-Allow-Headers'] = allowed_headers
     headers['Access-Control-Max-Age'] = allowed_max_age
   end
 
-  # TODO: FRONTEND_HOST
+  # TODO: Change :allowed_client_origins to FRONTEND_HOST for GoLive #41
   private def allowed_client_origins
     return '*' if App::Hosting.localhost? || @api_client.present?
     return App::Config::FRONTEND_PREVIEW_HOST if App::Hosting.preview_hosting?

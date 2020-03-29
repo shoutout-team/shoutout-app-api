@@ -1,6 +1,6 @@
 module Loggers
   class IssueLogger < ::AppLogger
-    def self.init(name = :issue)
+    def self.init(name = :issues)
       super(name)
     end
   end
