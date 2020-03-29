@@ -15,6 +15,8 @@ module App
     end
 
     def self.hosting_matches?(name)
+      return if Rails.env.development?
+
       raise EnvironmentUndefined if ENV['APP_HOSTING'].blank?
 
       ENV['APP_HOSTING'].to_sym.eql?(name.to_sym)
