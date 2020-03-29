@@ -96,9 +96,6 @@ class Company < ApplicationRecord
     user.name
   end
 
-<<<<<<< HEAD
-  # TODO: This causes an extra-query N+1 #67
-=======
   # TODO: Checkout why the same stuff with :picture_key works ootb in model user #48 #43
   def update_with_picture(attributes)
     attributes[:properties][:picture_key] = attributes.dig(:picture_key)
@@ -109,7 +106,6 @@ class Company < ApplicationRecord
     change_picture
   end
 
->>>>>>> 186d2035eae96a3e44652ff8cf0f23259eb2ad79
   def has_picture?
     # TODO: This fires a query on each call, resulting in N+1 queries on SPA-Fetch #67
     picture.attached?
