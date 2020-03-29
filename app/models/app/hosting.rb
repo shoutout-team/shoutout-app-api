@@ -10,10 +10,20 @@ module App
       hosting_matches?(:preview)
     end
 
+    def self.localhost?
+      Rails.env.development?
+    end
+
     def self.hosting_matches?(name)
       raise EnvironmentUndefined if ENV['APP_HOSTING'].blank?
 
       ENV['APP_HOSTING'].to_sym.eql?(name.to_sym)
+    end
+
+    def self.api_access_mode
+      return :public if localhost?
+
+      ENV['APP_API_ACCESS_MODE'].to_sym
     end
   end
 end
