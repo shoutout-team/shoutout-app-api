@@ -23,7 +23,7 @@ class Upload < ApplicationRecord
   VALID_CONTENT_TYPES = ['image/png', 'image/jpg', 'image/jpeg', 'image/bmp'].freeze
   VARIANTS = { small: '100x100', medium: '400x400', large: '1200x1200' }.freeze
 
-  attr_accessor :force_destroy, :asset
+  attr_accessor :force_destroy
 
   has_one_attached :user_avatar
   has_one_attached :company_picture
@@ -65,6 +65,10 @@ class Upload < ApplicationRecord
     return key if blob_key.present? && update(key: blob_key)
 
     false
+  end
+
+  def asset
+    public_send(attachment_name)
   end
 
   def attachment_name

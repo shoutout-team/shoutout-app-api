@@ -44,6 +44,7 @@ Rails.application.routes.draw do
     patch 'users/update/:id', to: 'users#update', as: :update_user
 
     get 'uploads', to: 'uploads#index', as: :list_uploads
+    get 'uploads/:id', to: 'uploads#show', as: :show_upload
     delete 'uploads/:id', to: 'uploads#remove', as: :remove_upload
     get 'upload/new', to: 'uploads#new', as: :new_upload
     post 'upload', to: 'uploads#upload', as: :upload_asset

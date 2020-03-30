@@ -12,6 +12,7 @@
           th
       tbody
         - @entities.decorate.each do |entity|
+          /= entity.clickable_table_row_tag(backend_show_upload_path(entity)) do
           tr
             td= entity.id
             td= entity.key
@@ -20,7 +21,9 @@
             = entity.sortable_date_table_cell_tag(:created_at_value)
             = entity.sortable_date_table_cell_tag(:updated_at_value)
             td.action-buttons
-              = link_to('Remove', backend_remove_upload_path(entity.id), method: :delete)
+              = link_to('Show', backend_show_upload_path(entity))
+              | |
+              = link_to('Remove', backend_remove_upload_path(entity), method: :delete)
 
 
 = link_to('New upload', backend_new_upload_path)
