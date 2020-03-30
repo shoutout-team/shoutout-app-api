@@ -64,6 +64,7 @@ class Company < ApplicationRecord
 
   scope :ordered, -> { order(:created_at) }
   scope :with_models, -> { includes(:user) }
+  scope :list, -> { with_models.ordered }
 
   validates :name, :category, :postcode, :city, :street, :street_number, :user_id, presence: true
 

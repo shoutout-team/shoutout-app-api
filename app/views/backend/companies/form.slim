@@ -1,9 +1,6 @@
 section#backend-content.companies.form
   - form_url = @entity.persisted? ? backend_update_company_path : backend_create_company_path
 
-  = @entity.inspect
-  hr
-
   = simple_form_for(@entity, url: form_url, html: { class: 'backend-form' }) do |form|
     - @entity.form = form
 
@@ -55,3 +52,7 @@ section#backend-content.companies.form
       .col-12
         span.input-group-btn
           = form.submit
+
+hr
+= @entity.inspect
+hr

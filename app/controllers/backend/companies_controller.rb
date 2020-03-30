@@ -8,14 +8,8 @@ module Backend
 
     before_action :require_company, only: %i[approve reject edit update]
 
-    def approve
-      @company.update(approved: true)
-      redirect_to root_path
-    end
-
-    def reject
-      @company.update(approved: false)
-      redirect_to root_path
+    def index
+      @entities = Company.list
     end
 
     def add
@@ -43,6 +37,16 @@ module Backend
       else
         render :form
       end
+    end
+
+    def approve
+      @company.update(approved: true)
+      redirect_to root_path
+    end
+
+    def reject
+      @company.update(approved: false)
+      redirect_to root_path
     end
 
     private def company_params

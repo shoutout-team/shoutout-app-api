@@ -27,6 +27,7 @@ Rails.application.routes.draw do
   end
 
   namespace :backend do
+    get 'companies', to: 'companies#index', as: :list_companies
     get 'companies/approve/:id', to: 'companies#approve', as: :approve_company
     get 'companies/reject/:id', to: 'companies#reject', as: :reject_company
     get 'companies/add', to: 'companies#add', as: :add_company
