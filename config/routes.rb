@@ -33,6 +33,14 @@ Rails.application.routes.draw do
     get 'companies/edit/:id', to: 'companies#edit', as: :edit_company
     post 'companies/create', to: 'companies#create', as: :create_company
     patch 'companies/update/:id', to: 'companies#update', as: :update_company
+
+    get 'users', to: 'users#index', as: :list_users
+    get 'users/approve/:id', to: 'users#approve', as: :approve_user
+    get 'users/reject/:id', to: 'users#reject', as: :reject_user
+    get 'users/add', to: 'users#add', as: :add_user
+    get 'users/edit/:id', to: 'users#edit', as: :edit_user
+    post 'users/create', to: 'users#create', as: :create_user
+    patch 'users/update/:id', to: 'users#update', as: :update_user
   end
 
   get 'welcome', to: 'pages#index'
