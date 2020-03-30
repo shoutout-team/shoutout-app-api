@@ -1,5 +1,5 @@
-module Views
-  class Frontend
+module App
+  class Backend
     attr_reader :view, :params, :controller, :current_user
 
     def initialize(view_context)
@@ -15,23 +15,27 @@ module Views
       @params[:controller] || @controller_name
     end
 
+    def decorator
+      BackendDecorator.new(nil)
+    end
+
     def section_style
-      "#{qualified_controller_name}-#{@action_name}".parameterize # => e.g. 'frontend-pages-index'
+      "#{qualified_controller_name}-#{@action_name}".parameterize # => e.g. 'backend-pages-index'
     end
 
     # NOTE: The usual way of doing this in a view would be:
     # yield(:title) if content_for?(:title)
-    def title
+    def page_title
       return @view.content_for(:title) if @view.content_for?(:title)
 
       App::Config::TITLE
     end
 
-    def description
-      @view.content_for?(:description) ? @view.content_for(:description) : title
+    def page_description
+      @view.content_for?(:description) ? @view.content_for(:description) : page_title
     end
 
-    def theme
+    def page_theme
       user_theme || 'default'
     end
 
