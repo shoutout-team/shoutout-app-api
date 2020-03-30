@@ -3,7 +3,7 @@ module Backend
     PARAMS = %i[
       name title category
       postcode city street street_number latitude longitude
-      user description notes cr_number user_id
+      user user_id
     ].freeze
 
     before_action :require_company, only: %i[approve reject edit update]
@@ -46,7 +46,7 @@ module Backend
     end
 
     private def company_params
-      allowed = PARAMS + [Company.property_params]
+      allowed = PARAMS + [Company.property_params[:properties]]
       params.require(:company).permit(*allowed)
     end
 

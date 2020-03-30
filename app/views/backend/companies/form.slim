@@ -19,7 +19,7 @@ section#backend-content.companies.form
         .col-12
           = form.input :title
         .col-12
-          = form.input :category, collection: Company::CATEGORIES.keys
+          = form.input :category, collection: @entity.category_collection, include_blank: false
         .col-12
           h3 Address:
         .col-12
@@ -45,23 +45,13 @@ section#backend-content.companies.form
         .col-12
           h3 Payment
         .col-12
-          = form.simple_fields_for :payment, OpenStruct.new(form.object.payment) do |payment_form|
-            .col-12
-              - payment_form.object.to_h.each do |property, value|
-
-                - if value.is_a? Hash
-                  h4= property
-
-                  = payment_form.simple_fields_for property, OpenStruct.new(value) do |property_form|
-                    - property_form.object.to_h.each do |property, value|
-                      = property_form.input property, input_html: { value: value }
-
-                - else
-                  = payment_form.input property, input_html: { value: value }
+          = render partial: 'backend/shared/property_form', locals: { form: form, property_name: :payment }
+        .col-12
+          h3 Links
+        .col-12
+          = render partial: 'backend/shared/property_form', locals: { form: form, property_name: :links }
 
     .row.form-actions
       .col-12
         span.input-group-btn
           = form.submit
-
-

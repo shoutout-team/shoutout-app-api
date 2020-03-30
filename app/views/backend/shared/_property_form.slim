@@ -1,0 +1,14 @@
+= form.simple_fields_for property_name, OpenStruct.new(form.object.public_send(property_name)) do |property_form|
+  .col-12
+    - property_form.object.to_h.each do |property, value|
+
+      - if value.is_a? Hash
+        h4= property
+
+        = property_form.simple_fields_for property, OpenStruct.new(value) do |nested_property_form|
+          .col-12
+            - nested_property_form.object.to_h.each do |property, value|
+              = nested_property_form.input property, input_html: { value: value }
+
+      - else
+        = property_form.input property, input_html: { value: value }
