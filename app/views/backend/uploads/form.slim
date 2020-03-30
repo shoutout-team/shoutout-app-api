@@ -9,10 +9,13 @@ section#backend-content.uploads.form
       .col-12.validation-notice
 
     .row.form-inputs
+      / .col-12
+      /   = form.input :entity, collection: @entity.entity_collection, include_blank: false
+      / .col-12
+      /   = form.input :kind, collection: @entity.kind_collection, include_blank: false
+
       .col-12
-        = form.input :entity, collection: @entity.entity_collection, include_blank: false
-      .col-12
-        = form.input :kind, collection: @entity.kind_collection, include_blank: false
+        = form.input :attachment_name, collection: @entity.attachment_name_collection, include_blank: false
 
     .row.form-inputs.form-group.upload-field
       .col-8.upload-field-wrapper
