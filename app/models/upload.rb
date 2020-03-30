@@ -8,6 +8,7 @@
 #  key        :string
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  filename   :string
 #
 # Indexes
 #
@@ -22,7 +23,7 @@ class Upload < ApplicationRecord
   VALID_CONTENT_TYPES = ['image/png', 'image/jpg', 'image/jpeg', 'image/bmp'].freeze
   VARIANTS = { small: '100x100', medium: '400x400', large: '1200x1200' }.freeze
 
-  attr_accessor :force_destroy
+  attr_accessor :force_destroy, :asset
 
   has_one_attached :user_avatar
   has_one_attached :company_picture
