@@ -1,0 +1,2 @@
+class UploadDecorator < BackendDecorator
+end

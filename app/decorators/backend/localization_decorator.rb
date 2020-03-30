@@ -9,11 +9,11 @@ module Backend
     end
 
     def created_info
-      "Erstellt: #{created_at_value}"
+      "Created: #{created_at_value}"
     end
 
     def updated_info
-      "Aktualisiert: #{updated_at_value}"
+      "Updated: #{updated_at_value}"
     end
   end
 end

@@ -42,6 +42,9 @@ Rails.application.routes.draw do
     get 'users/edit/:id', to: 'users#edit', as: :edit_user
     post 'users/create', to: 'users#create', as: :create_user
     patch 'users/update/:id', to: 'users#update', as: :update_user
+
+    get 'uploads', to: 'uploads#index', as: :list_uploads
+    delete 'uploads/:id', to: 'uploads#remove', as: :remove_upload
   end
 
   get 'welcome', to: 'pages#index'

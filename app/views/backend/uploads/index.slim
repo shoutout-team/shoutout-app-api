@@ -1,0 +1,23 @@
+.row
+  .col-12
+    = backend.decorator.backend_table_tag(styles: 'large-rows') do
+      thead
+        tr
+          th #
+          th Key
+          th Entity
+          th Kind
+          th Created
+          th Updated
+          th
+      tbody
+        - @entities.decorate.each do |entity|
+          tr
+            td= entity.id
+            td= entity.key
+            td= entity.entity
+            td= entity.kind
+            = entity.sortable_date_table_cell_tag(:created_at_value)
+            = entity.sortable_date_table_cell_tag(:updated_at_value)
+            td.action-buttons
+              = link_to('Remove', backend_remove_upload_path(entity.id), method: :delete)

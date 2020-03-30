@@ -76,6 +76,12 @@ class Upload < ApplicationRecord
     throw(:abort) if Rails.env.production?
   end
 
+  def remove!
+    public_send("#{attachment_name}=".to_sym, nil)
+    save(validate: false)
+    delete
+  end
+
   def build_variants
     # TODO: Non-stored attachment must be handled! #31
     # e.g. try it later on? But we are in an after_commit-callback!!!
