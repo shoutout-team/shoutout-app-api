@@ -1,59 +1,67 @@
 section#backend-content.companies.form
   - form_url = @entity.persisted? ? backend_update_company_path : backend_create_company_path
 
-  = simple_form_for(@entity, url: form_url, html: { class: 'backend-form' }) do |f|
-    - @entity.form = f
+  = @entity.inspect
+  hr
+
+  = simple_form_for(@entity, url: form_url, html: { class: 'backend-form' }) do |form|
+    - @entity.form = form
 
     .row.form-errors
-      .col-12= f.error_notification
+      .col-12= form.error_notification
       .col-12.validation-notice
 
       .row.form-inputs
         .col-12
-          = f.association :user
+          = form.association :user
         .col-12
-          = f.input :name
+          = form.input :name
         .col-12
-          = f.input :title
+          = form.input :title
         .col-12
-          = f.input :category, collection: Company::CATEGORIES.keys
+          = form.input :category, collection: Company::CATEGORIES.keys
         .col-12
-          = f.input :postcode
+          h3 Address:
         .col-12
-          = f.input :city
+          = form.input :postcode
         .col-12
-          = f.input :street
+          = form.input :city
         .col-12
-          = f.input :street_number
+          = form.input :street
         .col-12
-          = f.input :latitude
+          = form.input :street_number
         .col-12
-          = f.input :longitude
+          = form.input :latitude
         .col-12
-          = f.input :description
+          = form.input :longitude
         .col-12
-          = f.input :notes
+          h3 Properties
         .col-12
-          = f.input :cr_number
+          = form.input :description
+        .col-12
+          = form.input :notes
+        .col-12
+          = form.input :cr_number
         .col-12
           h3 Payment
-        / .col-12
-        /   = f.input :name
-        / .col-12
-        /   = f.input :name
-        / .col-12
-        /   = f.input :name
-        / .col-12
-        /   = f.input :name
-        / .col-12
-        /   = f.input :name
-        / .col-12
-        /   = f.input :name
+        .col-12
+          = form.simple_fields_for :payment, OpenStruct.new(form.object.payment) do |payment_form|
+            .col-12
+              - payment_form.object.to_h.each do |property, value|
 
+                - if value.is_a? Hash
+                  h4= property
+
+                  = payment_form.simple_fields_for property, OpenStruct.new(value) do |property_form|
+                    - property_form.object.to_h.each do |property, value|
+                      = property_form.input property, input_html: { value: value }
+
+                - else
+                  = payment_form.input property, input_html: { value: value }
 
     .row.form-actions
       .col-12
         span.input-group-btn
-          = f.submit
+          = form.submit
 
 
