@@ -36,7 +36,7 @@ module Backend
       {
         asset: params[:upload].dig(:asset),
         entity: params[:upload].dig(:attachment_name).split('_').first,
-        kind: params[:upload].dig(:attachment_name).split('_').last,
+        kind: params[:upload].dig(:attachment_name).split('_').last
       }
     end
   end
