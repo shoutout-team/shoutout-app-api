@@ -2,6 +2,7 @@ module Api
   class BaseController < ApplicationController
     include ClientAccess
     include CorsAccess
+    include AuthenticationSupport
 
     protect_from_forgery unless: -> { request.format.json? }
 

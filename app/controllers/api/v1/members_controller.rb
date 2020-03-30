@@ -5,6 +5,7 @@ module Api
       include Users::ResourceStates
 
       after_action :set_csrf_headers, only: :login
+      after_action :verify_authorized, only: :update
 
       # TODO: Missing case-handling for :confirmed? and :approved?
       def login
@@ -18,7 +19,7 @@ module Api
 
         if @user.persisted?
           post_process_asset_for(@user, kind: :avatar)
-          render_json
+          render_succeded_login
         else
           render_json_error(@user.errors)
         end
@@ -26,6 +27,7 @@ module Api
 
       def update
         @keeper = User.available.find_by(gid: update_params[:keeper_token])
+        authorize(@keeper)
 
         return render_json_forbidden(:unknown_keeper) if @keeper.nil?
 
@@ -61,7 +63,7 @@ module Api
       end
 
       private def render_succeded_login
-        render_json(user: @user.public_attributes)
+        render_json(user: @user.public_attributes, token: generate_token(@user))
       end
     end
   end
