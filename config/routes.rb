@@ -45,6 +45,9 @@ Rails.application.routes.draw do
 
     get 'uploads', to: 'uploads#index', as: :list_uploads
     delete 'uploads/:id', to: 'uploads#remove', as: :remove_upload
+    get 'upload/new', to: 'uploads#new', as: :new_upload
+    post 'upload', to: 'uploads#upload', as: :upload_asset
+    patch 'update', to: 'uploads#update', as: :update_asset
   end
 
   get 'welcome', to: 'pages#index'

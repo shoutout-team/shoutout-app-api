@@ -8,45 +8,45 @@ section#backend-content.companies.form
       .col-12= form.error_notification
       .col-12.validation-notice
 
-      .row.form-inputs
-        .col-12
-          = form.association :user
-        .col-12
-          = form.input :name
-        .col-12
-          = form.input :title
-        .col-12
-          = form.input :category, collection: @entity.category_collection, include_blank: false
-        .col-12
-          h3 Address:
-        .col-12
-          = form.input :postcode
-        .col-12
-          = form.input :city
-        .col-12
-          = form.input :street
-        .col-12
-          = form.input :street_number
-        .col-12
-          = form.input :latitude
-        .col-12
-          = form.input :longitude
-        .col-12
-          h3 Properties
-        .col-12
-          = form.input :description
-        .col-12
-          = form.input :notes
-        .col-12
-          = form.input :cr_number
-        .col-12
-          h3 Payment
-        .col-12
-          = render partial: 'backend/shared/property_form', locals: { form: form, property_name: :payment }
-        .col-12
-          h3 Links
-        .col-12
-          = render partial: 'backend/shared/property_form', locals: { form: form, property_name: :links }
+    .row.form-inputs
+      .col-12
+        = form.association :user
+      .col-12
+        = form.input :name
+      .col-12
+        = form.input :title
+      .col-12
+        = form.input :category, collection: @entity.category_collection, include_blank: false
+      .col-12
+        h3 Address:
+      .col-12
+        = form.input :postcode
+      .col-12
+        = form.input :city
+      .col-12
+        = form.input :street
+      .col-12
+        = form.input :street_number
+      .col-12
+        = form.input :latitude
+      .col-12
+        = form.input :longitude
+      .col-12
+        h3 Properties
+      .col-12
+        = form.input :description
+      .col-12
+        = form.input :notes
+      .col-12
+        = form.input :cr_number
+      .col-12
+        h3 Payment
+      .col-12
+        = render partial: 'backend/shared/property_form', locals: { form: form, property_name: :payment }
+      .col-12
+        h3 Links
+      .col-12
+        = render partial: 'backend/shared/property_form', locals: { form: form, property_name: :links }
 
     .row.form-actions
       .col-12

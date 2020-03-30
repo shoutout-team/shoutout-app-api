@@ -1,0 +1,26 @@
+section#backend-content.uploads.form
+  - form_url = @entity.persisted? ? backend_update_upload_asset_path : backend_upload_asset_path
+
+  = simple_form_for(@entity, url: form_url, html: { class: 'backend-form' }) do |form|
+    - @entity.form = form
+
+    .row.form-errors
+      .col-12= form.error_notification
+      .col-12.validation-notice
+
+    .row.form-inputs
+      .col-12
+        = form.input :entity, collection: @entity.entity_collection, include_blank: false
+      .col-12
+        = form.input :kind, collection: @entity.kind_collection, include_blank: false
+
+    .row.form-inputs.form-group.upload-field
+      .col-8.upload-field-wrapper
+        = form.file_field :asset, class: 'file-upload-field form-control-file', data: { name: :asset }
+        / = form.file_field :image, class: 'file-upload-field form-control-file', data: { name: :image }
+        / = form.file_field :video, class: 'file-upload-field form-control-file', data: { name: :video }
+
+    .row.form-actions
+      .col-12
+        span.input-group-btn
+          = form.submit
