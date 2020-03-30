@@ -1,5 +1,8 @@
 module Backend
   module HeadingDecorator
+    # rubocop:disable Metrics/ParameterLists
+    # rubocop:disable Layout/LineLength
+
     def entity_list_heading(class_name, count = 0)
       human_name = class_name.model_name.human(count: count)
       count.present? ? "#{count} #{human_name}" : human_name
@@ -18,8 +21,7 @@ module Backend
       h.render partial: 'layouts/backend/components/heading', locals: options
     end
 
-    # TODO: Adpot features and actions from controller #17
-    # rubocop:disable Metrics/ParameterLists
+    # TODO: Adpot features and actions from controller
     def render_list_heading(relation, class_name: nil, size: nil, count: true, features: [], actions: {})
       return if relation.nil?
 
@@ -29,7 +31,6 @@ module Backend
       human_name = model_name.human(count: count ? size : 2) # '2' := Plural by default for list-headings
       render_entity_heading(heading: human_name, count: (count ? size : nil), model_name: model_name, features: features, actions: actions)
     end
-    # rubocop:enable Metrics/ParameterLists
 
     def render_plain_heading(class_name, text: nil, count: nil)
       render_entity_heading(heading: text, count: count, model_name: class_name.model_name)
@@ -53,7 +54,6 @@ module Backend
       render_entity_heading(heading: form_title(title_method))
     end
 
-    # rubocop:disable Metrics/ParameterLists
     def render_entity_heading(heading: nil, heading_element: 'h1', heading_style: 'heading', count: nil, model_name: nil, features: [], actions: {})
       heading_title = count.present? ? "#{count} #{heading}" : heading
       first_column_class = features.include?(:search) ? 'col-6' : 'col-10'
@@ -70,6 +70,8 @@ module Backend
 
       h.render partial: 'layouts/backend/components/heading', locals: options
     end
+
     # rubocop:enable Metrics/ParameterLists
+    # rubocop:enable Layout/LineLength
   end
 end

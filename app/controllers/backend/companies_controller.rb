@@ -1,5 +1,5 @@
 module Backend
-  class CompaniesController <  BackendController
+  class CompaniesController < BackendController
     PARAMS = %i[
       name title category
       postcode city street street_number latitude longitude
