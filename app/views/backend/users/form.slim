@@ -1,0 +1,29 @@
+section#backend-content.companies.form
+  - form_url = @entity.persisted? ? backend_update_user_path : backend_create_user_path
+
+  = simple_form_for(@entity, url: form_url, html: { class: 'backend-form' }) do |form|
+    - @entity.form = form
+
+    .row.form-errors
+      .col-12= form.error_notification
+      .col-12.validation-notice
+
+      .row.form-inputs
+        .col-12
+          = form.input :name
+        .col-12
+          = form.input :email
+
+        - if current_user.developer?
+          .col-12
+            = form.input :role, collection: @entity.role_collection, include_blank: false
+          .col-12
+            = form.input :developer_key
+
+        / .col-12
+        /   = form.association :company
+
+    .row.form-actions
+      .col-12
+        span.input-group-btn
+          = form.submit

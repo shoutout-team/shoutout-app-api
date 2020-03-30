@@ -3,7 +3,7 @@ module Backend
     before_action :require_user, only: %i[approve reject edit update]
 
     def index
-      @entities = User.keepers.with_models
+      @entities = User.keeper_list
     end
 
     def add
