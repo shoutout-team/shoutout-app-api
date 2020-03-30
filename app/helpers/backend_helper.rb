@@ -4,35 +4,33 @@ module BackendHelper
 
   # rubocop:disable Rails/HelperInstanceVariable
   def backend
-    @backend ||= Backend::ViewHandler.new(self)
+    @backend ||= App::Backend.new(self)
   end
   # rubocop:enable Rails/HelperInstanceVariable
 
-  # TODO: Replace this helper-soup with Backend::ViewHandler
+  # TODO: Replace this helper-soup using App::Backend
+  def hosting_selector
+    result = []
+    env_urls = {
+      preview: App::Config::PREVIEW_BACKEND,
+      staging: App::Config::STAGING_BACKEND,
+      production: App::Config::PRODUCTION_BACKEND
+    }
 
-  # def hosting_selector
-  #   result = []
-  #   env_urls = {
-  #     preview: App::Config::PREVIEW_BACKEND,
-  #     staging: App::Config::STAGING_BACKEND,
-  #     production: App::Config::PRODUCTION_BACKEND,
-  #     legacy: App::Config::LEGACY_BACKEND
-  #   }
+    env_urls.delete(Rails.env.to_sym)
 
-  #   env_urls.delete(Rails.env.to_sym)
+    env_urls.each do |env, url|
+      result << link_to(env.to_s.titleize, url, class: 'dropdown-item', target: '_blank', rel: 'noopener')
+    end
+    safe_join(result)
+  end
 
-  #   env_urls.each do |env, url|
-  #     result << link_to(env.to_s.titleize, url, class: 'dropdown-item', target: '_blank', rel: 'noopener')
-  #   end
-  #   safe_join(result)
-  # end
-
-  # TODO: Unify with ComponentHelper #16
+  # TODO: Unify with ComponentHelper
   def render_list_heading(relation, class_name: nil, count: true)
     backend.decorator.render_list_heading(relation, class_name: class_name, count: count)
   end
 
-  # TODO: Unify with ComponentHelper #16
+  # TODO: Unify with ComponentHelper
   def entity_list_heading(class_name, count = 0)
     backend.decorator.entity_list_heading(class_name, count)
   end
