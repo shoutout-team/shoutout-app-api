@@ -1,6 +1,6 @@
 .row.heading
   .col-12
-    h1= "#{User.count} Users"
+    h1= "#{User.keepers.count} Keepers"
     = link_to('Add user', backend_add_user_path, class: 'btn btn-secondary')
 
 section#backend-content.users.index
