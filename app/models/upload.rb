@@ -9,6 +9,7 @@
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #  filename   :string
+#  reference  :string           not null
 #
 # Indexes
 #
@@ -41,6 +42,8 @@ class Upload < ApplicationRecord
             attached: true, content_type: VALID_CONTENT_TYPES, size: SIZE_VALIDATION,
             if: -> { attachment_name.eql?(:company_picture) }
 
+  # TODO: Remove :generate_reference when securing upload-endpoint #81
+  after_initialize :generate_reference
   before_destroy :destroyable?
   after_commit :build_variants
 
@@ -101,6 +104,10 @@ class Upload < ApplicationRecord
 
   def stored?
     public_send(attachment_name)&.attached?
+  end
+
+  def generate_reference
+    self.reference = SecureRandom.hex(16) if reference.blank?
   end
 
   private def log_not_found_error(exception, attachment_name)
