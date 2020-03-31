@@ -1,11 +1,6 @@
-section#backend-content {
-  margin-top: 80px;
-}
+/*
+ *= require_self
+ *= require backend/root
+ */
 
-tr.hidden {
-  display: none;
-}
-
-// .table-double-striped tbody tr:nth-of-type(4n) {
-//   background-color: rgba(0, 0, 0, 0.05);
-// }
+@import 'components'

@@ -18,22 +18,22 @@ html lang='de'
 
     title = backend.page_title
 
-    = stylesheet_link_tag 'frontend', media: 'all', 'data-turbolinks-track': 'reload'
-    = javascript_include_tag 'frontend', 'data-turbolinks-track': 'reload'
+    = stylesheet_link_tag 'backend', media: 'all', 'data-turbolinks-track': 'reload'
+    = javascript_include_tag 'backend', 'data-turbolinks-track': 'reload'
     = javascript_pack_tag 'application', 'data-turbolinks-track': 'reload'
 
 
   body*body_attributes
     section#page class="#{backend.page_theme}"
       header#header
-        = render 'layouts/frontend/header'
+        = render 'layouts/backend/header'
       main#content role='main'
-        = render 'layouts/frontend/messages'
+        = render 'layouts/backend/messages'
 
         section#view.container-fluid class="#{backend.section_style}"
           = yield
 
-        = render 'layouts/frontend/dev_tools' if Rails.env.development?
+        = render 'layouts/backend/dev_tools' if Rails.env.development?
 
       / footer#footer.bg-dark.text-white-50
       /   = render 'layouts/frontend/footer'

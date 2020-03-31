@@ -1,5 +1,5 @@
 class ApplicationController < ActionController::Base
   include JsonRendering
 
-  layout 'frontend'
+  layout 'backend'
 end
