@@ -11,7 +11,7 @@ module SaveTheKiez
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 6.0
 
-    config.i18n.default_locale = :en
+    config.i18n.default_locale = :de
     config.i18n.available_locales = %i[de en]
     config.time_zone = 'Berlin'
 
