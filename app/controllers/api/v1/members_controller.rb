@@ -31,7 +31,7 @@ module Api
           post_process_asset_for(@user, kind: :avatar)
           render_succeded_login
         else
-          render_json_error(@user.errors)
+          render_json_unprocessable(@user.errors)
         end
       end
 
