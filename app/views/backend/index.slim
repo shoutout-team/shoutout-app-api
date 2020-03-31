@@ -1,12 +1,16 @@
-h1= "Hi #{current_user.name}"
+.row.heading
+  .col-12
+    h1= "Hi #{current_user.name}"
+    hr
+  .col-12
+    = link_to('Add user', backend_add_user_path, class: 'btn btn-secondary')
+    | &nbsp;
+    = link_to('Add company', backend_add_company_path, class: 'btn btn-secondary')
+    | &nbsp;
+    = link_to('Add upload', backend_new_upload_path, class: 'btn btn-secondary')
 
 hr
 
 section#backend-content.companies.dashboard
-  b= link_to('Add company', backend_add_company_path)
-  hr
-
   h2 Unapproved companies
   = render partial: 'backend/companies/list', locals: { entities: @unapproved_companies }
-
-/= backend.decorator.render_pagination(@paginated)

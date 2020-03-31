@@ -33,10 +33,11 @@
             = entity.sortable_date_table_cell_tag(:created_at_value)
             = entity.sortable_date_table_cell_tag(:updated_at_value)
             td.action-buttons
-              = link_to('Approve', backend_approve_company_path(entity)) if entity.unapproved?
-              = link_to('Reject', backend_reject_company_path(entity)) if entity.approved?
+              = link_to('Approve', backend_approve_company_path(entity), class: 'btn btn-secondary') if entity.unapproved?
+              = link_to('Reject', backend_reject_company_path(entity), class: 'btn btn-secondary') if entity.approved?
               br
-              = link_to('Edit', backend_edit_company_path(entity.id))
+              br
+              = link_to('Edit', backend_edit_company_path(entity.id), class: 'btn btn-secondary')
 
           tr
             td colspan='2'
