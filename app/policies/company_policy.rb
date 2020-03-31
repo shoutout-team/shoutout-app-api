@@ -1,5 +1,5 @@
-class UserPolicy < ApplicationPolicy
-  class Scope < Scope
+class CompanyPolicy < ApplicationPolicy
+  class Scope
     def resolve
       scope.all
     end
