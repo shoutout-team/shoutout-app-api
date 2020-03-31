@@ -1,6 +1,8 @@
 /*
  *= require_self
- *= require backend/root
  */
 
-@import 'components'
+@import 'components';
+@import 'backend/layout';
+@import 'backend/views';
+@import 'backend/temp';
