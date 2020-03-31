@@ -9,6 +9,7 @@ module Api
         @asset.present? ? render_json(path: rails_blob_url(@asset)) : head(:not_found)
       end
 
+      # TODO: Must be protected! (only authorized user should be able to upload assets) #81
       def upload
         @service = Assets::UploadService.call(params)
 

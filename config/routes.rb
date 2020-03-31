@@ -14,6 +14,7 @@ Rails.application.routes.draw do
       get 'locations', to: 'entities#locations'
       post 'locations/search', to: 'locations#search'
       post 'locations/cities', to: 'locations#cities'
+      get 'members/token', to: 'members#acquire_token'
       post 'members/login', to: 'members#login'
       post 'members/signup', to: 'members#signup'
       post 'members/(:keeper_token)/edit', to: 'members#update'

@@ -7,6 +7,16 @@ module Api
       after_action :set_csrf_headers, only: :login
       after_action :verify_authorized, only: :update
 
+      # Required for future securing upload-endpoint #81
+      # New workflow for signup (post-golive):
+      # - acquire_token before signup
+      # - will be delivered as :keeper_token from SPA in :signup_params
+      # - use :keeper_token for uploads before signup is proceeded (and verify it)
+      # - allow pre-signup-uploads only for given :keeper_token (prevents not Reply-Attacks against upload-endpoint)
+      def acquire_token
+        render_json(token: SecureRandom.hex(16))
+      end
+
       # TODO: Missing case-handling for :confirmed? and :approved?
       def login
         @user = User.find_for_database_authentication(email: params[:user][:email])
@@ -46,7 +56,7 @@ module Api
       end
 
       private def signup_params
-        params.require(:user).permit(:name, :email, :password, :avatar_key)
+        params.require(:user).permit(:name, :email, :password, :keeper_token, :avatar_key)
       end
 
       private def update_params
