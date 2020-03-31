@@ -31,7 +31,7 @@ module AuthenticationSupport
   private
 
   def signing_key
-    @signing_key = Ed25519::SigningKey.new(Rails.application.secrets.secret_key_base[0, 32])
+    @signing_key = Ed25519::SigningKey.new(Rails.application.credentials.secret_key_base[0, 32])
   end
 
   def verify_key
