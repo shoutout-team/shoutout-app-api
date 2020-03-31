@@ -8,7 +8,7 @@ module Backend
       user user_id
     ].freeze
 
-    before_action :require_company, only: %i[approve reject edit update]
+    before_action :require_company, only: %i[approve reject edit update destroy]
 
     def index
       @entities = Company.list
@@ -41,6 +41,11 @@ module Backend
       else
         render :form
       end
+    end
+
+    def destroy
+      @entity.destroy
+      redirect_to backend_list_companies_path
     end
 
     def approve

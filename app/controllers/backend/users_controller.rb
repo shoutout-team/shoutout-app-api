@@ -2,7 +2,7 @@ module Backend
   class UsersController < BackendController
     include UploadPostProcessing
 
-    before_action :require_user, only: %i[approve reject edit update]
+    before_action :require_user, only: %i[approve reject edit update destroy]
 
     def index
       @entities = User.keeper_list
@@ -35,6 +35,11 @@ module Backend
       else
         render :form
       end
+    end
+
+    def destroy
+      @entity.destroy
+      redirect_to backend_list_users_path
     end
 
     def approve

@@ -36,6 +36,7 @@ Rails.application.routes.draw do
     get 'companies/edit/:id', to: 'companies#edit', as: :edit_company
     post 'companies/create', to: 'companies#create', as: :create_company
     patch 'companies/update/:id', to: 'companies#update', as: :update_company
+    delete 'companies/:id', to: 'companies#destroy', as: :delete_company
 
     get 'users', to: 'users#index', as: :list_users
     get 'users/approve/:id', to: 'users#approve', as: :approve_user
@@ -44,6 +45,7 @@ Rails.application.routes.draw do
     get 'users/edit/:id', to: 'users#edit', as: :edit_user
     post 'users/create', to: 'users#create', as: :create_user
     patch 'users/update/:id', to: 'users#update', as: :update_user
+    delete 'users/:id', to: 'users#destroy', as: :delete_user
 
     get 'uploads', to: 'uploads#index', as: :list_uploads
     get 'uploads/:id', to: 'uploads#show', as: :show_upload
