@@ -37,6 +37,7 @@
 class Company < ApplicationRecord
   include ActiveScope
   include JsonBinaryAttributes
+  include Approval
 
   API_ATTRIBUTES = %i[
     name title category slug properties gid
@@ -47,7 +48,7 @@ class Company < ApplicationRecord
 
   NESTED_PROPERTIES = %i[payment links].freeze
 
-  PAYMENT_OPTIONS = [:paypal, :gofoundme, bank: %i[owner iban]].freeze
+  PAYMENT_OPTIONS = [:paypal, :gofoundme, :ticket_io, bank: %i[owner iban]].freeze
   LINKS_OPTIONS = %i[website promotion facebook twitter instagram].freeze
 
   CATEGORIES = Static::CATEGORIES_ENUM
@@ -61,8 +62,9 @@ class Company < ApplicationRecord
   belongs_to :user
   has_one_attached :picture
 
-  scope :approved, -> { where(approved: true) }
+  scope :ordered, -> { order(:created_at) }
   scope :with_models, -> { includes(:user) }
+  scope :list, -> { with_models.ordered }
 
   validates :name, :category, :postcode, :city, :street, :street_number, :user_id, presence: true
 

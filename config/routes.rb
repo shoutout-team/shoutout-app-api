@@ -24,10 +24,36 @@ Rails.application.routes.draw do
       post 'companies/(:keeper_token)/edit', to: 'companies#update'
       get 'assets/:key', to: 'assets#show'
       post 'assets/:entity/:kind', to: 'assets#upload'
+      get 'state/ping', to: 'state#ping'
     end
   end
 
-  get 'welcome', to: 'pages#index'
+  namespace :backend do
+    get 'dashboard', action: :index, as: :dashboard
 
-  root to: 'pages#index'
+    get 'companies', to: 'companies#index', as: :list_companies
+    get 'companies/approve/:id', to: 'companies#approve', as: :approve_company
+    get 'companies/reject/:id', to: 'companies#reject', as: :reject_company
+    get 'companies/add', to: 'companies#add', as: :add_company
+    get 'companies/edit/:id', to: 'companies#edit', as: :edit_company
+    post 'companies/create', to: 'companies#create', as: :create_company
+    patch 'companies/update/:id', to: 'companies#update', as: :update_company
+
+    get 'users', to: 'users#index', as: :list_users
+    get 'users/approve/:id', to: 'users#approve', as: :approve_user
+    get 'users/reject/:id', to: 'users#reject', as: :reject_user
+    get 'users/add', to: 'users#add', as: :add_user
+    get 'users/edit/:id', to: 'users#edit', as: :edit_user
+    post 'users/create', to: 'users#create', as: :create_user
+    patch 'users/update/:id', to: 'users#update', as: :update_user
+
+    get 'uploads', to: 'uploads#index', as: :list_uploads
+    get 'uploads/:id', to: 'uploads#show', as: :show_upload
+    delete 'uploads/:id', to: 'uploads#remove', as: :remove_upload
+    get 'upload/new', to: 'uploads#new', as: :new_upload
+    post 'upload', to: 'uploads#upload', as: :upload_asset
+    patch 'update', to: 'uploads#update', as: :update_asset
+  end
+
+  root to: 'backend#index'
 end

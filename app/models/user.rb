@@ -46,6 +46,9 @@
 class User < ApplicationRecord
   include ActiveScope
   include JsonBinaryAttributes
+  include Approval
+
+  ROLES = { guest: 0, user: 1, administrator: 2, developer: 3, root: 4 }.freeze
 
   API_ATTRIBUTES = %i[name gid].freeze
   API_METHODS = %i[company_name avatar_url avatar_key].freeze
@@ -54,12 +57,12 @@ class User < ApplicationRecord
 
   attr_accessor :change_avatar, :keeper_token
 
+  enum role: ROLES
+
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
-
-  enum role: { guest: 0, user: 1, administrator: 2, developer: 3, root: 4 }
 
   has_one :company, dependent: :destroy
   has_one_attached :avatar
@@ -67,11 +70,13 @@ class User < ApplicationRecord
   scope :administrative, -> { where(role: %i[administrator developer]) }
   scope :users, -> { where(role: %i[guest user]) }
   scope :keepers, -> { where(role: %i[user]) }
-  scope :approved, -> { where(approved: true) }
+  scope :ordered, -> { order(:created_at) }
   scope :with_models, -> { includes(:company) }
+  scope :keeper_list, -> { keepers.with_models.ordered }
 
   after_initialize :define_properties, if: :new_record?
   after_initialize :define_user_role
+  before_save :check_developer_key
   before_create :generate_gid
 
   def self.available
@@ -80,6 +85,10 @@ class User < ApplicationRecord
 
   def self.fetchable
     active.with_models
+  end
+
+  def check_developer_key
+    self.developer_key = nil unless developer?
   end
 
   # rubocop:disable Rails/Delegate
@@ -125,6 +134,11 @@ class User < ApplicationRecord
     super({ only: API_ATTRIBUTES, methods: API_METHODS }.merge(options || {}))
   end
 
+  def generate_password(length = 10)
+    chars = ('0'..'9').to_a + ('A'..'Z').to_a + ('a'..'z').to_a + '!@#$%^&*'.split('')
+    chars.sort_by { rand }.join[0...length]
+  end
+
   def define_properties
     return if properties.any?
 
@@ -135,6 +149,7 @@ class User < ApplicationRecord
 
   def define_user_role
     self.role = :user if role.blank?
+    sefl.developer_key = SecureRandom.hex(16) if developer_key.blank? && developer?
   end
 
   def generate_gid

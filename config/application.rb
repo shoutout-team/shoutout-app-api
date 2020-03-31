@@ -4,7 +4,7 @@ require 'rails/all'
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
-Bundler.require(*Rails.groups, :core, :frontend, :backend, :utils, :debug)
+Bundler.require(*Rails.groups, :core, :ui, :backend, :utils, :debug)
 
 module SaveTheKiez
   class Application < Rails::Application

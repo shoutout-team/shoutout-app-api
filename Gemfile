@@ -23,7 +23,7 @@ group :core do
   gem 'rails', '~> 6.0.2', '>= 6.0.2.1'
 end
 
-group :frontend do
+group :ui do
   gem 'bootstrap'
   gem 'browser'
   gem 'country_select'
@@ -39,6 +39,8 @@ group :frontend do
 end
 
 group :backend do
+  #gem 'active_decorator'
+  gem 'draper'
 end
 
 group :utils do

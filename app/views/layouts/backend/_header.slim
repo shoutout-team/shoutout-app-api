@@ -1,11 +1,10 @@
 nav#nav.navbar.navbar-expand-xl.fixed-top.navbar-dark.bg-dark
 
-  a.navbar-brand href="#"
-    = frontend.title
+  a.navbar-brand href="http://shoutout.jetzt" target="_blank" Shoutout!
 
   - if user_signed_in?
     button class='navbar-toggler' type='button' data-toggle='collapse' data-target='#mobile-nav-button'
       span.navbar-toggler-icon
 
     div.navbar-collapse.collapse id='mobile-nav-button'
-      = render 'layouts/frontend/navigation'
+      = render 'layouts/backend/navigation'

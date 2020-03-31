@@ -1,7 +1,5 @@
 class ApplicationController < ActionController::Base
   include JsonRendering
 
-  layout 'frontend'
-
-  #before_action :authenticate_user!
+  layout 'backend'
 end

@@ -1,0 +1,34 @@
+.row.heading
+  .col-12
+    h1= "#{User.count} Users"
+    = link_to('Add user', backend_add_user_path, class: 'btn btn-secondary')
+
+section#backend-content.users.index
+  .row
+    .col-12
+      = backend.decorator.backend_table_tag(styles: 'large-rows') do
+        thead
+          tr
+            th #
+            th E-Mail
+            th Name
+            th Company
+            th Approved
+            th Created
+            th Updated
+            th
+        tbody
+          - @entities.decorate.each do |entity|
+            tr
+              td= entity.id
+              td= entity.email
+              td= entity.name
+              td= entity.company_name
+              td= entity.approved
+              = entity.sortable_date_table_cell_tag(:created_at_value)
+              = entity.sortable_date_table_cell_tag(:updated_at_value)
+              td.action-buttons
+                / = link_to('Approve', backend_approve_user_path(entity), class: 'btn btn-secondary') if entity.unapproved?
+                / = link_to('Reject', backend_reject_user_path(entity), class: 'btn btn-secondary') if entity.approved?
+                / br
+                = link_to('Edit', backend_edit_user_path(entity.id), class: 'btn btn-secondary')

@@ -1,0 +1,44 @@
+section#backend-content.users.form
+  - form_url = @entity.persisted? ? backend_update_user_path : backend_create_user_path
+
+  = simple_form_for(@entity, url: form_url, html: { class: 'backend-form' }) do |form|
+    - @entity.form = form
+
+    .row.form-errors
+      .col-12= form.error_notification
+      .col-12.validation-notice
+
+    .row.form-inputs
+      .col-12
+        = form.input :name
+      .col-12
+        = form.input :email
+      .col-12
+        h3 Avatar (Upload-Key)
+      .col-12
+        = form.input :avatar_key
+
+      - if current_user.developer?
+        .col-12
+          = form.input :role, collection: @entity.role_collection, include_blank: false, selected: :user
+        .col-12
+          = form.input :developer_key
+
+      - if @entity.new_record?
+        - new_password = @entity.generate_password + '$'
+
+        .col-12
+          = form.input :password, as: :string, input_html: { value: new_password }
+        .col-12
+          = form.input :password_confirmation, as: :string, input_html: { value: new_password }
+
+      / .col-12
+      /   = form.association :company
+
+    .row.form-actions
+      .col-12
+        span.input-group-btn
+          = form.submit
+
+
+= render partial: 'backend/shared/debug', locals: { entity: @entity }

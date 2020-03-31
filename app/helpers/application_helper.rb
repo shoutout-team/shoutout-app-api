@@ -30,20 +30,4 @@ module ApplicationHelper
     classes.push(Rails.env)
     classes.compact.join(' ')
   end
-
-  def hosting_selector
-    result = []
-    env_urls = {
-      preview: App::Config::PREVIEW_BACKEND,
-      staging: App::Config::STAGING_BACKEND,
-      production: App::Config::PRODUCTION_BACKEND
-    }
-
-    env_urls.delete(Rails.env.to_sym)
-
-    env_urls.each do |env, url|
-      result << link_to(env.to_s.titleize, url, class: 'dropdown-item', target: '_blank', rel: 'noopener')
-    end
-    safe_join(result)
-  end
 end

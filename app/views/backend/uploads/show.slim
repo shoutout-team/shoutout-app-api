@@ -1,0 +1,13 @@
+br
+br
+br
+br
+
+p= @entity.entity
+p= @entity.kind
+p= @entity.key
+p= image_tag rails_blob_url(@entity.asset)
+
+hr
+p= @entity.asset.inspect
+hr

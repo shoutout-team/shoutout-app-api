@@ -52,9 +52,10 @@ class Upload < ApplicationRecord
 
     raise Upload::AssetNotFound if instance.nil?
 
+    entity_class = entity.class.name.gsub('Decorator', '')
     asset_blob = ActiveStorage::Blob.find_by(key: key)
     attachment = ActiveStorage::Attachment.find_by(blob_id: asset_blob.id)
-    attachment.update_columns(name: kind, record_type: entity.class.name, record_id: entity.id)
+    attachment.update_columns(name: kind, record_type: entity_class, record_id: entity.id)
     instance
   end
 
@@ -70,6 +71,10 @@ class Upload < ApplicationRecord
     false
   end
 
+  def asset
+    public_send(attachment_name)
+  end
+
   def attachment_name
     [entity, kind].join('_').to_sym
   end
@@ -78,6 +83,12 @@ class Upload < ApplicationRecord
     return if @force_destroy
 
     throw(:abort) if Rails.env.production?
+  end
+
+  def remove!
+    public_send("#{attachment_name}=".to_sym, nil)
+    save(validate: false)
+    delete
   end
 
   def build_variants

@@ -1,0 +1,21 @@
+body#backend {
+  nav#nav.navbar {
+    ul.navbar-nav.hosting {
+      margin-left: 50px;
+    }
+
+    ul.navbar-nav.hosting {
+      li.nav-item.dropdown.development a.nav-link {
+        color: #28a745;
+      }
+
+      li.nav-item.dropdown.preview a.nav-link {
+        color: #007bff;
+      }
+
+      li.nav-item.dropdown.staging a.nav-link {
+        color: #ffc107;
+      }
+    }
+  }
+}

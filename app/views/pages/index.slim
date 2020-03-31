@@ -1,7 +1,10 @@
-h1 Welcome
+/ h1 Welcome
 
-h2 Sign up
+/ - if user_signed_in?
+/   = render partial: 'approval'
 
-b= link_to('Anmelden', new_user_session_path)
-br
-b= link_to('Registrieren', new_user_registration_path)
+/ - else
+/   h2 Sign up
+/   b= link_to('Anmelden', new_user_session_path)
+/   / br
+/   / b= link_to('Registrieren', new_user_registration_path)

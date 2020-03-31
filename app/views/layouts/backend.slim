@@ -9,31 +9,31 @@ html lang='de'
 
     meta name='viewport' content='width=device-width, initial-scale=1.0, minimum-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no'
 
-    meta name='description' content="#{frontend.description}"
+    meta name='description' content="#{backend.page_description}"
 
     = csrf_meta_tags
     = csp_meta_tag
 
     link rel='shortcut icon' type='image/x-icon' href='/favicon.ico'
 
-    title = frontend.title
+    title = backend.page_title
 
-    = stylesheet_link_tag 'frontend', media: 'all', 'data-turbolinks-track': 'reload'
-    = javascript_include_tag 'frontend', 'data-turbolinks-track': 'reload'
+    = stylesheet_link_tag 'backend', media: 'all', 'data-turbolinks-track': 'reload'
+    = javascript_include_tag 'backend', 'data-turbolinks-track': 'reload'
     = javascript_pack_tag 'application', 'data-turbolinks-track': 'reload'
 
 
   body*body_attributes
-    section#page class="#{frontend.theme}"
+    section#page class="#{backend.page_theme}"
       header#header
-        = render 'layouts/frontend/header'
+        = render 'layouts/backend/header'
       main#content role='main'
-        = render 'layouts/frontend/messages'
+        = render 'layouts/backend/messages'
 
-        section#view.container-fluid class="#{frontend.section_style}"
+        section#view.container-fluid class="#{backend.section_style}"
           = yield
 
-        = render 'layouts/frontend/dev_tools' if Rails.env.development?
+        = render 'layouts/backend/dev_tools' if Rails.env.development?
 
-      footer#footer.bg-dark.text-white-50
-        = render 'layouts/frontend/footer'
+      / footer#footer.bg-dark.text-white-50
+      /   = render 'layouts/frontend/footer'

@@ -26,6 +26,7 @@ module App
   class Client < ApplicationRecord
     include ActiveScope
     include JsonBinaryAttributes
+    include Approval
 
     enum kind: { app: 0, developer: 1 }
 
@@ -42,22 +43,6 @@ module App
 
     def generate_api_key
       self.api_key = SecureRandom.hex(16) if api_key.blank?
-    end
-
-    def enable!
-      update(active: true)
-    end
-
-    def approve!
-      update(approved: true)
-    end
-
-    def disable!
-      update(active: false)
-    end
-
-    def reject!
-      update(approved: false)
     end
 
     def define_properties
