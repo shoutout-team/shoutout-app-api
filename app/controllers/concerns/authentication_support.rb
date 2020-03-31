@@ -1,6 +1,8 @@
 module AuthenticationSupport
   extend Pundit
 
+  class SignatureNotProvided < StandardError; end
+
   # A bit of cheating: just return the GID from the signed token to avoid expensive DB access
   def pundit_user
     token = require_token
@@ -17,14 +19,18 @@ module AuthenticationSupport
   def user_gid_from_token(signed_token)
     user_gid, encoded_signature = signed_token&.split('|')
     # Fix escaping done by :token_and_options
-    encoded_signature.gsub!("\\n", "\n") if encoded_signature.ends_with?("\\n")
+    encoded_signature.gsub!("\\n", "\n") if encoded_signature&.ends_with?("\\n")
 
-    raise ArgumentError if encoded_signature.blank?
+    raise SignatureNotProvided if encoded_signature.blank?
 
     signature = Base64.decode64(encoded_signature)
     verify_key.verify(signature, user_gid)
     user_gid
   rescue Ed25519::VerifyError
+    # TODO: Missing error-handling #75
+    nil
+  rescue SignatureNotProvided
+    # TODO: Missing error-handling #75
     nil
   end
 
