@@ -40,7 +40,7 @@
               = link_to('Edit', backend_edit_company_path(entity.id), class: 'btn btn-secondary')
               br
               br
-              = link_to('Delete', backend_delete_company_path(entity.id), class: 'btn btn-secondary', confirm: 'Are you sure?', method: :delete)
+              = link_to('Delete', backend_delete_company_path(entity.id), class: 'btn btn-secondary', method: :delete, data: { confirm: 'Are you sure?' })
 
           tr
             td colspan='2'
