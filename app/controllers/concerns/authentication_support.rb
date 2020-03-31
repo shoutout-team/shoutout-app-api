@@ -10,16 +10,22 @@ module AuthenticationSupport
   end
 
   # Generates a per-user uniq token based on :gid and our private :secret_key_base
+  # NOTE: SPA has problems with processing "\n" in requests. #84
+  # For now we use pipes and convert the token for all inbound and outbound requests. Error from SPA:
+  # DOMException: Failed to execute 'setRequestHeader' on 'XMLHttpRequest': 'Token $token
   def generate_token(user)
+    return if user.nil?
+
     signature = signing_key.sign(user.gid)
-    "#{user.gid}|#{Base64.encode64(signature)}"
+    signature = Base64.encode64(signature).gsub("\n", '|')
+    "#{user.gid}||#{signature}"
   end
 
   # Verifies the base64-encoded signature (:gid against :signed_token)
   def user_gid_from_token(signed_token)
-    user_gid, encoded_signature = signed_token&.split('|')
-    # Fix escaping done by :token_and_options
-    encoded_signature.gsub!("\\n", "\n") if encoded_signature&.ends_with?("\\n")
+    user_gid, encoded_signature = signed_token&.split('||')
+    # Convert back '|' to required "\n" #84
+    encoded_signature.gsub!('|', "\n") if encoded_signature&.ends_with?('|')
 
     raise SignatureNotProvided if encoded_signature.blank?
 
