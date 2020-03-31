@@ -32,3 +32,6 @@ section#backend-content.users.index
                 / = link_to('Reject', backend_reject_user_path(entity), class: 'btn btn-secondary') if entity.approved?
                 / br
                 = link_to('Edit', backend_edit_user_path(entity.id), class: 'btn btn-secondary')
+                br
+                br
+                = link_to('Delete', backend_delete_user_path(entity.id), class: 'btn btn-secondary', confirm: 'Are you sure?', method: :delete)

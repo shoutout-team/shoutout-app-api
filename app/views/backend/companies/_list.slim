@@ -38,6 +38,9 @@
               br
               br
               = link_to('Edit', backend_edit_company_path(entity.id), class: 'btn btn-secondary')
+              br
+              br
+              = link_to('Delete', backend_delete_company_path(entity.id), class: 'btn btn-secondary', confirm: 'Are you sure?', method: :delete)
 
           tr
             td colspan='2'
