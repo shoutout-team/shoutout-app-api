@@ -20,13 +20,15 @@
             td= entity.title
             td= entity.category
             td
-              = entity.postcode
-              br
-              = entity.city
+              = entity.user.name
               br
               = entity.street
               br
               = entity.street_number
+              br
+              = entity.postcode
+              br
+              = entity.city
               br
             = entity.sortable_date_table_cell_tag(:created_at_value)
             = entity.sortable_date_table_cell_tag(:updated_at_value)

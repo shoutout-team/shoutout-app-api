@@ -1,5 +1,8 @@
 .row
   .col-12
+    = link_to('New upload', backend_new_upload_path)
+.row
+  .col-12
     = backend.decorator.backend_table_tag(styles: 'large-rows') do
       thead
         tr
@@ -26,4 +29,4 @@
               = link_to('Remove', backend_remove_upload_path(entity), method: :delete)
 
 
-= link_to('New upload', backend_new_upload_path)
+

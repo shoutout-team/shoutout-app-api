@@ -27,6 +27,7 @@ module Backend
       @entity = Company.create(company_params).try(:decorate)
 
       if @entity.persisted?
+        process_changed_picture
         redirect_to backend_list_companies_path
       else
         render :form

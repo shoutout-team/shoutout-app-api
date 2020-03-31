@@ -48,7 +48,7 @@ class Company < ApplicationRecord
 
   NESTED_PROPERTIES = %i[payment links].freeze
 
-  PAYMENT_OPTIONS = [:paypal, :gofoundme, bank: %i[owner iban]].freeze
+  PAYMENT_OPTIONS = [:paypal, :gofoundme, :ticket_io, bank: %i[owner iban]].freeze
   LINKS_OPTIONS = %i[website promotion facebook twitter instagram].freeze
 
   CATEGORIES = Static::CATEGORIES_ENUM

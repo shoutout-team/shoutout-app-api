@@ -1,2 +1,8 @@
+.row
+  .col-12
+    h1= "#{Company.count} Companies"
+    = link_to('New company', backend_add_company_path)
+
+
 section#backend-content.companies.index
   = render partial: 'backend/companies/list', locals: { entities: @entities }
