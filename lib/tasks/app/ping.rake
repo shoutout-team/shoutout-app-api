@@ -2,7 +2,6 @@ namespace :app do
   namespace :ping do
     # rake app:ping:run
     task run: :environment do
-
       require 'net/http'
       require 'uri'
 
@@ -12,10 +11,12 @@ namespace :app do
       request.content_type = 'application/json'
 
       req_options = {
-        use_ssl: uri.scheme == 'https',
+        use_ssl: uri.scheme == 'https'
       }
 
-      while true do
+      say "Starting pings against #{api_ping_url}"
+
+      loop do
         response = Net::HTTP.start(uri.hostname, uri.port, req_options) do |http|
           http.request(request)
         end
@@ -25,10 +26,10 @@ namespace :app do
           sleep(300) # 5min
         else
           cmd = ['terminal-notifier']
-          cmd << "-title Shoutout-Error"
+          cmd << '-title Shoutout-Error'
           cmd << "-subtitle #{response.code}"
-          cmd << "-message ALERT"
-          cmd << "-sound default"
+          cmd << '-message ALERT'
+          cmd << '-sound default'
           system cmd.join(' ')
 
           sleep(60)
