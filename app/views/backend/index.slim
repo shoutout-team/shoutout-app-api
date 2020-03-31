@@ -1,0 +1,10 @@
+h1 Hi
+
+section#backend-content.companies.dashboard
+  b= link_to('Add company', backend_add_company_path)
+  hr
+
+  h2 Unapproved companies
+  = render partial: 'backend/companies/list', locals: { entities: @unapproved_companies }
+
+/= backend.decorator.render_pagination(@paginated)

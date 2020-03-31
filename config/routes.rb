@@ -27,6 +27,8 @@ Rails.application.routes.draw do
   end
 
   namespace :backend do
+    get 'dashboard', to: 'backend#index', as: :dashboard
+
     get 'companies', to: 'companies#index', as: :list_companies
     get 'companies/approve/:id', to: 'companies#approve', as: :approve_company
     get 'companies/reject/:id', to: 'companies#reject', as: :reject_company
@@ -51,7 +53,5 @@ Rails.application.routes.draw do
     patch 'update', to: 'uploads#update', as: :update_asset
   end
 
-  get 'welcome', to: 'pages#index'
-
-  root to: 'pages#index'
+  root to: 'backend#index'
 end
