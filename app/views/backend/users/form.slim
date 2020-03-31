@@ -20,9 +20,17 @@ section#backend-content.users.form
 
       - if current_user.developer?
         .col-12
-          = form.input :role, collection: @entity.role_collection, include_blank: false
+          = form.input :role, collection: @entity.role_collection, include_blank: false, selected: :user
         .col-12
           = form.input :developer_key
+
+      - if @entity.new_record?
+        - new_password = @entity.generate_password + '$'
+
+        .col-12
+          = form.input :password, as: :string, input_html: { value: new_password }
+        .col-12
+          = form.input :password_confirmation, as: :string, input_html: { value: new_password }
 
       / .col-12
       /   = form.association :company

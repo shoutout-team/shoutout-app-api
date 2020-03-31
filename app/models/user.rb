@@ -134,6 +134,11 @@ class User < ApplicationRecord
     super({ only: API_ATTRIBUTES, methods: API_METHODS }.merge(options || {}))
   end
 
+  def generate_password(length = 10)
+    chars = ('0'..'9').to_a + ('A'..'Z').to_a + ('a'..'z').to_a + '!@#$%^&*'.split('')
+    chars.sort_by { rand }.join[0...length]
+  end
+
   def define_properties
     return if properties.any?
 

@@ -1,5 +1,7 @@
 module Backend
   class UsersController < BackendController
+    include UploadPostProcessing
+
     before_action :require_user, only: %i[approve reject edit update]
 
     def index
@@ -19,7 +21,8 @@ module Backend
       @entity = User.create(user_params).try(:decorate)
 
       if @entity.persisted?
-        redirect_to root_path
+        process_changed_avatar
+        redirect_to backend_list_users_path
       else
         render :form
       end
@@ -27,7 +30,8 @@ module Backend
 
     def update
       if @entity.update(user_params)
-        redirect_to root_path
+        process_changed_avatar
+        redirect_to backend_list_users_path
       else
         render :form
       end
@@ -43,8 +47,18 @@ module Backend
       redirect_to root_path
     end
 
+    private def process_changed_avatar
+      return if @entity.avatar_key_before_last_save.eql?(user_params[:avatar_key])
+
+      if user_params[:avatar_key].blank?
+        @entity.update(avatar: nil)
+      else
+        remap_upload(user_params[:avatar_key], @entity, :avatar)
+      end
+    end
+
     private def user_params
-      params.require(:user).permit(:email, :name, :role, :developer_key, :avatar_key)
+      params.require(:user).permit(:email, :name, :role, :developer_key, :avatar_key, :password)
     end
 
     private def require_user

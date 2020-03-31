@@ -1,5 +1,10 @@
 .row
   .col-12
+    h1= "#{User.count} Users"
+    = link_to('New user', backend_add_user_path)
+
+.row
+  .col-12
     = backend.decorator.backend_table_tag(styles: 'large-rows') do
       thead
         tr
