@@ -9,7 +9,7 @@ module Api
         picture_key change_picture
       ].freeze
 
-      before_action :require_keeper, only: %i[fetch create update approve]
+      before_action :require_authorized_keeper, only: %i[fetch create update approve]
       after_action :verify_authorized, only: %i[create update]
 
       def fetch
@@ -73,8 +73,9 @@ module Api
         params[:keeper_token] || params[:company].try(:[], :keeper_token)
       end
 
-      private def require_keeper
+      private def require_authorized_keeper
         @keeper = User.available.find_by(gid: token)
+        authorize(@keeper)
       end
     end
   end
