@@ -38,6 +38,7 @@ module AuthenticationSupport
   def require_token
     #token, _options = token_and_options(request)
     #token, _options = ActionController::HttpAuthentication::Token.token_and_options(request)
+    #token = request.headers['HTTP_AUTHORIZATION'].gsub('Bearer ', '')
 
     # TODO: For the draft, we accept it from params #75
     token = params[:token]

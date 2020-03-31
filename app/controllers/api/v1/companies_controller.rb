@@ -10,6 +10,7 @@ module Api
       ].freeze
 
       before_action :require_keeper, only: %i[fetch create update approve]
+      after_action :verify_authorized, only: %i[create update]
 
       def fetch
         return render_json_forbidden(:unknown_keeper) if @keeper.nil?
