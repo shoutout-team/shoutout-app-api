@@ -52,9 +52,10 @@ class Upload < ApplicationRecord
 
     raise Upload::AssetNotFound if instance.nil?
 
+    entity_class = entity.class.name.gsub('Decorator', '')
     asset_blob = ActiveStorage::Blob.find_by(key: key)
     attachment = ActiveStorage::Attachment.find_by(blob_id: asset_blob.id)
-    attachment.update_columns(name: kind, record_type: entity.class.name, record_id: entity.id)
+    attachment.update_columns(name: kind, record_type: entity_class, record_id: entity.id)
     instance
   end
 

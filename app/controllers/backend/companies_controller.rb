@@ -1,5 +1,7 @@
 module Backend
   class CompaniesController < BackendController
+    include UploadPostProcessing
+
     PARAMS = %i[
       name title category
       postcode city street street_number latitude longitude
@@ -25,7 +27,7 @@ module Backend
       @entity = Company.create(company_params).try(:decorate)
 
       if @entity.persisted?
-        redirect_to root_path
+        redirect_to backend_list_companies_path
       else
         render :form
       end
@@ -33,7 +35,8 @@ module Backend
 
     def update
       if @entity.update(company_params)
-        redirect_to root_path
+        process_changed_picture
+        redirect_to backend_list_companies_path
       else
         render :form
       end
@@ -47,6 +50,16 @@ module Backend
     def reject
       @company.update(approved: false)
       redirect_to root_path
+    end
+
+    private def process_changed_picture
+      return if @entity.picture_key_before_last_save.eql?(company_params[:picture_key])
+
+      if company_params[:picture_key].blank?
+        @entity.update(picture: nil)
+      else
+        remap_upload(company_params[:picture_key], @entity, :picture)
+      end
     end
 
     private def company_params
