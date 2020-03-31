@@ -9,7 +9,6 @@ class UserPolicy < ApplicationPolicy
     record.gid == user
   end
 
-
   def update?
     record.gid == user
   end
