@@ -16,6 +16,9 @@ module AuthenticationSupport
   # Verifies the base64-encoded signature (:gid against :signed_token)
   def user_gid_from_token(signed_token)
     user_gid, encoded_signature = signed_token.split('|')
+    # Fix escaping done by :token_and_options
+    encoded_signature.gsub!("\\n", "\n") if encoded_signature.ends_with?("\\n")
+
     raise ArgumentError if encoded_signature.blank?
 
     signature = Base64.decode64(encoded_signature)
@@ -36,11 +39,12 @@ module AuthenticationSupport
   end
 
   def require_token
-    #token, _options = token_and_options(request)
-    #token, _options = ActionController::HttpAuthentication::Token.token_and_options(request)
-    #token = request.headers['HTTP_AUTHORIZATION'].gsub('Bearer ', '')
+    # TODO: Remove this option #75
+    return params[:token] if params[:token].present?
 
-    # TODO: For the draft, we accept it from params #75
-    token = params[:token]
+    # This causes 'ArgumentError - expected 64 byte signature, got 65:' ... but having it in params works! #75
+    # OK got it: it escapes "\n" => "\\n" ... whic causes failing base64-decoding
+    token, _options = ActionController::HttpAuthentication::Token.token_and_options(request)
+    token
   end
 end
