@@ -2,8 +2,12 @@ module Api
   class BaseController < ApplicationController
     include ClientAccess
     include CorsAccess
+    include Pundit
+    include AuthenticationSupport
 
     protect_from_forgery unless: -> { request.format.json? }
+
+    rescue_from Pundit::NotAuthorizedError, with: :render_unauthorized_operation
 
     before_action :authenticate_client_access!
     before_action :cors_preflight_check
@@ -18,5 +22,9 @@ module Api
     end
 
     protected def handle_no_op_error!(_error); end
+
+    def render_unauthorized_operation
+      render json: { keeper_token: @keeper.try(:gid) }, status: :unauthorized
+    end
   end
 end

@@ -9,7 +9,9 @@ module Api
         picture_key change_picture
       ].freeze
 
-      before_action :require_keeper, only: %i[fetch create update approve]
+      before_action :require_keeper, only: %i[fetch approve]
+      before_action :require_authorized_keeper, only: %i[create update]
+      after_action :verify_authorized, only: %i[create update]
 
       def fetch
         return render_json_forbidden(:unknown_keeper) if @keeper.nil?
@@ -50,6 +52,7 @@ module Api
       end
 
       # TODO: This endpoint must be restricted to dev-clients #43
+      # TODO: Remove me for golive #75
       def approve
         return render_json_forbidden(:unknown_keeper) if @keeper.nil?
         return render_json_forbidden(:company_not_present) if @keeper.company.nil?
@@ -74,6 +77,11 @@ module Api
 
       private def require_keeper
         @keeper = User.available.find_by(gid: token)
+      end
+
+      private def require_authorized_keeper
+        require_keeper
+        authorize(@keeper)
       end
     end
   end
