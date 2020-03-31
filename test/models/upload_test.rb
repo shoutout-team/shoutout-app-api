@@ -8,6 +8,8 @@
 #  key        :string
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  filename   :string
+#  reference  :string           not null
 #
 # Indexes
 #
