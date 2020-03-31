@@ -27,7 +27,7 @@ Rails.application.routes.draw do
   end
 
   namespace :backend do
-    get 'dashboard', to: 'backend#index', as: :dashboard
+    get 'dashboard', action: :index, as: :dashboard
 
     get 'companies', to: 'companies#index', as: :list_companies
     get 'companies/approve/:id', to: 'companies#approve', as: :approve_company

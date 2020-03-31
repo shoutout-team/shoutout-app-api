@@ -27,3 +27,6 @@ section#backend-content.uploads.form
       .col-12
         span.input-group-btn
           = form.submit
+
+
+= render partial: 'backend/shared/debug', locals: { entity: @entity }

@@ -53,6 +53,5 @@ section#backend-content.companies.form
         span.input-group-btn
           = form.submit
 
-hr
-= @entity.inspect
-hr
+
+= render partial: 'backend/shared/debug', locals: { entity: @entity }
