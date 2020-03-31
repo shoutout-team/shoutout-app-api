@@ -15,7 +15,7 @@ module AuthenticationSupport
 
   # Verifies the base64-encoded signature (:gid against :signed_token)
   def user_gid_from_token(signed_token)
-    user_gid, encoded_signature = signed_token.split('|')
+    user_gid, encoded_signature = signed_token&.split('|')
     # Fix escaping done by :token_and_options
     encoded_signature.gsub!("\\n", "\n") if encoded_signature.ends_with?("\\n")
 
