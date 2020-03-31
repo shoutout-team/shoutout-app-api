@@ -44,7 +44,7 @@ module Backend
     end
 
     private def user_params
-      params.require(:user).permit(:email, :name, :role, :developer_key)
+      params.require(:user).permit(:email, :name, :role, :developer_key, :avatar_key)
     end
 
     private def require_user

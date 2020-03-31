@@ -13,6 +13,10 @@ section#backend-content.users.form
         = form.input :name
       .col-12
         = form.input :email
+      .col-12
+        h3 Avatar (Upload-Key)
+      .col-12
+        = form.input :avatar_key
 
       - if current_user.developer?
         .col-12
