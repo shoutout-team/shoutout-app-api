@@ -15,7 +15,7 @@ group :core do
   gem 'bootsnap', '>= 1.4.2', require: false # Reduces boot times through caching; required in config/boot.rb
   gem 'devise'
   gem 'ed25519' # signatures for auth tokens
-  gem 'image_processing', '~> 1.2'
+  gem 'image_processing', '~> 1.12'
   gem 'mini_magick'
   gem 'pg'
   gem 'puma', '~> 4.1'
