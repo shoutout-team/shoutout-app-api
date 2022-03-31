@@ -18,7 +18,7 @@ group :core do
   gem 'image_processing', '~> 1.2'
   gem 'mini_magick'
   gem 'pg'
-  gem 'puma', '~> 4.1'
+  gem 'puma', '~> 4.3'
   gem 'pundit' # authorization
   gem 'rails', '~> 6.0.2', '>= 6.0.2.1'
 end
